@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Context>
+    <Resource
+            maxIdle="3"
+            maxActive="15"
+            removeAbandonedTimeout="30"
+            removeAbandoned="true"
+            url="jdbc:mysql://localhost:3306/app?useUnicode=true&amp;serverTimezone=UTC"
+            driverClassName="com.mysql.cj.jdbc.Driver"
+            password="testpass"
+            username="testuser"
+            validationInterval="30000"
+            validationQuery="SELECT 1"
+            factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+            type="javax.sql.DataSource"
+            serverTimezone="-1"
+            auth="Container"
+            name="jdbc/mysql"/>
+</Context>

@@ -2,7 +2,11 @@ package com.example.app.service.user;
 
 import com.example.app.dao.user.UserDao;
 import com.example.app.model.user.User;
+import com.example.app.model.user.UserType;
+import com.example.app.util.Page;
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
@@ -47,7 +51,7 @@ public class UserServiceImpl implements UserService {
         return userDao.findUserByEmailAndPassword(email, password);
     }
 
-/*    @Override
+    @Override
     public Page<User> getPageByUserType(Integer page, Integer size, UserType userType) {
         LOGGER.info("Getting page number " + page + ", of size " + size + ", for user type " + userType.name());
 
@@ -57,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
         List<User> items =  userDao.findPageByUserType(userType, (page - 1) * size, size);
         return new Page<>(items, page, size);
-    }*/
+    }
 
     @Override
     public User findUserByEmail(String email) {

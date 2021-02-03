@@ -2,31 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="navbar" tagdir="/WEB-INF/tags" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="header"%>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <%--Localization--%>
-    <c:if test="${sessionScope.locale == null}">
-        <fmt:setLocale value="ru"/>
-    </c:if>
-    <c:if test="${sessionScope.locale != null}">
-        <fmt:setLocale value="${sessionScope.locale}"/>
-    </c:if>
-
-    <fmt:setBundle basename="localization" var="bundle"/>
-    <%----%>
-
-    <title>Newsstand - <fmt:message key="signin" bundle="${bundle}"/></title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <%--<link href="signin.css" rel="stylesheet">--%>
-
+    <header:header title="${msg.signin}"/>
     <style>
         html,
         body {
@@ -78,6 +57,16 @@
             border-top-right-radius: 0;
         }
     </style>
+    <%--Localization--%>
+    <c:if test="${sessionScope.locale == null}">
+        <fmt:setLocale value="ru"/>
+    </c:if>
+    <c:if test="${sessionScope.locale != null}">
+        <fmt:setLocale value="${sessionScope.locale}"/>
+    </c:if>
+
+    <fmt:setBundle basename="localization" var="bundle"/>
+    <%----%>
 </head>
 <body class="text-center">
 <navbar:navbar/>
@@ -88,19 +77,18 @@
     </div>
 </c:if>
 <form class="form-signin" accept-charset="UTF-8" role="form" method="post" action="${pageContext.request.contextPath}/login">
-    <a class="btn btn-success login_page_big_button" href="${pageContext.request.contextPath}/register"><h4><fmt:message key="signup" bundle="${bundle}"/></h4></a>
     <h1 class="h3 mb-3 font-weight-normal"><fmt:message key="signin" bundle="${bundle}"/></h1>
-    <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="email" id="inputEmail" class="form-control"
-           placeholder="<fmt:message key="email" bundle="${bundle}"/>" required autofocus name="email" >
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required
-           placeholder="<fmt:message key="password" bundle="${bundle}"/>" name="password">
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" value="remember-me"> Remember me
-        </label>
+    <div class="form-group">
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control"
+               placeholder="<fmt:message key="email" bundle="${bundle}"/>" required autofocus name="email" >
     </div>
+    <div class="form-group">
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required
+               placeholder="<fmt:message key="password" bundle="${bundle}"/>" name="password">
+    </div>
+
     <button class="btn btn-lg btn-primary btn-block" type="submit"><fmt:message key="signin" bundle="${bundle}"/></button>
 </form>
 

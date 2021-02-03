@@ -48,7 +48,7 @@ public class LoginCommand implements ServletCommand {
 			if (user != null) {
 				HttpSession session = request.getSession();
 				session.setAttribute("email", user.getEmail());
-				session.setAttribute("username", user.getFirstName() + " " + user.getLastName());
+				session.setAttribute("username", user.getFirstName());
 				session.setAttribute("authenticated", true);
 				session.setAttribute("role", user.getUserType().name());
 

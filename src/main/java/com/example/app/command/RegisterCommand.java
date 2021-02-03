@@ -44,15 +44,13 @@ public class RegisterCommand implements ServletCommand {
 
 		String resultPage = registerPage;
 
-		if(request.getParameter("firstName") != null && request.getParameter("lastName") != null &&
+		if(request.getParameter("firstName") != null &&
 			request.getParameter("email") != null && request.getParameter("password") != null &&
-			request.getParameter("address") != null &&
 			userService.checkEmailAvailability(request.getParameter("email"))){
 
 			LOGGER.info("New user registration");
 
 			User user = new UserBuilder().setFirstName(request.getParameter("firstName"))
-					                     .setLastName(request.getParameter("lastName"))
 					                     .setEmail(request.getParameter("email"))
 					                     .setPassword(request.getParameter("password"))
 					                     .setUserType(UserType.USER)

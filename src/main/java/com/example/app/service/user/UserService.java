@@ -1,6 +1,8 @@
 package com.example.app.service.user;
 
 import com.example.app.model.user.User;
+import com.example.app.model.user.UserType;
+import com.example.app.util.Page;
 
 public interface UserService {
     /**
@@ -28,15 +30,15 @@ public interface UserService {
      */
     User getUserByCredentials(String email, String password);
 
-/*    *//**
+    /**
      * This method returns a page of users by user type.
      *
      * @param page     Number of the page, starts from 1.
      * @param size     Size of the page.
      * @param userType User type of the users to find.
      * @return         A list of users.
-     *//*
-    Page<User> getPageByUserType(Integer page, Integer size, UserType userType);*/
+     */
+    Page<User> getPageByUserType(Integer page, Integer size, UserType userType);
 
     /**
      * This method finds user by email.

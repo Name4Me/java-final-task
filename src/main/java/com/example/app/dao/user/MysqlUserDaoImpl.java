@@ -54,12 +54,8 @@ public class MysqlUserDaoImpl implements UserDao{
 		try(Connection connection = connectionPool.getConnection()) {
 			PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, user.getFirstName());
-			statement.setString(2, user.getLastName());
-			statement.setString(3, user.getPassword());
-			statement.setString(4, user.getEmail());
-			statement.setLong(5, user.getUserType().ordinal() + 1);
-			statement.setString(6, user.getAddress());
-
+			statement.setString(2, user.getPassword());
+			statement.setString(3, user.getEmail());
 			int affectedRows = statement.executeUpdate();
 
 			if(affectedRows == 0) {
@@ -89,12 +85,10 @@ public class MysqlUserDaoImpl implements UserDao{
 		try(Connection connection = connectionPool.getConnection()) {
 			PreparedStatement statement = connection.prepareStatement(updateQuery);
 			statement.setString(1, user.getFirstName());
-			statement.setString(2, user.getLastName());
-			statement.setString(3, user.getPassword());
-			statement.setString(4, user.getEmail());
-			statement.setLong(5, user.getUserType().ordinal() + 1);
-			statement.setString(6, user.getAddress());
-			statement.setLong(7, user.getId());
+			statement.setString(2, user.getPassword());
+			statement.setString(3, user.getEmail());
+			statement.setLong(4, user.getUserType().ordinal());
+			statement.setLong(5, user.getId());
 
 			boolean result = statement.execute();
 
@@ -191,14 +185,10 @@ public class MysqlUserDaoImpl implements UserDao{
 
 		try(Connection connection = connectionPool.getConnection()) {
 			PreparedStatement statement = connection.prepareStatement(findPageByUserType);
-			statement.setLong(1, userType.ordinal() + 1);
+			statement.setLong(1, userType.ordinal());
 			statement.setInt(2, offset);
 			statement.setInt(3, size);
-
-			ResultSet result = statement.executeQuery();
-
-			res = getUsers(result);
-
+			res = getUsers(statement.executeQuery());
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -213,12 +203,10 @@ public class MysqlUserDaoImpl implements UserDao{
 		try {
 			if(resultSet.next()) {
 				user = new UserBuilder().setId(resultSet.getLong("id"))
-						                .setFirstName(resultSet.getString("firstName"))
-						                .setLastName(resultSet.getString("lastName"))
+						                .setFirstName(resultSet.getString("login"))
 						                .setEmail(resultSet.getString("email"))
 						                .setPassword(resultSet.getString("password"))
-						                .setAddress(resultSet.getString("address"))
-						                .setUserType(UserType.values()[resultSet.getInt("userTypeId") - 1])
+						                .setUserType(UserType.values()[resultSet.getInt("userType")])
 						                .build();
             }
 		} catch (SQLException e) { LOGGER.info(e.getMessage()); }
@@ -232,12 +220,9 @@ public class MysqlUserDaoImpl implements UserDao{
 		try {
 			while (resultSet.next()) {
 				User user = new UserBuilder().setId(resultSet.getLong("id"))
-						                            .setFirstName(resultSet.getString("firstName"))
-						                            .setLastName(resultSet.getString("lastName"))
+						                            .setFirstName(resultSet.getString("login"))
 						                            .setEmail(resultSet.getString("email"))
-						                            .setPassword(resultSet.getString("password"))
-						                            .setAddress(resultSet.getString("address"))
-						                            .setUserType(UserType.values()[resultSet.getInt("userTypeId") - 1])
+						                            .setUserType(UserType.values()[resultSet.getInt("userType")])
 						                            .build();
 
 				res.add(user);

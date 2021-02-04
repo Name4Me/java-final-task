@@ -8,7 +8,6 @@ import com.example.app.properties.MappingProperties;
 import com.example.app.service.user.UserService;
 import com.example.app.service.user.UserServiceImpl;
 import org.apache.log4j.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,24 +15,14 @@ import javax.servlet.http.HttpServletResponse;
  * This class is used to handle POST requests to register user.
  */
 public class RegisterCommand implements ServletCommand {
-
 	private static final Logger LOGGER = Logger.getLogger(RegisterCommand.class);
-
 	private static UserService userService;
-/*	private static CategoryService categoryService;
-	private static MagazineService magazineService;*/
-
 	private static String registerPage;
 	private static String mainPage;
 
 	public RegisterCommand(){
 		LOGGER.info("Initializing RegisterCommand");
-
 		userService = new UserServiceImpl(MysqlUserDaoImpl.getInstance());
-/*		categoryService = new CategoryServiceImpl(MysqlCategoryDaoImpl.getInstance());
-		magazineService = new MagazineServiceImpl(MysqlMagazineDaoImpl.getInstance(),
-				                                  MysqlImageDaoImpl.getInstance());*/
-
 		MappingProperties properties = MappingProperties.getInstance();
 		registerPage = properties.getProperty("registerPage");
 		mainPage = properties.getProperty("mainPage");
@@ -41,28 +30,20 @@ public class RegisterCommand implements ServletCommand {
 
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.info("Executing command");
-
 		String resultPage = registerPage;
-
 		if(request.getParameter("firstName") != null &&
 			request.getParameter("email") != null && request.getParameter("password") != null &&
 			userService.checkEmailAvailability(request.getParameter("email"))){
-
 			LOGGER.info("New user registration");
-
 			User user = new UserBuilder().setFirstName(request.getParameter("firstName"))
 					                     .setEmail(request.getParameter("email"))
 					                     .setPassword(request.getParameter("password"))
 					                     .setUserType(UserType.USER)
 					                     .build();
-
 			if(userService.registerUser(user)) {
-/*				request.setAttribute("categories", categoryService.findAll());
-				request.setAttribute("latestMagazines", magazineService.findLatestAdded(6));*/
 				resultPage = mainPage;
 			}
 		}
-
 		return resultPage;
 	}
 }

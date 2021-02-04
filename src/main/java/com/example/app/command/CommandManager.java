@@ -37,8 +37,6 @@ public class CommandManager {
 
 /*
         getCommands.put("/account", new GetAccountPageCommand());
-        getCommands.put("/image", new GetImageCommand());
-        getCommands.put("/search", new GetSearchPageCommand());
         */
 
 
@@ -56,9 +54,6 @@ public class CommandManager {
         postCommands.put("/login", new LoginCommand());
         postCommands.put("/register", new RegisterCommand());
 
-        //admin users
-        //postCommands.put("/admin/admins/add", new AddAdminAdminCommand());
-
         MappingProperties properties = MappingProperties.getInstance();
         errorPage = properties.getProperty("errorPage");
     }
@@ -74,7 +69,6 @@ public class CommandManager {
         LOGGER.info("Getting command " + command);
         System.out.println("authenticated: "+request.getSession().getAttribute("authenticated"));
         if(getCommands.get(command) == null) {
-
             return getCommands.get("/");
         }
         return getCommands.get(command);
@@ -89,11 +83,9 @@ public class CommandManager {
     public ServletCommand getPostCommand(HttpServletRequest request) {
         String command = getMappting(request);
         LOGGER.info("Getting command " + command);
-
         if(postCommands.get(command) == null) {
             return getCommands.get("/");
         }
-
         return postCommands.get(command);
     }
 
@@ -108,7 +100,6 @@ public class CommandManager {
         if(mapping.endsWith("/")) {
             mapping = mapping.substring(0, mapping.length() - 1);
         }
-
         return mapping;
     }
 }

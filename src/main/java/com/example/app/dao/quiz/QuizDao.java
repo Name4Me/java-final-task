@@ -11,7 +11,7 @@ public interface QuizDao {
      * @param category Object to be created.
      * @return         An updated object.
      */
-    Quiz createCategory(Quiz category);
+    Quiz createQuiz(Quiz category);
 
     /**
      * This method updates category.
@@ -19,7 +19,7 @@ public interface QuizDao {
      * @param category Object to be updated.
      * @return         An updated object.
      */
-    Quiz updateCategory(Quiz category);
+    Quiz updateQuiz(Quiz category);
 
     /**
      * This method deletes category from db.
@@ -27,7 +27,7 @@ public interface QuizDao {
      * @param id Id of the category to be deleted.
      * @return   True if deletion successful, otherwise false.
      */
-    boolean deleteCategoryById(Long id);
+    boolean deleteQuizById(Long id);
 
     /**
      * This method finds category by id.
@@ -35,7 +35,7 @@ public interface QuizDao {
      * @param id Id of the category.
      * @return   Category object retrieved from db, otherwise null.
      */
-    Quiz findCategoryById(Long id);
+    Quiz findQuizById(Long id);
 
     /**
      * This method finds category by name.
@@ -43,7 +43,7 @@ public interface QuizDao {
      * @param name Name of the category.
      * @return     Category object with given name, otherwise null.
      */
-    Quiz findCategoryByName(String name);
+    Quiz findQuizByName(String name);
 
     /**
      * This method gets all categories

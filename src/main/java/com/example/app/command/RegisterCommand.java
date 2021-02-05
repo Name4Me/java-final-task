@@ -7,9 +7,11 @@ import com.example.app.model.user.UserType;
 import com.example.app.properties.MappingProperties;
 import com.example.app.service.user.UserService;
 import com.example.app.service.user.UserServiceImpl;
+import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * This class is used to handle POST requests to register user.
@@ -30,6 +32,7 @@ public class RegisterCommand implements ServletCommand {
 
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.info("Executing command");
+		JsonObject json = new JsonObject();
 		String resultPage = registerPage;
 		if(request.getParameter("firstName") != null &&
 			request.getParameter("email") != null && request.getParameter("password") != null &&
@@ -41,9 +44,14 @@ public class RegisterCommand implements ServletCommand {
 					                     .setUserType(UserType.USER)
 					                     .build();
 			if(userService.registerUser(user)) {
-				resultPage = mainPage;
+				HttpSession session = request.getSession();
+				session.setAttribute("email", user.getEmail());
+				session.setAttribute("username", user.getFirstName());
+				session.setAttribute("authenticated", true);
+				session.setAttribute("role", user.getUserType().name());
+				json.addProperty("result", true);
 			}
 		}
-		return resultPage;
+		return json.toString();
 	}
 }

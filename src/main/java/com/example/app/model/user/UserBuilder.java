@@ -7,6 +7,7 @@ public class UserBuilder {
 	private String email;
 	private String password;
 	private UserType userType;
+	private UserStatus userStatus;
 	private String address;
 
 	public UserBuilder setId(Long id) {
@@ -45,6 +46,11 @@ public class UserBuilder {
 	}
 
 	public User build() {
-		return new User(id, firstName, lastName, email, password, userType, address);
+		return new User(id, firstName, lastName, email, password, userType, userStatus);
+	}
+
+	public UserBuilder setUserStatus(UserStatus userStatus) {
+		this.userStatus = userStatus;
+		return this;
 	}
 }

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet("/Servlet")
 public class Servlet extends HttpServlet {
@@ -51,6 +52,8 @@ public class Servlet extends HttpServlet {
 
 		ServletCommand command = commandManager.getPostCommand(request);
 		String page = command.execute(request, response);
-		request.getRequestDispatcher(page).forward(request, response);
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(page);
 	}
 }

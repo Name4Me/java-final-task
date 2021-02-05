@@ -2,6 +2,7 @@ package com.example.app.dao.quiz;
 
 import com.example.app.connection.ConnectionPool;
 import com.example.app.model.quiz.Quiz;
+import com.example.app.model.quiz.QuizDifficulty;
 import com.example.app.properties.MysqlQueryProperties;
 import org.apache.log4j.Logger;
 
@@ -51,7 +52,10 @@ public class MysqlQuizDaoImpl implements QuizDao {
         try(Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, quiz.getName());
-
+            statement.setString(2, quiz.getDescription());
+            statement.setInt(3, quiz.getDifficulty().ordinal());
+            statement.setInt(4, quiz.getTime());
+            statement.setInt(5, quiz.getNumberOfQuestion());
             int affectedRows = statement.executeUpdate();
 
             if(affectedRows == 0) {
@@ -83,7 +87,11 @@ public class MysqlQuizDaoImpl implements QuizDao {
         try(Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(updateQuery);
             statement.setString(1, quiz.getName());
-            statement.setLong(2, quiz.getId());
+            statement.setString(2, quiz.getDescription());
+            statement.setInt(3, quiz.getDifficulty().ordinal());
+            statement.setInt(4, quiz.getTime());
+            statement.setInt(5, quiz.getNumberOfQuestion());
+            statement.setLong(6, quiz.getId());
 
             boolean result = statement.execute();
 
@@ -172,19 +180,24 @@ public class MysqlQuizDaoImpl implements QuizDao {
     }
 
     @Override
-    public List<Quiz> findAll() {
+    public List<Quiz> findAll(Integer offset, Integer size) {
         LOGGER.info("Getting all quizzes");
         List<Quiz> res = new ArrayList<>();
 
         try(Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(findAllQuery);
+            statement.setInt(1, offset);
+            statement.setInt(2, size);
             ResultSet result = statement.executeQuery();
 
             while(result.next()) {
                 Quiz quiz = new Quiz();
                 quiz.setId(result.getLong("id"));
                 quiz.setName(result.getString("name"));
-
+                quiz.setDescription(result.getString("description"));
+                quiz.setDifficulty(QuizDifficulty.values()[result.getInt("difficulty")]);
+                quiz.setTime(result.getInt("time"));
+                quiz.setNumberOfQuestion(result.getInt("numberOfQuestion"));
                 res.add(quiz);
             }
         } catch (SQLException e) {

@@ -15,7 +15,11 @@
 <%----%>
 
 <!-- Navigation -->
-
+<style>
+    header{
+        height: 90px;
+    }
+</style>
 <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/">Testing</a>
@@ -29,7 +33,7 @@
                 </li>
                 <c:if test="${sessionScope.authenticated == null}">
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/login"><fmt:message key="signin" bundle="${bundle}"/></a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/login"><fmt:message key="signIn" bundle="${bundle}"/></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/register"><fmt:message key="signup" bundle="${bundle}"/></a>
@@ -43,7 +47,7 @@
                         </li>
                     </c:if>
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/logout"><fmt:message key="signout" bundle="${bundle}"/></a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/logout"><fmt:message key="signOut" bundle="${bundle}"/></a>
                     </li>
                 </c:if>
 
@@ -54,6 +58,9 @@
                         <div class="dropdown-menu" aria-labelledby="dropdown01">
                             <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/users">
                                 <fmt:message key="users" bundle="${bundle}"/>
+                            </a>
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/quizzes">
+                                <fmt:message key="quizzes" bundle="${bundle}"/>
                             </a>
                         </div>
                     </li>

@@ -3,6 +3,7 @@ package com.example.app.dao.user;
 import com.example.app.connection.ConnectionPool;
 import com.example.app.model.user.User;
 import com.example.app.model.user.UserBuilder;
+import com.example.app.model.user.UserStatus;
 import com.example.app.model.user.UserType;
 import com.example.app.properties.MysqlQueryProperties;
 import org.apache.log4j.Logger;
@@ -16,7 +17,7 @@ public class MysqlUserDaoImpl implements UserDao{
 
 	private static MysqlUserDaoImpl INSTANCE;
 	private static ConnectionPool connectionPool;
-
+	private static String blockQuery;
 	private static String createQuery;
 	private static String updateQuery;
 	private static String deleteQuery;
@@ -30,7 +31,7 @@ public class MysqlUserDaoImpl implements UserDao{
 
 		connectionPool = ConnectionPool.getInstance();
 		MysqlQueryProperties properties = MysqlQueryProperties.getInstance();
-
+		blockQuery = properties.getProperty("blockUser");
 		createQuery = properties.getProperty("createUser");
 		updateQuery = properties.getProperty("updateUserById");
 		deleteQuery = properties.getProperty("deleteUserById");
@@ -174,7 +175,7 @@ public class MysqlUserDaoImpl implements UserDao{
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 		}
-
+		LOGGER.info("Getting user with email +++" + email);
 		return user;
 	}
 
@@ -196,6 +197,43 @@ public class MysqlUserDaoImpl implements UserDao{
 		return res;
 	}
 
+	@Override
+	public boolean blockUser(Long id){
+		LOGGER.info("blockUser");
+		boolean result = false;
+		try(Connection connection = connectionPool.getConnection()) {
+			PreparedStatement statement = connection.prepareStatement(blockQuery);
+			statement.setInt(1, UserStatus.BLOCKED.ordinal());
+			statement.setLong(2, id);
+			if(statement.executeUpdate() == 0) {
+				LOGGER.info("blockUser failed");
+			} else {
+				result = true;
+				LOGGER.info("blockUser successfully");
+			}
+		} catch (SQLException e) { LOGGER.error(e.getMessage()); }
+
+		return result;
+	}
+
+	@Override
+	public boolean unblockUser(Long id){
+		LOGGER.info("unblockUser");
+		boolean result = false;
+		try(Connection connection = connectionPool.getConnection()) {
+			PreparedStatement statement = connection.prepareStatement(blockQuery);
+			statement.setInt(1, UserStatus.ACTIVE.ordinal());
+			statement.setLong(2, id);
+			if(statement.executeUpdate() == 0) {
+				LOGGER.info("unblockUser failed");
+			} else {
+				result = true;
+				LOGGER.info("unblockUser successfully");
+			}
+		} catch (SQLException e) { LOGGER.error(e.getMessage()); }
+
+		return result;
+	}
 
 	private User getUser(ResultSet resultSet) {
 		User user = null;
@@ -207,6 +245,7 @@ public class MysqlUserDaoImpl implements UserDao{
 						                .setEmail(resultSet.getString("email"))
 						                .setPassword(resultSet.getString("password"))
 						                .setUserType(UserType.values()[resultSet.getInt("userType")])
+										.setUserStatus(UserStatus.values()[resultSet.getInt("status")])
 						                .build();
             }
 		} catch (SQLException e) { LOGGER.info(e.getMessage()); }
@@ -223,6 +262,7 @@ public class MysqlUserDaoImpl implements UserDao{
 						                            .setFirstName(resultSet.getString("login"))
 						                            .setEmail(resultSet.getString("email"))
 						                            .setUserType(UserType.values()[resultSet.getInt("userType")])
+													.setUserStatus(UserStatus.values()[resultSet.getInt("status")])
 						                            .build();
 
 				res.add(user);

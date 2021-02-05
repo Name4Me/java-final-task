@@ -55,4 +55,7 @@ public interface UserService {
      * @return   User found by id, otherwise null;
      */
     User findUserById(Long id);
+
+    boolean blockUser(Long id);
+    boolean unblockUser(Long id);
 }

@@ -1,12 +1,11 @@
-package com.example.app.command.admin.users;
+package com.example.app.command.admin.quizzes;
 
 import com.example.app.command.ServletCommand;
-import com.example.app.dao.user.MysqlUserDaoImpl;
-import com.example.app.model.user.User;
-import com.example.app.model.user.UserType;
+import com.example.app.dao.quiz.MysqlQuizDaoImpl;
+import com.example.app.model.quiz.Quiz;
 import com.example.app.properties.MappingProperties;
-import com.example.app.service.user.UserService;
-import com.example.app.service.user.UserServiceImpl;
+import com.example.app.service.quiz.QuizService;
+import com.example.app.service.quiz.QuizServiceImpl;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
 
@@ -16,33 +15,32 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * This class is used to GET requests to the admin page to view users.
  */
-public class UsersAdminPageCommand implements ServletCommand {
-    private static final Logger LOGGER = Logger.getLogger(UsersAdminPageCommand.class);
+public class QuizzesAdminPageCommand implements ServletCommand {
+    private static final Logger LOGGER = Logger.getLogger(QuizzesAdminPageCommand.class);
 
-    private static UserService userService;
+    private static QuizService quizService;
 
     private static String page;
 
-    public UsersAdminPageCommand(){
+    public QuizzesAdminPageCommand(){
         LOGGER.info("Initializing UsersAdminPageCommand");
 
-        userService = new UserServiceImpl(MysqlUserDaoImpl.getInstance());
+        quizService = new QuizServiceImpl(MysqlQuizDaoImpl.getInstance());
 
         MappingProperties properties = MappingProperties.getInstance();
-        page = properties.getProperty("adminUsersPage");
+        page = properties.getProperty("adminQuizzesPage");
     }
 
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Executing command");
 
         try {
-            /*Integer pageNum = Integer.parseInt(request.getParameter("p"));
-            Integer size = Integer.parseInt(request.getParameter("s"));*/
             Integer pageNum = 1;
             if (request.getParameter("p") != null) {
                 pageNum = Integer.parseInt(request.getParameter("p"));
             }
-            Page<User> page = userService.getPageByUserType(pageNum, 5, UserType.USER);
+            //Integer size = Integer.parseInt(request.getParameter("s"));
+            Page<Quiz> page = quizService.getPageByQuiz(pageNum, 5);
 
             request.setAttribute("page", page);
         }

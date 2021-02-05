@@ -84,4 +84,17 @@ public class UserServiceImpl implements UserService {
 
         return userDao.findUserById(id);
     }
+
+    @Override
+    public boolean blockUser(Long id) {
+        LOGGER.info("Block user by id " + id);
+        return id == null ? false : userDao.blockUser(id);
+
+    }
+
+    @Override
+    public boolean unblockUser(Long id) {
+        LOGGER.info("Unblock user by id " + id);
+        return id == null ? false : userDao.unblockUser(id);
+    }
 }

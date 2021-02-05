@@ -74,7 +74,7 @@
         <form class="pure-form" accept-charset="UTF-8" role="form" method="post" action="${pageContext.request.contextPath}/register">
             <fieldset>
                 <div class="form-group">
-                    <input class="form-control" placeholder="<fmt:message key="firstName" bundle="${bundle}"/>" name="firstName" type="text" required value="Roman">
+                    <input class="form-control" placeholder="<fmt:message key="name" bundle="${bundle}"/>" name="firstName" type="text" required value="Roman">
                 </div>
 
                 <div class="form-group">
@@ -95,13 +95,6 @@
                 <input class="btn btn-lg btn-success btn-block" type="submit" value="<fmt:message key="signup" bundle="${bundle}"/>">
             </fieldset>
         </form>
-
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script>
 
             <fmt:message key="passwordMatchFail" bundle="${bundle}" var="msg"/>
@@ -120,6 +113,16 @@
 
             password.onchange = validatePassword;
             confirm_password.onkeyup = validatePassword;
+            $(function() {
+                $(".pure-form").submit(
+                    function(){
+                        $.post( $(this).attr("action"),
+                            $(this).serialize(),
+                            function(data) { if (data.result) window.location.href="${pageContext.request.contextPath}"; },
+                            "json");
+                        return false;
+                    });
+            });
 
         </script>
     </body>

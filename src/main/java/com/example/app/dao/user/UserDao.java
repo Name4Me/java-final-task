@@ -53,6 +53,10 @@ public interface UserDao {
 	 */
 	User findUserByEmailAndPassword(String email, String password);
 
+	boolean blockUser(Long id);
+
+	boolean unblockUser(Long id);
+
 	/**
 	 * This method returns a page of users by user type.
 	 *
@@ -62,4 +66,6 @@ public interface UserDao {
 	 * @return         List of users.
 	 */
 	List<User> findPageByUserType(UserType userType, Integer offset, Integer size);
+
+
 }

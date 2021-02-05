@@ -5,7 +5,7 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="header"%>
 <html>
 <head>
-    <header:header title="${msg.signin}"/>
+    <header:header title="${msg.signIn}"/>
     <style>
         html,
         body {
@@ -67,37 +67,60 @@
 
     <fmt:setBundle basename="localization" var="bundle"/>
     <%----%>
+    <style>
+        header{
+            height: 90px;
+        }
+    </style>
 </head>
 <body class="text-center">
 <navbar:navbar/>
-<c:if test="${loginSuccess != null && loginSuccess == false}">
-    <div class="alert alert-danger" role="alert">
+
+<div class="container">
+    <div class="row alert alert-danger" role="alert" style="display: none">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         <fmt:message key="loginFail" bundle="${bundle}"/>
     </div>
-</c:if>
-<form class="form-signin" accept-charset="UTF-8" role="form" method="post" action="${pageContext.request.contextPath}/login">
-    <h1 class="h3 mb-3 font-weight-normal"><fmt:message key="signin" bundle="${bundle}"/></h1>
-    <div class="form-group">
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control"
-               placeholder="<fmt:message key="email" bundle="${bundle}"/>" required autofocus name="email" >
+    <div class="row">
+        <form class="form-signin" accept-charset="UTF-8" role="form" method="post" action="${pageContext.request.contextPath}/login">
+            <h1 class="h3 mb-3 font-weight-normal"><fmt:message key="signIn" bundle="${bundle}"/></h1>
+            <div class="form-group">
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="email" id="inputEmail" class="form-control"
+                       placeholder="<fmt:message key="email" bundle="${bundle}"/>" required autofocus name="email" >
+            </div>
+            <div class="form-group">
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required
+                       placeholder="<fmt:message key="password" bundle="${bundle}"/>" name="password">
+            </div>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit"><fmt:message key="signIn" bundle="${bundle}"/></button>
+        </form>
     </div>
-    <div class="form-group">
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required
-               placeholder="<fmt:message key="password" bundle="${bundle}"/>" name="password">
-    </div>
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit"><fmt:message key="signin" bundle="${bundle}"/></button>
-</form>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</div>
 
+
+<script>
+    $(function() {
+        $(".form-signin").submit(
+            function(){
+                $.post( $(this).attr("action"),
+                    $(this).serialize(),
+                    function(data) {
+                        if (data.result) {
+                            window.location.href="${pageContext.request.contextPath}";
+                        } else {
+                            $(".alert").show();
+                        }
+                    },
+                    "json");
+                return false;
+            });
+    });
+
+</script>
 </body>
 </html>

@@ -1,8 +1,6 @@
 package com.example.app.dao.quiz;
 
 import com.example.app.model.quiz.Quiz;
-import com.example.app.model.user.User;
-import com.example.app.model.user.UserType;
 
 import java.util.List;
 

@@ -52,7 +52,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th><fmt:message key="firstName" bundle="${bundle}"/></th>
+                    <th><fmt:message key="name" bundle="${bundle}"/></th>
                     <th><fmt:message key="email" bundle="${bundle}"/></th>
                     <th><fmt:message key="actions" bundle="${bundle}"/></th>
                 </tr>

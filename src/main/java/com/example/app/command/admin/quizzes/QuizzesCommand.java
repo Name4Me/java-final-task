@@ -15,14 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * This class is used to GET requests to the admin page to view users.
  */
-public class QuizzesAdminPageCommand implements ServletCommand {
-    private static final Logger LOGGER = Logger.getLogger(QuizzesAdminPageCommand.class);
+public class QuizzesCommand implements ServletCommand {
+    private static final Logger LOGGER = Logger.getLogger(QuizzesCommand.class);
 
     private static QuizService quizService;
 
     private static String page;
 
-    public QuizzesAdminPageCommand(){
+    public QuizzesCommand(){
         LOGGER.info("Initializing UsersAdminPageCommand");
 
         quizService = new QuizServiceImpl(MysqlQuizDaoImpl.getInstance());

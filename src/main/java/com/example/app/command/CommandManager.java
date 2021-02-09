@@ -1,8 +1,12 @@
 package com.example.app.command;
 
+import com.example.app.command.admin.questions.AddQuestionCommand;
+import com.example.app.command.admin.questions.DeleteQuestionCommand;
+import com.example.app.command.admin.questions.QuestionsCommand;
+import com.example.app.command.admin.questions.UpdateQuestionCommand;
 import com.example.app.command.admin.quizzes.AddQuizCommand;
 import com.example.app.command.admin.quizzes.DeleteQuizCommand;
-import com.example.app.command.admin.quizzes.QuizzesAdminPageCommand;
+import com.example.app.command.admin.quizzes.QuizzesCommand;
 import com.example.app.command.admin.quizzes.UpdateQuizCommand;
 import com.example.app.command.admin.users.BlockUserCommand;
 import com.example.app.command.admin.users.GetUserInfoAdminCommand;
@@ -12,7 +16,6 @@ import com.example.app.properties.MappingProperties;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -49,8 +52,10 @@ public class CommandManager {
         //admin users
         getCommands.put("/admin/users", new UsersAdminPageCommand());
         getCommands.put("/admin/user", new GetUserInfoAdminCommand());
+        getCommands.put("/admin/quizzes", new QuizzesCommand());
+        //getCommands.put("/admin/choices", new ChoicesAdminPageCommand());
+        getCommands.put("/admin/questions", new QuestionsCommand());
 
-        getCommands.put("/admin/quizzes", new QuizzesAdminPageCommand());
 /*        getCommands.put("/admin/admins", new AdminsAdminPageCommand());
         getCommands.put("/admin/admins/add", new GetAddAdminPageCommand());
         */
@@ -64,6 +69,12 @@ public class CommandManager {
         postCommands.put("/admin/quiz/add", new AddQuizCommand());
         postCommands.put("/admin/quiz/delete", new DeleteQuizCommand());
         postCommands.put("/admin/quiz/update", new UpdateQuizCommand());
+
+        postCommands.put("/admin/question/add", new AddQuestionCommand());
+        postCommands.put("/admin/question/delete", new DeleteQuestionCommand());
+        postCommands.put("/admin/question/update", new UpdateQuestionCommand());
+
+
         MappingProperties properties = MappingProperties.getInstance();
         errorPage = properties.getProperty("errorPage");
     }

@@ -1,8 +1,8 @@
-package com.example.app.dao.question;
+package com.example.app.dao.choice;
 
 import com.example.app.connection.ConnectionPool;
+import com.example.app.model.choice.Choice;
 import com.example.app.model.question.Question;
-import com.example.app.model.question.QuestionType;
 import com.example.app.properties.MysqlQueryProperties;
 import org.apache.log4j.Logger;
 
@@ -10,20 +10,21 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionDao {
-    private static final Logger LOGGER = Logger.getLogger(QuestionDao.class);
+public class ChoiceDao {
+    private static final Logger LOGGER = Logger.getLogger(ChoiceDao.class);
 
-    private static QuestionDao INSTANCE;
+    private static ChoiceDao INSTANCE;
     private static ConnectionPool connectionPool;
 
     private static String createQuery;
     private static String updateQuery;
     private static String deleteQuery;
     private static String findByIdQuery;
+    private static String findByNameQuery;
     private static String findAllQuery;
 
-    private QuestionDao() {
-        LOGGER.info("Initializing Question");
+    private ChoiceDao() {
+        LOGGER.info("Initializing ChoiceDao");
 
         connectionPool = ConnectionPool.getInstance();
         MysqlQueryProperties properties = MysqlQueryProperties.getInstance();
@@ -35,72 +36,70 @@ public class QuestionDao {
         findAllQuery = properties.getProperty("findAllQuestions");
     }
 
-    public static QuestionDao getInstance() {
+    public static ChoiceDao getInstance() {
         if(INSTANCE == null) {
-            INSTANCE = new QuestionDao();
+            INSTANCE = new ChoiceDao();
         }
         return INSTANCE;
     }
 
-    public Question createQuestion(Question question) {
+    public Choice createChoice(Choice choice) {
         LOGGER.info("Creating new question");
 
         try(Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
-            statement.setLong(1, question.getQuizId());
-            statement.setString(2, question.getText());
-            statement.setInt(3, question.getType().ordinal());
+            statement.setLong(1, choice.getQuestionId());
+            statement.setString(2, choice.getText());
+            statement.setBoolean(3, choice.isTrue());
             int affectedRows = statement.executeUpdate();
 
             if(affectedRows == 0) {
-                LOGGER.info("Question creation failed");
+                LOGGER.info("Choice creation failed");
             }
             else {
-                LOGGER.info("Question creation successful");
+                LOGGER.info("Choice creation successful");
 
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        question.setId(generatedKeys.getInt(1));
+                        choice.setId(generatedKeys.getInt(1));
                     }
                     else {
-                        LOGGER.error("Failed to create question, no ID obtained.");
+                        LOGGER.error("Failed to create choice, no ID obtained.");
                     }
                 }
             }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
+        } catch (SQLException e) { LOGGER.error(e.getMessage()); }
 
-        return question;
+        return choice;
     }
 
-    public Question updateQuestion(Question question) {
-        LOGGER.info("Updating question");
+    public Choice updateChoice(Choice choice) {
+        LOGGER.info("Updating choice");
 
         try(Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(updateQuery);
-            statement.setLong(1, question.getQuizId());
-            statement.setString(2, question.getText());
-            statement.setInt(3, question.getType().ordinal());
-            statement.setInt(4, question.getId());
+            statement.setLong(1, choice.getQuestionId());
+            statement.setString(2, choice.getText());
+            statement.setBoolean(3, choice.isTrue());
+            statement.setInt(4, choice.getId());
 
             boolean result = statement.execute();
 
             if(result) {
-                LOGGER.info("Question update failed");
+                LOGGER.info("Choice update failed");
             }
             else {
-                LOGGER.info("Question updated successfully");
+                LOGGER.info("Choice updated successfully");
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
 
-        return question;
+        return choice;
     }
 
-    public boolean deleteQuestionById(int id) {
-        LOGGER.info("Deleting question");
+    public boolean deleteChoiceById(int id) {
+        LOGGER.info("Deleting choice");
         boolean res = false;
 
         try(Connection connection = connectionPool.getConnection()) {
@@ -109,11 +108,9 @@ public class QuestionDao {
 
             boolean result = statement.execute();
 
-            if(result) {
-                LOGGER.info("Question deletion failed");
-            }
+            if(result) { LOGGER.info("Choice deletion failed"); }
             else {
-                LOGGER.info("Question deleted successfully");
+                LOGGER.info("Choice deleted successfully");
                 res = true;
             }
         } catch (SQLException e) {
@@ -122,38 +119,17 @@ public class QuestionDao {
 
         return res;
     }
-
-    public Question findQuestionById(Long id) {
-        LOGGER.info("Getting question with id " + id);
-        Question question = null;
-
-        try(Connection connection = connectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(findByIdQuery);
-            statement.setLong(1, id);
-
-            ResultSet result = statement.executeQuery();
-
-            if(result.next()) {
-                question = getQuestion(result);
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-
-        return question;
-    }
-
-    public List<Question> findAll(Integer quizId, Integer offset, Integer size) {
-        LOGGER.info("QuestionDao getting page with offset " + offset + ", size " + size + " for quizId " + quizId);
-        List<Question> res = new ArrayList<>();
+    public List<Choice> findAll(Integer questionId, Integer offset, Integer size) {
+        LOGGER.info("ChoiceDao getting page with offset " + offset + ", size " + size + " for questionId " + questionId);
+        List<Choice> res = new ArrayList<>();
 
         try(Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(findAllQuery);
-            statement.setInt(1, quizId);
+            statement.setInt(1, questionId);
             statement.setInt(2, offset);
             statement.setInt(3, size);
 
-            res = getQuestions(statement.executeQuery());
+            res = getChoices(statement.executeQuery());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
@@ -161,25 +137,23 @@ public class QuestionDao {
         return res;
     }
 
-    private List<Question> getQuestions(ResultSet resultSet) {
-        List<Question> res = new ArrayList<>();
+    private List<Choice> getChoices(ResultSet resultSet) {
+        List<Choice> res = new ArrayList<>();
         try {
-            while (resultSet.next()) { res.add(getQuestion(resultSet)); }
+            while (resultSet.next()) { res.add(getChoice(resultSet)); }
         } catch (SQLException e) { LOGGER.error(e.getMessage()); }
 
         return res;
     }
 
-    private Question getQuestion(ResultSet resultSet) throws SQLException {
-        Question question = new Question(
+    private Choice getChoice(ResultSet resultSet) throws SQLException {
+        return new Choice(
                 resultSet.getInt("id"),
-                resultSet.getInt("quizId"),
+                resultSet.getInt("questionId"),
                 resultSet.getString("text"),
-                QuestionType.values()[resultSet.getInt("type")],
+                resultSet.getBoolean("isTrue"),
                 resultSet.getTimestamp("createdAt"),
                 resultSet.getTimestamp("updatedAt")
-                );
-        return question;
+        );
     }
-
 }

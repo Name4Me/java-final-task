@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <header:header title="${msg.admin} - ${msg.question}"/>
+    <header:header title="${msg.admin} - ${msg.choice}"/>
 
     <%--Localization--%>
     <c:if test="${sessionScope.locale == null}">
@@ -28,7 +28,7 @@
         button.add{
             float: right;
         }
-        .new-question{
+        .new-choice{
             margin: 10px 0;
             position: relative;
         }
@@ -54,7 +54,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <h1><fmt:message key="questions" bundle="${bundle}"/></h1>
+            <h1><fmt:message key="choices" bundle="${bundle}"/></h1>
         </div>
         <div class="col-md-6">
             <button type="button" class="btn btn-outline-success add">
@@ -67,20 +67,17 @@
         </div>
     </div>
     <form id="save-form">
-        <div class="row new-question" style="display: none;">
+        <div class="row new-choice" style="display: none;">
             <div class="loader" style="display: none;" >
                 <div class="spinner-border text-success"></div>
             </div>
             <div class="col-md-5">
-                <input type="hidden" class="form-control" name="quizId" id="quizId" value="${quizId}">
-                <input type="text" class="form-control" placeholder="<fmt:message key="question" bundle="${bundle}"/>"
+                <input type="hidden" class="form-control" name="questionId" id="questionId" value="${questionId}">
+                <input type="text" class="form-control" placeholder="<fmt:message key="choice" bundle="${bundle}"/>"
                        name="text" id="text">
             </div>
             <div class="col-md-2">
-                <select class="form-control" name="type" id="type">
-                    <option value="0" data-type="Single"><fmt:message key="questionType.Single" bundle="${bundle}"/></option>
-                    <option value="1" data-type="Multiple" ><fmt:message key="questionType.Multiple" bundle="${bundle}"/></option>
-                </select>
+                <input type="checkbox" class="form-control" name="isTrue" id="isTrue">
             </div>
             <div class="col-md-5">
                 <button type="button" class="btn btn-outline-info update-submit" data-action="update" style="display: none">
@@ -115,31 +112,31 @@
         <table class="table">
             <thead>
             <tr>
-                <th><fmt:message key="question" bundle="${bundle}"/></th>
-                <th><fmt:message key="questionType" bundle="${bundle}"/></th>
+                <th><fmt:message key="choice" bundle="${bundle}"/></th>
+                <th><fmt:message key="isTrue" bundle="${bundle}"/></th>
                 <th><fmt:message key="actions" bundle="${bundle}"/></th>
             </tr>
             </thead>
 
             <tbody>
-            <c:forEach items="${page.items}" var="question">
-                <tr id="question_${question.id}">
-                    <td align="center">${question.text}</td>
-                    <td align="center" data-id="${question.type.ordinal()}"><fmt:message key="questionType.${question.type}" bundle="${bundle}"/></td>
+            <c:forEach items="${page.items}" var="choice">
+                <tr id="choice_${choice.id}">
+                    <td align="center">${choice.text}</td>
+                    <td align="center">${choice.isTrue}</td>
                     <td align="center">
-                        <button type="button" class="btn btn-outline-success edit" data-id="${question.id}">
+                        <button type="button" class="btn btn-outline-success edit" data-id="${choice.id}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                 <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
                             </svg>
                             <fmt:message key="edit" bundle="${bundle}"/>
                         </button>
-                        <a type="button" class="btn btn-outline-success choices" data-id="${question.id}" href="${pageContext.request.contextPath}/admin/choices?questionId=${question.id}&page=1">
+                        <a type="button" class="btn btn-outline-success choices" data-id="${choice.id}" href="${pageContext.request.contextPath}/admin/choices?questionId=${question.id}&page=1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diagram-3" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"></path>
                             </svg>
                             <fmt:message key="choices" bundle="${bundle}"/>
                         </a>
-                        <button type="button" class="btn btn-outline-danger delete" data-id="${question.id}">
+                        <button type="button" class="btn btn-outline-danger delete" data-id="${choice.id}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
                                 <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
@@ -182,7 +179,7 @@
         <ul class="pager">
             <c:if test="${!page.first}">
                 <li>
-                    <a href="${pageContext.request.contextPath}/admin/questions?quizId=${quizId}&page=${page.number-1}&s=${page.size}">
+                    <a href="${pageContext.request.contextPath}/admin/choices?questionId=${quizId}&page=${page.number-1}&s=${page.size}">
                         <span aria-hidden="true">&larr;</span>
                     </a>
                 </li>
@@ -190,7 +187,7 @@
 
             <c:if test="${!page.last}">
                 <li>
-                    <a href="${pageContext.request.contextPath}/admin/questions?quizId=${quizId}&page=${page.number+1}&s=${page.size}">
+                    <a href="${pageContext.request.contextPath}/admin/choices?questionId=${quizId}&page=${page.number+1}&s=${page.size}">
                         <span aria-hidden="true">&rarr;</span>
                     </a>
                 </li>
@@ -205,28 +202,28 @@
     $(function() {
         function edit(){
             const id = $(this).data("id");
-            const row = $("tr#question_"+id).children();
+            const row = $("tr#choice_"+id).children();
             $("input#text").val(row[0].innerText);
             $("select#type").val($(row[1]).data("id"));
             $(".update-submit").show();
-            $(".new-question").data("id", id).show();
+            $(".new-choice").data("id", id).show();
             $(".add").hide();
         }
         function del(){
             const id = $(this).data("id");
             $.post(
-                "${pageContext.request.contextPath}/admin/question/delete",
+                "${pageContext.request.contextPath}/admin/choice/delete",
                 {id: id},
-                function(data) { if (data.result){ $("tr#question_"+id).remove(); } },
+                function(data) { if (data.result){ $("tr#choice_"+id).remove(); } },
                 "json");
         }
 
         function cancel(){
-            $(".new-question").removeClass('disabled');
+            $(".new-choice").removeClass('disabled');
             $(".add-submit, .update-submit").prop('disabled', false);
             $("input#text").val("");
             $("select#type").val(0);
-            $(".new-question, .loader, .update-submit").hide();
+            $(".new-choice, .loader, .update-submit").hide();
             $(".add").show();
         }
 
@@ -237,14 +234,14 @@
         $(".cancel").on( "click", cancel);
 
         $(".add").on( "click", function() {
-            $(".new-question").show();
+            $(".new-choice").show();
             $(".add, .update-submit").hide();
         });
 
 
         $(".add-submit, .update-submit").on( "click", function() {
             $(this).prop('disabled', true);
-            $(".new-question").toggleClass('disabled');
+            $(".new-choice").toggleClass('disabled');
             $(".loader").show();
             if ($(this).data('action') == 'save') add();
             if ($(this).data('action') == 'update') {
@@ -254,14 +251,14 @@
         });
 
         function update(){
-            $.post( "${pageContext.request.contextPath}/admin/question/update",
-                $("#save-form").serialize()+'&id='+$(".new-question").data("id"), update_row,"json")
+            $.post( "${pageContext.request.contextPath}/admin/choice/update",
+                $("#save-form").serialize()+'&id='+$(".new-choice").data("id"), update_row,"json")
                 .fail(function() { console.log( "error" ); })
                 .always(cancel);
         }
 
         function add(){
-            $.post( "${pageContext.request.contextPath}/admin/question/add",
+            $.post( "${pageContext.request.contextPath}/admin/choice/add",
                 $("#save-form").serialize(), add_row, "json")
                 .fail(function() { console.log( "error" ); })
                 .always(cancel);
@@ -270,12 +267,12 @@
         function add_row(data){
             const row = $('.template').clone();
             const choice = row.find(".choices");
-            row.attr('id', 'question_' + data.id);
+            row.attr('id', 'choice_' + data.id);
             row.children()[0].append(data.text);
             row.children()[1].append($("option[data-type='"+data.type+"']").text());
             row.find(".delete").data("id", data.id);
             row.find(".edit").data("id", data.id);
-            choice.data("id", data.id).attr("href", choice.attr("href").replace("questionId=0", "questionId="+data.id));
+            choice.data("id", data.id);
             row.removeClass("template");
             $(".table>tbody").append(row);
             row.show();
@@ -284,7 +281,7 @@
         }
 
         function update_row(data){
-            const row = $("tr#question_"+data.id).children();
+            const row = $("tr#choice_"+data.id).children();
             row[0].innerText = data.text;
             row[1].innerText = $("option[data-type='"+data.type+"']").text();
             $(".update-submit").hide();

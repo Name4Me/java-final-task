@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This class is used to handle POST requests to add new quiz.
+ * This class is used to handle POST requests to add new choice.
  */
 public class AddChoiceCommand implements ServletCommand {
 	private static final Logger LOGGER = Logger.getLogger(AddChoiceCommand.class);
@@ -29,11 +29,10 @@ public class AddChoiceCommand implements ServletCommand {
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.info("AddChoiceCommand executing command");
 		Choice choice = new Choice();
-		if(request.getParameter("questionId") != null && request.getParameter("text") != null &&
-				request.getParameter("isTrue") != null) {
+		if(request.getParameter("questionId") != null && request.getParameter("text") != null) {
 			choice.setQuestionId(Integer.parseInt(request.getParameter("questionId")));
 			choice.setText(request.getParameter("text"));
-			choice.setTrue(Boolean.getBoolean(request.getParameter("isTrue")));
+			choice.setIsCorrect(request.getParameter("isCorrect") == null ? false : true);
 			request.setAttribute("success", choiceService.createChoice(choice));
 		}
 

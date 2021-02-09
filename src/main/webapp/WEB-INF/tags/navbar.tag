@@ -45,6 +45,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/account"><c:out value="${sessionScope.username}"/></a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/assignments"><fmt:message key="assignments" bundle="${bundle}"/></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/quizzes"><fmt:message key="quizzes" bundle="${bundle}"/></a>
+                        </li>
                     </c:if>
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/logout"><fmt:message key="signOut" bundle="${bundle}"/></a>

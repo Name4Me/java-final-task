@@ -9,16 +9,16 @@ public class Choice {
     private int id;
     private int questionId;
     private String text;
-    private boolean isTrue;
+    private boolean isCorrect;
     private Date createdAt;
     private Date updatedAt;
 
     public Choice(){ }
-    public Choice(int id, int questionId, String text, Boolean isTrue, Timestamp createdAt, Timestamp updatedAt) {
+    public Choice(int id, int questionId, String text, Boolean isCorrect, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.questionId = questionId;
         this.text = text;
-        this.isTrue = isTrue;
+        this.isCorrect = isCorrect;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -47,11 +47,27 @@ public class Choice {
         this.text = text;
     }
 
-    public boolean isTrue() {
-        return isTrue;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTrue(boolean aTrue) {
-        isTrue = aTrue;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean getIsCorrect() {
+        return isCorrect;
+    }
+
+    public void setIsCorrect(boolean correct) {
+        isCorrect = correct;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

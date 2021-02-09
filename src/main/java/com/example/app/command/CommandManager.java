@@ -1,5 +1,9 @@
 package com.example.app.command;
 
+import com.example.app.command.admin.choices.AddChoiceCommand;
+import com.example.app.command.admin.choices.ChoicesCommand;
+import com.example.app.command.admin.choices.DeleteChoiceCommand;
+import com.example.app.command.admin.choices.UpdateChoiceCommand;
 import com.example.app.command.admin.questions.AddQuestionCommand;
 import com.example.app.command.admin.questions.DeleteQuestionCommand;
 import com.example.app.command.admin.questions.QuestionsCommand;
@@ -12,6 +16,7 @@ import com.example.app.command.admin.users.BlockUserCommand;
 import com.example.app.command.admin.users.GetUserInfoAdminCommand;
 import com.example.app.command.admin.users.UnBlockUserCommand;
 import com.example.app.command.admin.users.UsersAdminPageCommand;
+import com.example.app.command.user.UserQuizzesCommand;
 import com.example.app.properties.MappingProperties;
 import org.apache.log4j.Logger;
 
@@ -43,7 +48,7 @@ public class CommandManager {
         getCommands.put("/login", new GetLoginPageCommand());
         getCommands.put("/logout", new LogoutCommand());
         getCommands.put("/register", new GetRegisterPageCommand());
-
+        getCommands.put("/quizzes", new UserQuizzesCommand());
 /*
         getCommands.put("/account", new GetAccountPageCommand());
         */
@@ -55,7 +60,7 @@ public class CommandManager {
         getCommands.put("/admin/quizzes", new QuizzesCommand());
         //getCommands.put("/admin/choices", new ChoicesAdminPageCommand());
         getCommands.put("/admin/questions", new QuestionsCommand());
-
+        getCommands.put("/admin/choices", new ChoicesCommand());
 /*        getCommands.put("/admin/admins", new AdminsAdminPageCommand());
         getCommands.put("/admin/admins/add", new GetAddAdminPageCommand());
         */
@@ -74,6 +79,9 @@ public class CommandManager {
         postCommands.put("/admin/question/delete", new DeleteQuestionCommand());
         postCommands.put("/admin/question/update", new UpdateQuestionCommand());
 
+        postCommands.put("/admin/choice/add", new AddChoiceCommand());
+        postCommands.put("/admin/choice/delete", new DeleteChoiceCommand());
+        postCommands.put("/admin/choice/update", new UpdateChoiceCommand());
 
         MappingProperties properties = MappingProperties.getInstance();
         errorPage = properties.getProperty("errorPage");

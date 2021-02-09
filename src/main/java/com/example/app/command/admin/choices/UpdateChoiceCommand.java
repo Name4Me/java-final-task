@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This class is used to handle POST requests to update quiz.
+ * This class is used to handle POST requests to update choice.
  */
 public class UpdateChoiceCommand implements ServletCommand {
 	private static final Logger LOGGER = Logger.getLogger(UpdateChoiceCommand.class);
@@ -27,13 +27,13 @@ public class UpdateChoiceCommand implements ServletCommand {
 	}
 
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
-		LOGGER.info("UpdateQuestionCommand executing command");
+		LOGGER.info("UpdateChoiceCommand executing command");
 		Choice choice = new Choice();
 		if(request.getParameter("questionId") != null && request.getParameter("text") != null &&
-				request.getParameter("type") != null && request.getParameter("id") != null) {
+				request.getParameter("id") != null) {
 			choice.setQuestionId(Integer.parseInt(request.getParameter("questionId")));
 			choice.setText(request.getParameter("text"));
-			choice.setTrue(Boolean.getBoolean(request.getParameter("isTrue")));
+			choice.setIsCorrect(request.getParameter("isCorrect") == null ? false : true);
 			choice.setId(Integer.parseInt(request.getParameter("id")));
 			request.setAttribute("success", choiceService.updateChoice(choice));
 		}

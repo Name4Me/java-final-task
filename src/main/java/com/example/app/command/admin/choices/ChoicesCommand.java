@@ -22,7 +22,7 @@ public class ChoicesCommand implements ServletCommand {
         LOGGER.info("Initializing ChoicesCommand");
         choiceService = new ChoiceService(ChoiceDao.getInstance());
         MappingProperties properties = MappingProperties.getInstance();
-        page = properties.getProperty("adminQuestionPage");
+        page = properties.getProperty("adminChoicePage");
     }
 
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -33,7 +33,7 @@ public class ChoicesCommand implements ServletCommand {
             if (request.getParameter("page") != null) {
                 pageNum = Integer.parseInt(request.getParameter("page"));
             }
-            Integer questionId = Integer.parseInt(request.getParameter("quizId"));
+            Integer questionId = Integer.parseInt(request.getParameter("questionId"));
             //Integer size = Integer.parseInt(request.getParameter("s"));
             Page<Choice> page = choiceService.getPage(questionId, pageNum, 5);
             request.setAttribute("questionId", questionId);

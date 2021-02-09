@@ -2,7 +2,6 @@ package com.example.app.dao.choice;
 
 import com.example.app.connection.ConnectionPool;
 import com.example.app.model.choice.Choice;
-import com.example.app.model.question.Question;
 import com.example.app.properties.MysqlQueryProperties;
 import org.apache.log4j.Logger;
 
@@ -29,11 +28,11 @@ public class ChoiceDao {
         connectionPool = ConnectionPool.getInstance();
         MysqlQueryProperties properties = MysqlQueryProperties.getInstance();
 
-        createQuery = properties.getProperty("createQuestion");
-        updateQuery = properties.getProperty("updateQuestionById");
-        deleteQuery = properties.getProperty("deleteQuestionById");
-        findByIdQuery = properties.getProperty("findQuestionById");
-        findAllQuery = properties.getProperty("findAllQuestions");
+        createQuery = properties.getProperty("createChoice");
+        updateQuery = properties.getProperty("updateChoiceById");
+        deleteQuery = properties.getProperty("deleteChoiceById");
+        findByIdQuery = properties.getProperty("findChoiceById");
+        findAllQuery = properties.getProperty("findAllChoices");
     }
 
     public static ChoiceDao getInstance() {
@@ -50,7 +49,7 @@ public class ChoiceDao {
             PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
             statement.setLong(1, choice.getQuestionId());
             statement.setString(2, choice.getText());
-            statement.setBoolean(3, choice.isTrue());
+            statement.setBoolean(3, choice.getIsCorrect());
             int affectedRows = statement.executeUpdate();
 
             if(affectedRows == 0) {
@@ -80,7 +79,7 @@ public class ChoiceDao {
             PreparedStatement statement = connection.prepareStatement(updateQuery);
             statement.setLong(1, choice.getQuestionId());
             statement.setString(2, choice.getText());
-            statement.setBoolean(3, choice.isTrue());
+            statement.setBoolean(3, choice.getIsCorrect());
             statement.setInt(4, choice.getId());
 
             boolean result = statement.execute();
@@ -151,7 +150,7 @@ public class ChoiceDao {
                 resultSet.getInt("id"),
                 resultSet.getInt("questionId"),
                 resultSet.getString("text"),
-                resultSet.getBoolean("isTrue"),
+                resultSet.getBoolean("isCorrect"),
                 resultSet.getTimestamp("createdAt"),
                 resultSet.getTimestamp("updatedAt")
         );

@@ -72,12 +72,12 @@
                 <div class="spinner-border text-success"></div>
             </div>
             <div class="col-md-5">
-                <input type="hidden" class="form-control" name="questionId" id="questionId" value="${questionId}">
+                <input type="hidden" class="form-control" name="questionId" id="questionId" value="${questionId}" required>
                 <input type="text" class="form-control" placeholder="<fmt:message key="choice" bundle="${bundle}"/>"
-                       name="text" id="text">
+                       name="text" id="text" required>
             </div>
             <div class="col-md-2">
-                <input type="checkbox" class="form-control" name="isTrue" id="isTrue">
+                <input type="checkbox" class="form-control" name="isCorrect" id="isCorrect">
             </div>
             <div class="col-md-5">
                 <button type="button" class="btn btn-outline-info update-submit" data-action="update" style="display: none">
@@ -113,7 +113,7 @@
             <thead>
             <tr>
                 <th><fmt:message key="choice" bundle="${bundle}"/></th>
-                <th><fmt:message key="isTrue" bundle="${bundle}"/></th>
+                <th><fmt:message key="correct" bundle="${bundle}"/></th>
                 <th><fmt:message key="actions" bundle="${bundle}"/></th>
             </tr>
             </thead>
@@ -122,7 +122,13 @@
             <c:forEach items="${page.items}" var="choice">
                 <tr id="choice_${choice.id}">
                     <td align="center">${choice.text}</td>
-                    <td align="center">${choice.isTrue}</td>
+                    <td align="center" data-correct="${choice.isCorrect}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green"
+                             class="bi bi-check2-all" viewBox="0 0 16 16" style="display: ${choice.isCorrect ? "block" : "none"}">
+                            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7l-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+                            <path d="M5.354 7.146l.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"/>
+                        </svg>
+                    </td>
                     <td align="center">
                         <button type="button" class="btn btn-outline-success edit" data-id="${choice.id}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
@@ -130,12 +136,6 @@
                             </svg>
                             <fmt:message key="edit" bundle="${bundle}"/>
                         </button>
-                        <a type="button" class="btn btn-outline-success choices" data-id="${choice.id}" href="${pageContext.request.contextPath}/admin/choices?questionId=${question.id}&page=1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diagram-3" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"></path>
-                            </svg>
-                            <fmt:message key="choices" bundle="${bundle}"/>
-                        </a>
                         <button type="button" class="btn btn-outline-danger delete" data-id="${choice.id}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
@@ -148,7 +148,13 @@
             </c:forEach>
             <tr class="template" style="display: none">
                 <td align="center"></td>
-                <td align="center"></td>
+                <td align="center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green"
+                         class="bi bi-check2-all" viewBox="0 0 16 16" style="display: none">
+                        <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7l-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+                        <path d="M5.354 7.146l.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"/>
+                    </svg>
+                </td>
                 <td align="center">
                     <button type="button" class="btn btn-outline-success edit" data-id="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
@@ -156,12 +162,6 @@
                         </svg>
                         <fmt:message key="edit" bundle="${bundle}"/>
                     </button>
-                    <a type="button" class="btn btn-outline-success choices" data-id="" href="${pageContext.request.contextPath}/admin/choices?questionId=0&page=1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diagram-3" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"></path>
-                        </svg>
-                        <fmt:message key="choices" bundle="${bundle}"/>
-                    </a>
                     <button type="button" class="btn btn-outline-danger delete" data-id="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
@@ -179,7 +179,7 @@
         <ul class="pager">
             <c:if test="${!page.first}">
                 <li>
-                    <a href="${pageContext.request.contextPath}/admin/choices?questionId=${quizId}&page=${page.number-1}&s=${page.size}">
+                    <a href="${pageContext.request.contextPath}/admin/choices?questionId=${questionId}&page=${page.number-1}&s=${page.size}">
                         <span aria-hidden="true">&larr;</span>
                     </a>
                 </li>
@@ -187,7 +187,7 @@
 
             <c:if test="${!page.last}">
                 <li>
-                    <a href="${pageContext.request.contextPath}/admin/choices?questionId=${quizId}&page=${page.number+1}&s=${page.size}">
+                    <a href="${pageContext.request.contextPath}/admin/choices?questionId=${questionId}&page=${page.number+1}&s=${page.size}">
                         <span aria-hidden="true">&rarr;</span>
                     </a>
                 </li>
@@ -200,11 +200,22 @@
 
 <script>
     $(function() {
+        if (!HTMLFormElement.prototype.reportValidity) {
+            HTMLFormElement.prototype.reportValidity = function() {
+                if (this.checkValidity()) return true;
+                var btn = document.createElement('button');
+                this.appendChild(btn);
+                btn.click();
+                this.removeChild(btn);
+                return false;
+            }
+        }
+
         function edit(){
             const id = $(this).data("id");
             const row = $("tr#choice_"+id).children();
             $("input#text").val(row[0].innerText);
-            $("select#type").val($(row[1]).data("id"));
+            $("input#isCorrect").prop( "checked", row[1].dataset.correct === 'true');
             $(".update-submit").show();
             $(".new-choice").data("id", id).show();
             $(".add").hide();
@@ -222,7 +233,7 @@
             $(".new-choice").removeClass('disabled');
             $(".add-submit, .update-submit").prop('disabled', false);
             $("input#text").val("");
-            $("select#type").val(0);
+            $("input#isCorrect").prop( "checked", false );
             $(".new-choice, .loader, .update-submit").hide();
             $(".add").show();
         }
@@ -240,6 +251,11 @@
 
 
         $(".add-submit, .update-submit").on( "click", function() {
+            const applicationForm = document.getElementById("save-form");
+            if (!applicationForm.checkValidity()) {
+                applicationForm.reportValidity();
+                return;
+            }
             $(this).prop('disabled', true);
             $(".new-choice").toggleClass('disabled');
             $(".loader").show();
@@ -269,7 +285,9 @@
             const choice = row.find(".choices");
             row.attr('id', 'choice_' + data.id);
             row.children()[0].append(data.text);
-            row.children()[1].append($("option[data-type='"+data.type+"']").text());
+            if (data.isCorrect) {
+                row.children()[1].innerHTML = row.children()[1].innerHTML.replace("display: none", "display: block");
+            }
             row.find(".delete").data("id", data.id);
             row.find(".edit").data("id", data.id);
             choice.data("id", data.id);
@@ -283,7 +301,11 @@
         function update_row(data){
             const row = $("tr#choice_"+data.id).children();
             row[0].innerText = data.text;
-            row[1].innerText = $("option[data-type='"+data.type+"']").text();
+            if (data.isCorrect) {
+                row[1].innerHTML = row[1].innerHTML.replace("display: none", "display: block");
+            } else {
+                row[1].innerHTML = row[1].innerHTML.replace("display: block", "display: none");
+            }
             $(".update-submit").hide();
         }
     });

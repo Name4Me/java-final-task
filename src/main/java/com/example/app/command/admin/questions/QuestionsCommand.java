@@ -1,11 +1,10 @@
 package com.example.app.command.admin.questions;
 
 import com.example.app.command.ServletCommand;
-import com.example.app.dao.question.QuestionDao;
+import com.example.app.dao.QuestionDao;
 import com.example.app.model.question.Question;
-import com.example.app.model.question.QuestionType;
 import com.example.app.properties.MappingProperties;
-import com.example.app.service.question.QuestionService;
+import com.example.app.service.QuestionService;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
 

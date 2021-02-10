@@ -1,7 +1,7 @@
-package com.example.app.dao.choice;
+package com.example.app.dao;
 
 import com.example.app.connection.ConnectionPool;
-import com.example.app.model.choice.Choice;
+import com.example.app.model.Choice;
 import com.example.app.properties.MysqlQueryProperties;
 import org.apache.log4j.Logger;
 

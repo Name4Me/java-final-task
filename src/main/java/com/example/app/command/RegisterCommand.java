@@ -1,12 +1,11 @@
 package com.example.app.command;
 
-import com.example.app.dao.user.MysqlUserDaoImpl;
+import com.example.app.dao.UserDao;
 import com.example.app.model.user.User;
 import com.example.app.model.user.UserBuilder;
 import com.example.app.model.user.UserType;
 import com.example.app.properties.MappingProperties;
-import com.example.app.service.user.UserService;
-import com.example.app.service.user.UserServiceImpl;
+import com.example.app.service.UserService;
 import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +23,7 @@ public class RegisterCommand implements ServletCommand {
 
 	public RegisterCommand(){
 		LOGGER.info("Initializing RegisterCommand");
-		userService = new UserServiceImpl(MysqlUserDaoImpl.getInstance());
+		userService = new UserService(UserDao.getInstance());
 		MappingProperties properties = MappingProperties.getInstance();
 		registerPage = properties.getProperty("registerPage");
 		mainPage = properties.getProperty("mainPage");

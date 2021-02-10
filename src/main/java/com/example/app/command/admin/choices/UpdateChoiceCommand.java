@@ -1,13 +1,9 @@
 package com.example.app.command.admin.choices;
 
 import com.example.app.command.ServletCommand;
-import com.example.app.dao.choice.ChoiceDao;
-import com.example.app.dao.question.QuestionDao;
-import com.example.app.model.choice.Choice;
-import com.example.app.model.question.Question;
-import com.example.app.model.question.QuestionType;
-import com.example.app.service.choice.ChoiceService;
-import com.example.app.service.question.QuestionService;
+import com.example.app.dao.ChoiceDao;
+import com.example.app.model.Choice;
+import com.example.app.service.ChoiceService;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 

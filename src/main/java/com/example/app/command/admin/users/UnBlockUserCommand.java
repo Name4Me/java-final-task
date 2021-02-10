@@ -1,9 +1,8 @@
 package com.example.app.command.admin.users;
 
 import com.example.app.command.ServletCommand;
-import com.example.app.dao.user.MysqlUserDaoImpl;
-import com.example.app.service.user.UserService;
-import com.example.app.service.user.UserServiceImpl;
+import com.example.app.dao.UserDao;
+import com.example.app.service.UserService;
 import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
 
@@ -21,7 +20,7 @@ public class UnBlockUserCommand implements ServletCommand {
 
 	public UnBlockUserCommand(){
 		LOGGER.info("Initializing UnBlockUserCommand");
-		userService = new UserServiceImpl(MysqlUserDaoImpl.getInstance());
+		userService = new UserService(UserDao.getInstance());
 	}
 
 	public String execute(HttpServletRequest request, HttpServletResponse response) {

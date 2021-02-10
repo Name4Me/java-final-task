@@ -1,6 +1,4 @@
-package com.example.app.model.choice;
-
-import com.example.app.model.question.QuestionType;
+package com.example.app.model;
 
 import java.sql.Timestamp;
 import java.util.Date;

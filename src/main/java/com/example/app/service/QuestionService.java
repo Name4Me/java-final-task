@@ -1,6 +1,6 @@
-package com.example.app.service.question;
+package com.example.app.service;
 
-import com.example.app.dao.question.QuestionDao;
+import com.example.app.dao.QuestionDao;
 import com.example.app.model.question.Question;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
@@ -11,7 +11,7 @@ public class QuestionService {
 
     private static final Logger LOGGER = Logger.getLogger(QuestionService.class);
 
-    private QuestionDao questionDao;
+    private final QuestionDao questionDao;
 
     public QuestionService(QuestionDao questionDao) {
         LOGGER.info("Initializing QuestionService");

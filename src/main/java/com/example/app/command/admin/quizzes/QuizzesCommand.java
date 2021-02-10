@@ -1,11 +1,10 @@
 package com.example.app.command.admin.quizzes;
 
 import com.example.app.command.ServletCommand;
-import com.example.app.dao.quiz.MysqlQuizDaoImpl;
+import com.example.app.dao.QuizDao;
 import com.example.app.model.quiz.Quiz;
 import com.example.app.properties.MappingProperties;
-import com.example.app.service.quiz.QuizService;
-import com.example.app.service.quiz.QuizServiceImpl;
+import com.example.app.service.QuizService;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
 
@@ -25,7 +24,7 @@ public class QuizzesCommand implements ServletCommand {
     public QuizzesCommand(){
         LOGGER.info("Initializing UsersAdminPageCommand");
 
-        quizService = new QuizServiceImpl(MysqlQuizDaoImpl.getInstance());
+        quizService = new QuizService(QuizDao.getInstance());
 
         MappingProperties properties = MappingProperties.getInstance();
         page = properties.getProperty("adminQuizzesPage");

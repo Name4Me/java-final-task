@@ -1,7 +1,7 @@
-package com.example.app.service.choice;
+package com.example.app.service;
 
-import com.example.app.dao.choice.ChoiceDao;
-import com.example.app.model.choice.Choice;
+import com.example.app.dao.ChoiceDao;
+import com.example.app.model.Choice;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
 
@@ -10,7 +10,7 @@ import java.util.List;
 public class ChoiceService {
     private static final Logger LOGGER = Logger.getLogger(ChoiceService.class);
 
-    private ChoiceDao choiceDao;
+    private final ChoiceDao choiceDao;
 
     public ChoiceService(ChoiceDao choiceDao) {
         LOGGER.info("Initializing ChoiceService");

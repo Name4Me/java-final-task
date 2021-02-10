@@ -1,10 +1,8 @@
 package com.example.app.command;
 
-import com.example.app.dao.user.MysqlUserDaoImpl;
+import com.example.app.dao.UserDao;
 import com.example.app.model.user.User;
-import com.example.app.properties.MappingProperties;
-import com.example.app.service.user.UserService;
-import com.example.app.service.user.UserServiceImpl;
+import com.example.app.service.UserService;
 import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
 
@@ -21,7 +19,7 @@ public class LoginCommand implements ServletCommand {
 
 	public LoginCommand(){
 		LOGGER.info("Initializing LoginCommand");
-		userService = new UserServiceImpl(MysqlUserDaoImpl.getInstance());
+		userService = new UserService(UserDao.getInstance());
 	}
 
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -34,6 +32,7 @@ public class LoginCommand implements ServletCommand {
 				HttpSession session = request.getSession();
 				session.setAttribute("email", user.getEmail());
 				session.setAttribute("username", user.getFirstName());
+				session.setAttribute("userId", user.getId());
 				session.setAttribute("authenticated", true);
 				session.setAttribute("role", user.getUserType().name());
 				json.addProperty("result", true);

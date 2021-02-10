@@ -1,4 +1,4 @@
-package com.example.app.dao.userQuize;
+package com.example.app.dao;
 
 import com.example.app.connection.ConnectionPool;
 import com.example.app.model.userQuize.UserQuiz;
@@ -118,7 +118,7 @@ public class UserQuizDao {
     }
 
     private UserQuiz getUserQuiz(ResultSet resultSet) throws SQLException {
-        return new UserQuiz(
+        UserQuiz userQuiz = new UserQuiz(
                 resultSet.getInt("userId"),
                 resultSet.getInt("quizId"),
                 resultSet.getInt("score"),
@@ -127,5 +127,7 @@ public class UserQuizDao {
                 resultSet.getTimestamp("updatedAt"),
                 resultSet.getTimestamp("finishedAt")
         );
+        userQuiz.setQuiz(new QuizDao().findQuizById((long) userQuiz.getQuizId()));
+        return userQuiz;
     }
 }

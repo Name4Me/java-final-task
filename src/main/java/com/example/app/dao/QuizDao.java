@@ -1,4 +1,4 @@
-package com.example.app.dao.quiz;
+package com.example.app.dao;
 
 import com.example.app.connection.ConnectionPool;
 import com.example.app.model.quiz.Quiz;
@@ -10,11 +10,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MysqlQuizDaoImpl implements QuizDao {
+public class QuizDao {
 
-    private static final Logger LOGGER = Logger.getLogger(MysqlQuizDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(QuizDao.class);
 
-    private static MysqlQuizDaoImpl INSTANCE;
+    private static QuizDao INSTANCE;
     private static ConnectionPool connectionPool;
 
     private static String createQuery;
@@ -24,7 +24,7 @@ public class MysqlQuizDaoImpl implements QuizDao {
     private static String findByNameQuery;
     private static String findAllQuery;
 
-    private MysqlQuizDaoImpl() {
+    public QuizDao() {
         LOGGER.info("Initializing MysqlQuizDaoImpl");
 
         connectionPool = ConnectionPool.getInstance();
@@ -38,14 +38,13 @@ public class MysqlQuizDaoImpl implements QuizDao {
         findAllQuery = properties.getProperty("findAllQuizzes");
     }
 
-    public static MysqlQuizDaoImpl getInstance() {
+    public static QuizDao getInstance() {
         if(INSTANCE == null) {
-            INSTANCE = new MysqlQuizDaoImpl();
+            INSTANCE = new QuizDao();
         }
         return INSTANCE;
     }
 
-    @Override
     public Quiz createQuiz(Quiz quiz) {
         LOGGER.info("Creating new quiz");
 
@@ -80,7 +79,6 @@ public class MysqlQuizDaoImpl implements QuizDao {
         return quiz;
     }
 
-    @Override
     public Quiz updateQuiz(Quiz quiz) {
         LOGGER.info("Updating quiz");
 
@@ -108,7 +106,6 @@ public class MysqlQuizDaoImpl implements QuizDao {
         return quiz;
     }
 
-    @Override
     public boolean deleteQuizById(Long id) {
         LOGGER.info("Deleting quiz");
         boolean res = false;
@@ -133,7 +130,6 @@ public class MysqlQuizDaoImpl implements QuizDao {
         return res;
     }
 
-    @Override
     public Quiz findQuizById(Long id) {
         LOGGER.info("Getting quiz with id " + id);
         Quiz quiz = null;
@@ -156,7 +152,6 @@ public class MysqlQuizDaoImpl implements QuizDao {
         return quiz;
     }
 
-    @Override
     public Quiz findQuizByName(String name) {
         LOGGER.info("Getting quiz with name " + name);
         Quiz quiz = null;
@@ -179,7 +174,6 @@ public class MysqlQuizDaoImpl implements QuizDao {
         return quiz;
     }
 
-    @Override
     public List<Quiz> findAll(Integer offset, Integer size) {
         LOGGER.info("Getting all quizzes");
         List<Quiz> res = new ArrayList<>();

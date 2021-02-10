@@ -1,8 +1,8 @@
 package com.example.app.command.admin.choices;
 
 import com.example.app.command.ServletCommand;
-import com.example.app.dao.choice.ChoiceDao;
-import com.example.app.service.choice.ChoiceService;
+import com.example.app.dao.ChoiceDao;
+import com.example.app.service.ChoiceService;
 import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
 

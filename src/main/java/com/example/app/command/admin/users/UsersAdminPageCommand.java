@@ -1,12 +1,11 @@
 package com.example.app.command.admin.users;
 
 import com.example.app.command.ServletCommand;
-import com.example.app.dao.user.MysqlUserDaoImpl;
+import com.example.app.dao.UserDao;
 import com.example.app.model.user.User;
 import com.example.app.model.user.UserType;
 import com.example.app.properties.MappingProperties;
-import com.example.app.service.user.UserService;
-import com.example.app.service.user.UserServiceImpl;
+import com.example.app.service.UserService;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
 
@@ -26,7 +25,7 @@ public class UsersAdminPageCommand implements ServletCommand {
     public UsersAdminPageCommand(){
         LOGGER.info("Initializing UsersAdminPageCommand");
 
-        userService = new UserServiceImpl(MysqlUserDaoImpl.getInstance());
+        userService = new UserService(UserDao.getInstance());
 
         MappingProperties properties = MappingProperties.getInstance();
         page = properties.getProperty("adminUsersPage");

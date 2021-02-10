@@ -1,4 +1,4 @@
-package com.example.app.dao.user;
+package com.example.app.dao;
 
 import com.example.app.connection.ConnectionPool;
 import com.example.app.model.user.User;
@@ -12,10 +12,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MysqlUserDaoImpl implements UserDao{
-	private static final Logger LOGGER = Logger.getLogger(MysqlUserDaoImpl.class);
+public class UserDao{
+	private static final Logger LOGGER = Logger.getLogger(UserDao.class);
 
-	private static MysqlUserDaoImpl INSTANCE;
+	private static UserDao INSTANCE;
 	private static ConnectionPool connectionPool;
 	private static String blockQuery;
 	private static String createQuery;
@@ -26,7 +26,7 @@ public class MysqlUserDaoImpl implements UserDao{
 	private static String findByEmailAndPasswordQuery;
 	private static String findPageByUserType;
 
-	private MysqlUserDaoImpl() {
+	private UserDao() {
 		LOGGER.info("Initializing MysqlUserDaoImpl");
 
 		connectionPool = ConnectionPool.getInstance();
@@ -41,14 +41,13 @@ public class MysqlUserDaoImpl implements UserDao{
 		findPageByUserType = properties.getProperty("findPageByUserType");
 	}
 
-	public static MysqlUserDaoImpl getInstance() {
+	public static UserDao getInstance() {
 		if(INSTANCE == null) {
-			INSTANCE = new MysqlUserDaoImpl();
+			INSTANCE = new UserDao();
 		}
 		return INSTANCE;
 	}
 
-	@Override
 	public User createUser(User user) {
 		LOGGER.info("Creating new user");
 
@@ -79,7 +78,6 @@ public class MysqlUserDaoImpl implements UserDao{
 		return user;
 	}
 
-	@Override
 	public User updateUser(User user) {
 		LOGGER.info("Updating user");
 
@@ -104,7 +102,6 @@ public class MysqlUserDaoImpl implements UserDao{
 		return user;
 	}
 
-	@Override
 	public void deleteUserById(Long id) {
 		LOGGER.info("Deleting user");
 
@@ -123,7 +120,6 @@ public class MysqlUserDaoImpl implements UserDao{
 		} catch (SQLException e) { LOGGER.error(e.getMessage()); }
 	}
 
-	@Override
 	public User findUserById(Long id) {
 		LOGGER.info("Getting user with id " + id);
 		User user = null;
@@ -140,7 +136,6 @@ public class MysqlUserDaoImpl implements UserDao{
 		return user;
 	}
 
-	@Override
 	public User findUserByEmail(String email) {
 		LOGGER.info("Getting user with email " + email);
 		User user = null;
@@ -159,7 +154,6 @@ public class MysqlUserDaoImpl implements UserDao{
 		return user;
 	}
 
-	@Override
 	public User findUserByEmailAndPassword(String email, String password) {
 		LOGGER.info("Getting user with email " + email);
 		User user = null;
@@ -179,7 +173,6 @@ public class MysqlUserDaoImpl implements UserDao{
 		return user;
 	}
 
-	@Override
 	public List<User> findPageByUserType(UserType userType, Integer offset, Integer size) {
 		LOGGER.info("Getting page with offset " + offset + ", size " + size + " of userType " + userType.name());
 		List<User> res = new ArrayList<>();
@@ -197,7 +190,6 @@ public class MysqlUserDaoImpl implements UserDao{
 		return res;
 	}
 
-	@Override
 	public boolean blockUser(Long id){
 		LOGGER.info("blockUser");
 		boolean result = false;
@@ -216,7 +208,6 @@ public class MysqlUserDaoImpl implements UserDao{
 		return result;
 	}
 
-	@Override
 	public boolean unblockUser(Long id){
 		LOGGER.info("unblockUser");
 		boolean result = false;

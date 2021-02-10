@@ -1,5 +1,7 @@
 package com.example.app.model.userQuize;
 
+import com.example.app.model.quiz.Quiz;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -11,6 +13,7 @@ public class UserQuiz {
     private Date createdAt;
     private Date updatedAt;
     private Date finishedAt;
+    private Quiz quiz;
 
     public UserQuiz(){ }
 
@@ -79,5 +82,13 @@ public class UserQuiz {
 
     public void setFinishedAt(Date finishedAt) {
         this.finishedAt = finishedAt;
+    }
+
+    public Quiz getQuiz() {
+        return quiz;
+    }
+
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
     }
 }

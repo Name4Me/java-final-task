@@ -1,11 +1,8 @@
 package com.example.app.command.admin.quizzes;
 
 import com.example.app.command.ServletCommand;
-import com.example.app.dao.quiz.MysqlQuizDaoImpl;
-import com.example.app.model.quiz.Quiz;
-import com.example.app.service.quiz.QuizService;
-import com.example.app.service.quiz.QuizServiceImpl;
-import com.google.gson.Gson;
+import com.example.app.dao.QuizDao;
+import com.example.app.service.QuizService;
 import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
 
@@ -21,7 +18,7 @@ public class DeleteQuizCommand implements ServletCommand {
 
 	public DeleteQuizCommand(){
 		LOGGER.info("Initializing DeleteQuizCommand");
-		quizService = new QuizServiceImpl(MysqlQuizDaoImpl.getInstance());
+		quizService = new QuizService(QuizDao.getInstance());
 	}
 
 	public String execute(HttpServletRequest request, HttpServletResponse response) {

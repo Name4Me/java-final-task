@@ -16,6 +16,8 @@ import com.example.app.command.admin.users.BlockUserCommand;
 import com.example.app.command.admin.users.GetUserInfoAdminCommand;
 import com.example.app.command.admin.users.UnBlockUserCommand;
 import com.example.app.command.admin.users.UsersAdminPageCommand;
+import com.example.app.command.user.AddUsersQuizzesCommand;
+import com.example.app.command.user.UserAssignmentsCommand;
 import com.example.app.command.user.UserQuizzesCommand;
 import com.example.app.properties.MappingProperties;
 import org.apache.log4j.Logger;
@@ -49,6 +51,7 @@ public class CommandManager {
         getCommands.put("/logout", new LogoutCommand());
         getCommands.put("/register", new GetRegisterPageCommand());
         getCommands.put("/quizzes", new UserQuizzesCommand());
+        getCommands.put("/assignments", new UserAssignmentsCommand());
 /*
         getCommands.put("/account", new GetAccountPageCommand());
         */
@@ -82,6 +85,8 @@ public class CommandManager {
         postCommands.put("/admin/choice/add", new AddChoiceCommand());
         postCommands.put("/admin/choice/delete", new DeleteChoiceCommand());
         postCommands.put("/admin/choice/update", new UpdateChoiceCommand());
+
+        postCommands.put("/quizzes/add", new AddUsersQuizzesCommand());
 
         MappingProperties properties = MappingProperties.getInstance();
         errorPage = properties.getProperty("errorPage");

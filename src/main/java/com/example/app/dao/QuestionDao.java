@@ -1,4 +1,4 @@
-package com.example.app.dao.question;
+package com.example.app.dao;
 
 import com.example.app.connection.ConnectionPool;
 import com.example.app.model.question.Question;

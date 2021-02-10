@@ -1,5 +1,6 @@
 package com.example.app.model.userQuize;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class UserQuiz {
@@ -10,6 +11,19 @@ public class UserQuiz {
     private Date createdAt;
     private Date updatedAt;
     private Date finishedAt;
+
+    public UserQuiz(){ }
+
+    public UserQuiz(int userId, int quizId, int score, UserQuizStatus status,
+                    Timestamp createdAt, Timestamp updatedAt, Timestamp finishedAt) {
+        this.userId = userId;
+        this.quizId = quizId;
+        this.score = score;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.finishedAt = finishedAt;
+    }
 
     public int getQuizId() {
         return quizId;

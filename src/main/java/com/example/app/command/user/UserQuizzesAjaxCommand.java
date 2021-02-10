@@ -8,18 +8,19 @@ import com.example.app.service.quiz.QuizService;
 import com.example.app.service.quiz.QuizServiceImpl;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This class is used to GET requests to the admin page to view quizzes.
+ * This class is used to POST requests to the admin page to view quizzes.
  */
-public class UserQuizzesCommand implements ServletCommand {
-    private static final Logger LOGGER = Logger.getLogger(UserQuizzesCommand.class);
+public class UserQuizzesAjaxCommand implements ServletCommand {
+    private static final Logger LOGGER = Logger.getLogger(UserQuizzesAjaxCommand.class);
     private static QuizService quizService;
     private static String page;
 
-    public UserQuizzesCommand(){
+    public UserQuizzesAjaxCommand(){
         LOGGER.info("Initializing UserQuizzesCommand");
         quizService = new QuizServiceImpl(MysqlQuizDaoImpl.getInstance());
         MappingProperties properties = MappingProperties.getInstance();

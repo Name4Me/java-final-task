@@ -17,6 +17,7 @@ import com.example.app.command.admin.users.GetUserInfoAdminCommand;
 import com.example.app.command.admin.users.UnBlockUserCommand;
 import com.example.app.command.admin.users.UsersAdminPageCommand;
 import com.example.app.command.user.AddUsersQuizzesCommand;
+import com.example.app.command.user.UserAssignmentCommand;
 import com.example.app.command.user.UserAssignmentsCommand;
 import com.example.app.command.user.UserQuizzesCommand;
 import com.example.app.properties.MappingProperties;
@@ -87,6 +88,8 @@ public class CommandManager {
         postCommands.put("/admin/choice/update", new UpdateChoiceCommand());
 
         postCommands.put("/quizzes/add", new AddUsersQuizzesCommand());
+        postCommands.put("/assignments/assignment", new UserAssignmentCommand());
+
 
         MappingProperties properties = MappingProperties.getInstance();
         errorPage = properties.getProperty("errorPage");

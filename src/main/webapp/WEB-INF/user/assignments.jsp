@@ -1,8 +1,11 @@
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="navbar" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="header"%>
+<jsp:useBean id="date" class="java.util.Date"/>
+
 <html>
 <head>
     <header:header title="${msg.admin} - ${msg.quizzes}"/>
@@ -105,15 +108,11 @@
         <table class="table">
             <thead>
             <tr>
-                <th>
-                    ID
-                </th>
-                <th>
-                    <fmt:message key="name" bundle="${bundle}"/>
-                </th>
-                <th>
-                    Status
-                </th>
+                <th><fmt:message key="id" bundle="${bundle}"/></th>
+                <th><fmt:message key="name" bundle="${bundle}"/></th>
+                <th><fmt:message key="assigned" bundle="${bundle}"/></th>
+                <th><fmt:message key="status" bundle="${bundle}"/></th>
+                <th><fmt:message key="result" bundle="${bundle}"/></th>
             </tr>
             </thead>
 
@@ -122,7 +121,9 @@
                 <tr id="quiz_${quiz.quizId}">
                     <td align="center">${quiz.quizId}</td>
                     <td align="center">${quiz.quiz.name}</td>
-                    <td align="center">${quiz.status}</td>
+                    <td align="center"><fmt:formatDate value="${quiz.createdAt}" pattern="dd MMM yyyy, hh:mm"/></td>
+                    <td align="center"><fmt:message key="${quiz.status}" bundle="${bundle}"/></td>
+                    <td align="center">${quiz.score !=0 ? quiz.score : ''}</td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -148,18 +149,6 @@
             </c:if>
         </ul>
     </div>
-    <div class="row arrows" style="display: none">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"></path>
-        </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"></path>
-        </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"></path>
-        </svg>
-    </div>
-
 </div>
 <!-- /.container -->
 
@@ -167,40 +156,9 @@
 <script>
     const content = document.getElementById('content');
     const search = document.getElementById('search');
-    $(function() {
-        $(".bi-arrow-down-up, .bi-arrow-down, .bi-arrow-up").on( "click", filter);
-        $(".add").on( "click", add);
-    });
-    function add(){
-        const quizId = $(this).data("id");
-        $.post( "${pageContext.request.contextPath}/quizzes/add", {quizId : quizId}, function(data) {
-            console.log(data);
-        }, "json");
-    }
 
-    function filter(){
-        const svg = $(this);
-        const th = svg.closest("th");
-        const sortField = th.data("name");
-        let sortOrder = 'desc';
-        if (svg.hasClass("bi-arrow-down-up")){
-            $("th:has(.bi-arrow-down, .bi-arrow-up)").append($(".arrows .bi-arrow-down-up").clone())
-            $("th>.bi-arrow-down, th>.bi-arrow-up").remove();
-        }
-        if (svg.hasClass("bi-arrow-down-up")|| svg.hasClass("bi-arrow-up")) {
-            th.append($(".arrows .bi-arrow-down").clone());
-        }
-        if (svg.hasClass("bi-arrow-down")) {
-            th.append($(".arrows .bi-arrow-up").clone());
-            sortOrder = 'asc';
-        }
-        svg.remove();
-        $(".bi-arrow-down-up, .bi-arrow-down, .bi-arrow-up").off( "click").on( "click", filter);
-        console.log("sortOrder: ", sortOrder, " sortField: ", sortField);
-    }
-
-    function sort(){
-        $.post("${pageContext.request.contextPath}/quizzes/searchAjax", {search : search.value}, response => content.innerHTML = response);
+    function get(){
+        $.post("${pageContext.request.contextPath}/assignments/assignment", {quizId : 9}, response => content.innerHTML = response);
     }
     //search.onkeyup = event => event.key === 'Enter' && getArticles();
 </script>

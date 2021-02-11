@@ -23,6 +23,11 @@ public class UserQuizService {
         return userQuizDao.createUserQuiz(userQuiz);
     }
 
+    public UserQuiz getUserQuizByUserIdQuizId(int userId, int quizId) {
+        LOGGER.info("UserQuizService get UserQuiz by userId: "+userId+" quizId: "+quizId);
+        return userQuizDao.findUserQuizByUserIdQuizId(userId, quizId);
+    }
+
     public Page<UserQuiz> getPageByUserId(Integer userId, Integer page, Integer size) {
         LOGGER.info("QuestionService getting page number " + page + ", of size " + size);
         if(page == null || size == null || page < 1 || size < 1) { return null; }

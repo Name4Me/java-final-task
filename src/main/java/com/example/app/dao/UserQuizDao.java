@@ -1,6 +1,7 @@
 package com.example.app.dao;
 
 import com.example.app.connection.ConnectionPool;
+import com.example.app.model.quiz.Quiz;
 import com.example.app.model.userQuize.UserQuiz;
 import com.example.app.model.userQuize.UserQuizStatus;
 import com.example.app.properties.MysqlQueryProperties;
@@ -19,6 +20,7 @@ public class UserQuizDao {
     private static String createQuery;
     private static String updateQuery;
     private static String findByUserIdQuery;
+    private static String findByUserIdQuizIdQuery;
     private static String findAllQuery;
 
     private UserQuizDao() {
@@ -30,6 +32,7 @@ public class UserQuizDao {
         createQuery = properties.getProperty("createUserQuiz");
         updateQuery = properties.getProperty("updateUserQuizByUserIdQuizId");
         findByUserIdQuery = properties.getProperty("findUserQuizByUserId");
+        findByUserIdQuizIdQuery = properties.getProperty("findUserQuizByUserIdQuizId");
         findAllQuery = properties.getProperty("findAllUserQuiz");
     }
 
@@ -86,6 +89,20 @@ public class UserQuizDao {
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
+
+        return userQuiz;
+    }
+
+    public UserQuiz findUserQuizByUserIdQuizId(int userId, int quizId) {
+        LOGGER.info("Getting UserQuiz by userId: " + userId + " quizId: " + quizId);
+        UserQuiz userQuiz = null;
+        try(Connection connection = connectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(findByUserIdQuizIdQuery);
+            statement.setInt(1, userId);
+            statement.setInt(2, quizId);
+            ResultSet result = statement.executeQuery();
+            userQuiz = result.next() ? getUserQuiz(result) : null;
+        } catch (SQLException e) { LOGGER.error(e.getMessage()); }
 
         return userQuiz;
     }

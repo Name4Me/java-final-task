@@ -1,25 +1,39 @@
 package com.example.app.model.quiz;
 
+import com.example.app.model.question.Question;
+
+import java.util.List;
+
 public class Quiz {
-    private long id;
+    private int id;
     private String name;
     private String description;
     private QuizDifficulty difficulty;
     private int time;
     private int numberOfQuestion;
+    private List<Question> Questions;
 
     public Quiz() {}
 
-    public Quiz(long id, String name) {
+    public Quiz(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public long getId() {
+    public Quiz(int id, String name, String description, QuizDifficulty difficulty, int time, int numberOfQuestion) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.difficulty = difficulty;
+        this.time = time;
+        this.numberOfQuestion = numberOfQuestion;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -80,5 +94,13 @@ public class Quiz {
 
     public void setNumberOfQuestion(int numberOfQuestion) {
         this.numberOfQuestion = numberOfQuestion;
+    }
+
+    public List<Question> getQuestions() {
+        return Questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        Questions = questions;
     }
 }

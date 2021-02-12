@@ -65,7 +65,7 @@ public class QuizDao {
 
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        quiz.setId(generatedKeys.getLong(1));
+                        quiz.setId(generatedKeys.getInt(1));
                     }
                     else {
                         LOGGER.error("Failed to create quiz, no ID obtained.");
@@ -140,33 +140,7 @@ public class QuizDao {
 
             ResultSet result = statement.executeQuery();
 
-            if(result.next()) {
-                quiz = new Quiz();
-                quiz.setId(result.getLong("id"));
-                quiz.setName(result.getString("name"));
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-
-        return quiz;
-    }
-
-    public Quiz findQuizByName(String name) {
-        LOGGER.info("Getting quiz with name " + name);
-        Quiz quiz = null;
-
-        try (Connection connection = connectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(findByNameQuery);
-            statement.setString(1, name);
-
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                quiz = new Quiz();
-                quiz.setId(result.getLong("id"));
-                quiz.setName(result.getString("name"));
-            }
+            if(result.next()) { quiz = getQuiz(result); }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
@@ -186,7 +160,7 @@ public class QuizDao {
 
             while(result.next()) {
                 Quiz quiz = new Quiz();
-                quiz.setId(result.getLong("id"));
+                quiz.setId(result.getInt("id"));
                 quiz.setName(result.getString("name"));
                 quiz.setDescription(result.getString("description"));
                 quiz.setDifficulty(QuizDifficulty.values()[result.getInt("difficulty")]);
@@ -199,5 +173,18 @@ public class QuizDao {
         }
 
         return res;
+    }
+
+    private Quiz getQuiz(ResultSet resultSet) throws SQLException {
+        Quiz quiz = new Quiz(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                resultSet.getString("description"),
+                QuizDifficulty.values()[resultSet.getInt("difficulty")],
+                resultSet.getInt("time"),
+                resultSet.getInt("numberOfQuestion")
+        );
+        quiz.setQuestions(QuestionDao.getInstance().findAll(quiz.getId(),1,quiz.getNumberOfQuestion()));
+        return quiz;
     }
 }

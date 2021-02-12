@@ -31,7 +31,7 @@ public class Servlet extends HttpServlet {
 		String addr = commandManager.getMappting(request);
 		LOGGER.info("Processing get request: "+addr);
 
-		System.out.println(commandManager.getMappting(request));
+		//System.out.println(commandManager.getMappting(request));
         if((request.getSession().getAttribute("authenticated") == null ||
                 request.getSession().getAttribute("authenticated").equals(false)) && !("/login".equals(addr) || "/register".equals(addr))) {
 			try {
@@ -52,8 +52,15 @@ public class Servlet extends HttpServlet {
 
 		ServletCommand command = commandManager.getPostCommand(request);
 		String page = command.execute(request, response);
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(page);
+		if (request.getAttribute("isJson") != null && (boolean) request.getAttribute("isJson") == false ){
+			request.getRequestDispatcher(page).forward(request, response);
+		} else {
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(page);
+		}
+
+
+
 	}
 }

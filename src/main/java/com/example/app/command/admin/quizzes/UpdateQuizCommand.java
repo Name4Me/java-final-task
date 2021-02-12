@@ -32,7 +32,7 @@ public class UpdateQuizCommand implements ServletCommand {
 			quiz.setDifficulty(QuizDifficulty.values()[Integer.parseInt(request.getParameter("difficulty"))]);
 			quiz.setTime(Integer.parseInt(request.getParameter("time")));
 			quiz.setNumberOfQuestion(Integer.parseInt(request.getParameter("numberOfQuestion")));
-			quiz.setId(Long.parseLong(request.getParameter("id")));
+			quiz.setId(Integer.parseInt(request.getParameter("id")));
 			request.setAttribute("success", quizService.updateQuiz(quiz));
 		}
 

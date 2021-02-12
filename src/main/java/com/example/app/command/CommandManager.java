@@ -104,7 +104,7 @@ public class CommandManager {
     public ServletCommand getGetCommand(HttpServletRequest request) {
         String command = getMappting(request);
         LOGGER.info("Getting command " + command);
-        System.out.println("authenticated: "+request.getSession().getAttribute("authenticated"));
+        //System.out.println("authenticated: "+request.getSession().getAttribute("authenticated"));
         if(getCommands.get(command) == null) {
             return getCommands.get("/");
         }

@@ -105,7 +105,7 @@
 
 <script>
     $(function() {
-        $(".form-signin").submit(
+        $(".form-signin").on('submit',
             function(){
                 $.post( $(this).attr("action"),
                     $(this).serialize(),

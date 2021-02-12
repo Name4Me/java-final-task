@@ -1,7 +1,6 @@
 package com.example.app.dao;
 
 import com.example.app.connection.ConnectionPool;
-import com.example.app.model.quiz.Quiz;
 import com.example.app.model.userQuize.UserQuiz;
 import com.example.app.model.userQuize.UserQuizStatus;
 import com.example.app.properties.MysqlQueryProperties;

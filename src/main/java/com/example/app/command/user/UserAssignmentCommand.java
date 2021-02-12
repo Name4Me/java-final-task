@@ -19,10 +19,13 @@ import javax.servlet.http.HttpSession;
 public class UserAssignmentCommand implements ServletCommand {
     private static final Logger LOGGER = Logger.getLogger(UserAssignmentCommand.class);
     private static UserQuizService userQuizService;
+    private static String page;
 
     public UserAssignmentCommand(){
         LOGGER.info("Initializing UserAssignmentCommand");
         userQuizService = new UserQuizService(UserQuizDao.getInstance());
+        MappingProperties properties = MappingProperties.getInstance();
+        page = properties.getProperty("assignmentPage");
     }
 
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -34,8 +37,10 @@ public class UserAssignmentCommand implements ServletCommand {
             userQuiz = userQuizService.getUserQuizByUserIdQuizId(
                     Math.toIntExact((Long) session.getAttribute("userId")),
                     Integer.parseInt(request.getParameter("quizId")));
+            request.setAttribute("isJson", false);
+            request.setAttribute("quiz", userQuiz);
         }
         catch (Exception e) { LOGGER.info("Couldn't parse request parameters " + e.getMessage()); }
-        return new Gson().toJson(userQuiz);
+        return page;//new Gson().toJson(userQuiz);
     }
 }

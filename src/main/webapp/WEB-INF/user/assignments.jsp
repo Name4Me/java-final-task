@@ -53,7 +53,7 @@
 
 <!-- Page Content -->
 
-<div class="container">
+<div class="container" id="content">
     <div class="row">
         <div class="col-md-6">
             <h1><fmt:message key="quizzes" bundle="${bundle}"/></h1>
@@ -116,9 +116,9 @@
             </tr>
             </thead>
 
-            <tbody id="content">
+            <tbody>
             <c:forEach items="${page.items}" var="quiz">
-                <tr id="quiz_${quiz.quizId}">
+                <tr id="quiz_${quiz.quizId}" onclick="get(this)" data-id="${quiz.quizId}">
                     <td align="center">${quiz.quizId}</td>
                     <td align="center">${quiz.quiz.name}</td>
                     <td align="center"><fmt:formatDate value="${quiz.createdAt}" pattern="dd MMM yyyy, hh:mm"/></td>
@@ -157,8 +157,8 @@
     const content = document.getElementById('content');
     const search = document.getElementById('search');
 
-    function get(){
-        $.post("${pageContext.request.contextPath}/assignments/assignment", {quizId : 9}, response => content.innerHTML = response);
+    function get(element){
+        $.post("${pageContext.request.contextPath}/assignments/assignment", {quizId : element.dataset.id}, response => content.innerHTML = response);
     }
     //search.onkeyup = event => event.key === 'Enter' && getArticles();
 </script>

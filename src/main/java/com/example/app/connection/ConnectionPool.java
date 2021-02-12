@@ -1,7 +1,6 @@
 package com.example.app.connection;
 
 import org.apache.log4j.Logger;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -37,9 +36,7 @@ public class ConnectionPool {
     }
 
     public static synchronized ConnectionPool getInstance() {
-        if (connectionPool == null) {
-            connectionPool = new ConnectionPool();
-        }
+        if (connectionPool == null) { connectionPool = new ConnectionPool(); }
         return connectionPool;
     }
 }

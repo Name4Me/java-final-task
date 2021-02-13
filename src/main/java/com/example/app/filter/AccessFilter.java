@@ -60,7 +60,7 @@ public class AccessFilter implements Filter {
                 command = command.substring(1);
             }
             if(command.indexOf('?') > 0) {
-                command.substring(command.lastIndexOf('?'));
+                command = command.substring(command.lastIndexOf('?'));
             }
         }
         if (command.isEmpty()) {

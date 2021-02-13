@@ -21,7 +21,6 @@ public class QuizDao {
     private static String updateQuery;
     private static String deleteQuery;
     private static String findByIdQuery;
-    private static String findByNameQuery;
     private static String findAllQuery;
     private static String findAllQuizzesForUser;
 
@@ -35,7 +34,6 @@ public class QuizDao {
         updateQuery = properties.getProperty("updateQuizById");
         deleteQuery = properties.getProperty("deleteQuizById");
         findByIdQuery = properties.getProperty("findQuizById");
-        findByNameQuery = properties.getProperty("findQuizByName");
         findAllQuery = properties.getProperty("findAllQuizzes");
         findAllQuizzesForUser = properties.getProperty("findAllQuizzesForUser");
     }

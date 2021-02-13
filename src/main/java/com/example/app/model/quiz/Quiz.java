@@ -59,7 +59,7 @@ public class Quiz {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = id;
         result = 31 * result + name.hashCode();
         return result;
     }

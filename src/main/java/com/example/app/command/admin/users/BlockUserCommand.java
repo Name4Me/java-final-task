@@ -27,7 +27,7 @@ public class BlockUserCommand implements ServletCommand {
 		LOGGER.info("Executing command");
 		JsonObject json = new JsonObject();
 		if(request.getParameter("id") != null) {
-			json.addProperty("result", userService.blockUser(Long.parseLong(request.getParameter("id"))));
+			json.addProperty("result", userService.blockUser(Integer.parseInt(request.getParameter("id"))));
 		}
 		return json.toString();
 	}

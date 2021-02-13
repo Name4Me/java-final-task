@@ -1,11 +1,10 @@
 package com.example.app.model.user;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class User implements Serializable{
-    private Long id;
-    private String firstName;
-    private String lastName;
+    private int id;
     private String email;
     private byte[] password;
     private UserType userType;
@@ -13,39 +12,26 @@ public class User implements Serializable{
 
     public User() {}
 
-    public User(Long id, String firstName, String lastName, String email,
-                byte[] password, UserType userType, UserStatus userStatus) {
+    public User(int id, String email, byte[] password, UserType userType, UserStatus userStatus) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.userType = userType;
         this.userStatus = userStatus;
     }
 
-    public Long getId() {
+    public User(String email, byte[] password, UserType userType) {
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public byte[] getPassword() {
@@ -77,25 +63,18 @@ public class User implements Serializable{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         User user = (User) o;
-
-        if (!id.equals(user.id)) return false;
-        if (!firstName.equals(user.firstName)) return false;
-        if (!lastName.equals(user.lastName)) return false;
+        if (id != user.id) return false;
         if (!email.equals(user.email)) return false;
-        if (!password.equals(user.password)) return false;
-        if (userType != user.userType) return false;
-        return true;
+        if (!Arrays.equals(password, user.password)) return false;
+        return userType == user.userType;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + firstName.hashCode();
-        result = 31 * result + lastName.hashCode();
+        int result = id;
         result = 31 * result + email.hashCode();
-        result = 31 * result + password.hashCode();
+        result = 31 * result + Arrays.hashCode(password);
         result = 31 * result + userType.hashCode();
         return result;
     }

@@ -27,7 +27,7 @@ public class UnBlockUserCommand implements ServletCommand {
 		LOGGER.info("Executing command");
 		JsonObject json = new JsonObject();
 		if(request.getParameter("id") != null) {
-			json.addProperty("result", userService.unblockUser(Long.parseLong(request.getParameter("id"))));
+			json.addProperty("result", userService.unblockUser(Integer.parseInt(request.getParameter("id"))));
 		}
 		return json.toString();
 	}

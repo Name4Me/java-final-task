@@ -11,19 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class GetUserInfoAdminCommand implements ServletCommand {
-
 	private static final Logger LOGGER = Logger.getLogger(GetUserInfoAdminCommand.class);
-
 	private static UserService userService;
-
 	private static String usersPage;
 	private static String userInfoPage;
 
 	public GetUserInfoAdminCommand(){
 		LOGGER.info("Initializing GetUserInfoAdminCommand");
-
 		userService = new UserService(UserDao.getInstance());
-
 		MappingProperties properties = MappingProperties.getInstance();
 		usersPage = properties.getProperty("adminUsersPage");
 		userInfoPage = properties.getProperty("adminUserInfoPage");
@@ -33,23 +28,16 @@ public class GetUserInfoAdminCommand implements ServletCommand {
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.info("Executing command");
 		String resultPage = usersPage;
-
 		if(request.getParameter("id") != null) {
 			try {
-				Long id = Long.parseLong(request.getParameter("id"));
-				User user = userService.findUserById(id);
-
+				User user = userService.findUserById(Integer.parseInt(request.getParameter("id")));
 				if(user != null) {
-
 					request.setAttribute("user", user);
 					resultPage = userInfoPage;
 				}
 			}
-			catch (NumberFormatException ex) {
-				LOGGER.info("Couldn't parse id " + request.getParameter("p") + " to long");
-			}
+			catch (Exception e) { LOGGER.error(e.getMessage()); }
 		}
-
 		return resultPage;
 	}
 }

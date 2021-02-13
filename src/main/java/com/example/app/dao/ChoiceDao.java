@@ -19,7 +19,6 @@ public class ChoiceDao {
     private static String updateQuery;
     private static String deleteQuery;
     private static String findByIdQuery;
-    private static String findByNameQuery;
     private static String findAllQuery;
 
     private ChoiceDao() {

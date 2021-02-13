@@ -9,41 +9,30 @@ import org.apache.log4j.Logger;
 import java.util.List;
 
 public class UserService {
-
     private static final Logger LOGGER = Logger.getLogger(UserService.class);
-
-    private UserDao userDao;
+    private final UserDao userDao;
 
     public UserService(UserDao userDao) {
         LOGGER.info("Initializing UserServiceImpl");
-
         this.userDao = userDao;
     }
 
     public boolean checkEmailAvailability(String email) {
         LOGGER.info("Checking availability of email");
-
-        if(email == null) {
-            return false;
-        }
-
+        if(email == null) { return false; }
         User user = userDao.findUserByEmail(email);
         return user == null;
     }
 
     public boolean registerUser(User user) {
         LOGGER.info("New user registration");
-        return user != null && userDao.createUser(user).getId() != null;
+        return user != null && userDao.createUser(user).getId() != 0;
 
     }
 
     public User getUserByCredentials(String email, byte[] password) {
         LOGGER.info("Getting user by credentials");
-
-        if(email == null || password == null) {
-            return null;
-        }
-
+        if(email == null || password == null) { return null; }
         return userDao.findUserByEmailAndPassword(email, password);
     }
 
@@ -60,32 +49,22 @@ public class UserService {
 
     public User findUserByEmail(String email) {
         LOGGER.info("Finding user by email " + email);
-
-        if(email == null) {
-            return null;
-        }
-
-        return userDao.findUserByEmail(email);
+        return email == null ? null : userDao.findUserByEmail(email);
     }
 
-    public User findUserById(Long id) {
+    public User findUserById(int id) {
         LOGGER.info("Finding user by id " + id);
-
-        if(id == null) {
-            return null;
-        }
-
-        return userDao.findUserById(id);
+        return id == 0 ? null : userDao.findUserById(id);
     }
 
-    public boolean blockUser(Long id) {
+    public boolean blockUser(int id) {
         LOGGER.info("Block user by id " + id);
-        return id == null ? false : userDao.blockUser(id);
+        return id != 0 && userDao.blockUser(id);
 
     }
 
-    public boolean unblockUser(Long id) {
+    public boolean unblockUser(int id) {
         LOGGER.info("Unblock user by id " + id);
-        return id == null ? false : userDao.unblockUser(id);
+        return id != 0 && userDao.unblockUser(id);
     }
 }

@@ -33,12 +33,11 @@ public class UserService {
 
     public boolean registerUser(User user) {
         LOGGER.info("New user registration");
-
         return user != null && userDao.createUser(user).getId() != null;
 
     }
 
-    public User getUserByCredentials(String email, String password) {
+    public User getUserByCredentials(String email, byte[] password) {
         LOGGER.info("Getting user by credentials");
 
         if(email == null || password == null) {

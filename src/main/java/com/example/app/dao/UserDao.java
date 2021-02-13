@@ -54,7 +54,7 @@ public class UserDao{
 		try(Connection connection = connectionPool.getConnection()) {
 			PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, user.getFirstName());
-			statement.setString(2, user.getPassword());
+			statement.setBytes(2, user.getPassword());
 			statement.setString(3, user.getEmail());
 			int affectedRows = statement.executeUpdate();
 
@@ -84,7 +84,7 @@ public class UserDao{
 		try(Connection connection = connectionPool.getConnection()) {
 			PreparedStatement statement = connection.prepareStatement(updateQuery);
 			statement.setString(1, user.getFirstName());
-			statement.setString(2, user.getPassword());
+			statement.setBytes(2, user.getPassword());
 			statement.setString(3, user.getEmail());
 			statement.setLong(4, user.getUserType().ordinal());
 			statement.setLong(5, user.getId());
@@ -154,14 +154,14 @@ public class UserDao{
 		return user;
 	}
 
-	public User findUserByEmailAndPassword(String email, String password) {
+	public User findUserByEmailAndPassword(String email, byte[] password) {
 		LOGGER.info("Getting user with email " + email);
 		User user = null;
 
 		try(Connection connection = connectionPool.getConnection()) {
 			PreparedStatement statement = connection.prepareStatement(findByEmailAndPasswordQuery);
 			statement.setString(1, email);
-			statement.setString(2, password);
+			statement.setBytes(2, password);
 
 			ResultSet result = statement.executeQuery();
 
@@ -234,7 +234,7 @@ public class UserDao{
 				user = new UserBuilder().setId(resultSet.getLong("id"))
 						                .setFirstName(resultSet.getString("login"))
 						                .setEmail(resultSet.getString("email"))
-						                .setPassword(resultSet.getString("password"))
+						                .setPassword(resultSet.getBytes("password"))
 						                .setUserType(UserType.values()[resultSet.getInt("userType")])
 										.setUserStatus(UserStatus.values()[resultSet.getInt("status")])
 						                .build();

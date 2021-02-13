@@ -83,7 +83,7 @@ public class UserQuizDao {
             ResultSet result = statement.executeQuery();
 
             if(result.next()) {
-                userQuiz = getUserQuiz(result);
+                userQuiz = getUserQuiz(result, false);
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
@@ -92,7 +92,7 @@ public class UserQuizDao {
         return userQuiz;
     }
 
-    public UserQuiz findUserQuizByUserIdQuizId(int userId, int quizId) {
+    public UserQuiz findUserQuizByUserIdQuizId(int userId, int quizId, boolean getQuestions) {
         LOGGER.info("Getting UserQuiz by userId: " + userId + " quizId: " + quizId);
         UserQuiz userQuiz = null;
         try(Connection connection = connectionPool.getConnection()) {
@@ -100,7 +100,7 @@ public class UserQuizDao {
             statement.setInt(1, userId);
             statement.setInt(2, quizId);
             ResultSet result = statement.executeQuery();
-            userQuiz = result.next() ? getUserQuiz(result) : null;
+            userQuiz = result.next() ? getUserQuiz(result, false) : null;
         } catch (SQLException e) { LOGGER.error(e.getMessage()); }
 
         return userQuiz;
@@ -127,13 +127,13 @@ public class UserQuizDao {
     private List<UserQuiz> getUserQuizzes(ResultSet resultSet) {
         List<UserQuiz> res = new ArrayList<>();
         try {
-            while (resultSet.next()) { res.add(getUserQuiz(resultSet)); }
+            while (resultSet.next()) { res.add(getUserQuiz(resultSet, false)); }
         } catch (SQLException e) { LOGGER.error(e.getMessage()); }
 
         return res;
     }
 
-    private UserQuiz getUserQuiz(ResultSet resultSet) throws SQLException {
+    private UserQuiz getUserQuiz(ResultSet resultSet, boolean getQuestions) throws SQLException {
         UserQuiz userQuiz = new UserQuiz(
                 resultSet.getInt("userId"),
                 resultSet.getInt("quizId"),
@@ -143,7 +143,7 @@ public class UserQuizDao {
                 resultSet.getTimestamp("updatedAt"),
                 resultSet.getTimestamp("finishedAt")
         );
-        userQuiz.setQuiz(new QuizDao().findQuizById((long) userQuiz.getQuizId()));
+        if (getQuestions) userQuiz.setQuiz(new QuizDao().findQuizById((long) userQuiz.getQuizId()));
         return userQuiz;
     }
 }

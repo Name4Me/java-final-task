@@ -3,6 +3,7 @@ package com.example.app.command;
 import com.example.app.dao.UserDao;
 import com.example.app.model.user.User;
 import com.example.app.service.UserService;
+import com.example.app.util.Password;
 import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
 
@@ -26,8 +27,7 @@ public class LoginCommand implements ServletCommand {
 		LOGGER.info("Executing command");
 		JsonObject json = new JsonObject();
 		if (request.getParameter("email") != null && request.getParameter("password") != null) {
-			User user = userService.getUserByCredentials(request.getParameter("email"),
-					                                     request.getParameter("password"));
+			User user = userService.getUserByCredentials(request.getParameter("email"), Password.getPasswordHash(request.getParameter("password")) );
 			if (user != null) {
 				HttpSession session = request.getSession();
 				session.setAttribute("email", user.getEmail());

@@ -51,8 +51,8 @@ public class CommandManager {
         getCommands.put("/login", new GetLoginPageCommand());
         getCommands.put("/logout", new LogoutCommand());
         getCommands.put("/register", new GetRegisterPageCommand());
-        getCommands.put("/quizzes", new UserQuizzesCommand());
-        getCommands.put("/assignments", new UserAssignmentsCommand());
+        getCommands.put("/user/quizzes", new UserQuizzesCommand());
+        getCommands.put("/user/assignments", new UserAssignmentsCommand());
 /*
         getCommands.put("/account", new GetAccountPageCommand());
         */
@@ -87,8 +87,8 @@ public class CommandManager {
         postCommands.put("/admin/choice/delete", new DeleteChoiceCommand());
         postCommands.put("/admin/choice/update", new UpdateChoiceCommand());
 
-        postCommands.put("/quizzes/add", new AddUsersQuizzesCommand());
-        postCommands.put("/assignments/assignment", new UserAssignmentCommand());
+        postCommands.put("/user/quizzes/add", new AddUsersQuizzesCommand());
+        postCommands.put("/user/assignments/assignment", new UserAssignmentCommand());
 
 
         MappingProperties properties = MappingProperties.getInstance();

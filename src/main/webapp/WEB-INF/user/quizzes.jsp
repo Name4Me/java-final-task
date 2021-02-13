@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="navbar" tagdir="/WEB-INF/tags" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="header"%>
 <html>
 <head>
@@ -156,7 +156,7 @@
         <ul class="pager">
             <c:if test="${!page.first}">
                 <li>
-                    <a href="${pageContext.request.contextPath}/quizzes?page=${page.number-1}&s=${page.size}">
+                    <a href="${pageContext.request.contextPath}/user/quizzes?page=${page.number-1}&s=${page.size}">
                         <span aria-hidden="true">&larr;</span>
                     </a>
                 </li>
@@ -164,7 +164,7 @@
 
             <c:if test="${!page.last}">
                 <li>
-                    <a href="${pageContext.request.contextPath}/quizzes?page=${page.number+1}&s=${page.size}">
+                    <a href="${pageContext.request.contextPath}/user/quizzes?page=${page.number+1}&s=${page.size}">
                         <span aria-hidden="true">&rarr;</span>
                     </a>
                 </li>
@@ -196,7 +196,7 @@
     });
     function add(){
         const quizId = $(this).data("id");
-        $.post( "${pageContext.request.contextPath}/quizzes/add", {quizId : quizId}, function(data) {
+        $.post( "${pageContext.request.contextPath}/user/quizzes/add", {quizId : quizId}, function(data) {
             console.log(data);
         }, "json");
     }
@@ -223,7 +223,7 @@
     }
 
     function sort(){
-        $.post("${pageContext.request.contextPath}/quizzes/searchAjax", {search : search.value}, response => content.innerHTML = response);
+        $.post("${pageContext.request.contextPath}/user/quizzes/searchAjax", {search : search.value}, response => content.innerHTML = response);
     }
     //search.onkeyup = event => event.key === 'Enter' && getArticles();
 </script>

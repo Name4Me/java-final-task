@@ -23,9 +23,9 @@ public class UserQuizService {
         return userQuizDao.createUserQuiz(userQuiz);
     }
 
-    public UserQuiz getUserQuizByUserIdQuizId(int userId, int quizId) {
+    public UserQuiz getUserQuizByUserIdQuizId(int userId, int quizId, boolean getQuestions) {
         LOGGER.info("UserQuizService get UserQuiz by userId: "+userId+" quizId: "+quizId);
-        return userQuizDao.findUserQuizByUserIdQuizId(userId, quizId);
+        return userQuizDao.findUserQuizByUserIdQuizId(userId, quizId, getQuestions);
     }
 
     public Page<UserQuiz> getPageByUserId(Integer userId, Integer page, Integer size) {

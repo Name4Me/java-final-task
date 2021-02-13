@@ -1,7 +1,7 @@
 package com.example.app.filter;
 
-import com.example.app.model.user.User;
 import com.example.app.model.user.UserType;
+import com.example.app.properties.MappingProperties;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -9,82 +9,79 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 public class AccessFilter implements Filter {
-    private static final Logger log = Logger.getLogger(AccessFilter.class);
+    private static final Logger LOGGER = Logger.getLogger(AccessFilter.class);
+    private static String mainPage;
+    private static List<String> outOfControl = new ArrayList<>();
 
-    // commands access
-    private static Map<UserType, List<String>> accessMap = new HashMap<UserType, List<String>>();
-    private static List<String> commons = new ArrayList<String>();
-    private static List<String> outOfControl = new ArrayList<String>();
+    public void init(FilterConfig fConfig) {
+        LOGGER.info("Filter initialization starts");
+        MappingProperties properties = MappingProperties.getInstance();
+        mainPage = properties.getProperty("mainPage");
+
+        // out of control
+        outOfControl = asList(fConfig.getInitParameter("out-of-control"));
+        LOGGER.info("Out of control commands --> " + outOfControl);
+
+        LOGGER.info("Filter initialization finished");
+    }
 
     public void destroy() {
-        log.debug("Filter destruction starts");
+        LOGGER.info("Filter destruction starts");
         // do nothing
-        log.debug("Filter destruction finished");
+        LOGGER.info("Filter destruction finished");
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        log.debug("Filter starts");
+        LOGGER.info("Filter starts");
 
         if (accessAllowed(request)) {
-            log.debug("Filter finished");
+            LOGGER.info("Filter finished");
             chain.doFilter(request, response);
         } else {
-            String errorMessasge = "You do not have permission to access the requested resource";
-
-            request.setAttribute("errorMessage", errorMessasge);
-            log.trace("Set the request attribute: errorMessage --> " + errorMessasge);
-
-            request.getRequestDispatcher("/WEB-INF/errors/error.jsp")
-                    .forward(request, response);
+            String errorMessage = "You do not have permission to access the requested resource";
+            LOGGER.info("Set the request attribute: errorMessage --> " + errorMessage);
+            request.setAttribute("errorMessage", errorMessage);
+            request.getRequestDispatcher(mainPage).forward(request, response);
         }
     }
 
     private boolean accessAllowed(ServletRequest request) {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-
-        String commandName = request.getParameter("command");
-        if (commandName == null || commandName.isEmpty())
+        String command = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+        if (!"/".equals(command)) {
+            if(command.endsWith("/")) {
+                command = command.substring(0, command.length() - 1);
+            }
+            if(command.startsWith("/")) {
+                command = command.substring(1);
+            }
+        }
+        if (command.isEmpty()) {
+            LOGGER.info("Filter command isEmpty");
             return false;
+        }
 
-        if (outOfControl.contains(commandName))
+        if (outOfControl.contains(command)){
+            LOGGER.info("Filter command outOfControl");
             return true;
+        }
 
         HttpSession session = httpRequest.getSession(false);
-        if (session == null)
+        if (session == null) {
+            LOGGER.info("Filter command session is null");
             return false;
+        }
 
-        UserType userRole = (UserType)session.getAttribute("role");
-        if (userRole == null)
-            return false;
+        UserType userRole = UserType.valueOf((String) session.getAttribute("role"));
 
-        return accessMap.get(userRole).contains(commandName)
-                || commons.contains(commandName);
+        return command.contains(userRole.toString().toLowerCase()+"/");
     }
 
-    public void init(FilterConfig fConfig) throws ServletException {
-        log.debug("Filter initialization starts");
 
-        // roles
-        accessMap.put(UserType.ADMIN, asList(fConfig.getInitParameter("admin")));
-        accessMap.put(UserType.USER, asList(fConfig.getInitParameter("client")));
-        log.trace("Access map --> " + accessMap);
-
-        // commons
-        commons = asList(fConfig.getInitParameter("common"));
-        log.trace("Common commands --> " + commons);
-
-        // out of control
-        outOfControl = asList(fConfig.getInitParameter("out-of-control"));
-        log.trace("Out of control commands --> " + outOfControl);
-
-        log.debug("Filter initialization finished");
-    }
 
     /**
      * Extracts parameter values from string.
@@ -94,7 +91,7 @@ public class AccessFilter implements Filter {
      * @return list of parameter values.
      */
     private List<String> asList(String str) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         StringTokenizer st = new StringTokenizer(str);
         while (st.hasMoreTokens()) list.add(st.nextToken());
         return list;

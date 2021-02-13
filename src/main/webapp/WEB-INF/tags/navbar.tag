@@ -41,43 +41,42 @@
                 </c:if>
 
                 <c:if test="${sessionScope.authenticated != null && sessionScope.authenticated == true}">
-                    <c:if test="${sessionScope.role != 'ADMIN'}">
+                    <c:if test="${sessionScope.role == 'USER'}">
                         <li class="nav-item">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/account"><c:out value="${sessionScope.username}"/></a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/user/account"><c:out value="${sessionScope.username}"/></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/assignments"><fmt:message key="assignments" bundle="${bundle}"/></a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/user/assignments"><fmt:message key="assignments" bundle="${bundle}"/></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/quizzes"><fmt:message key="quizzes" bundle="${bundle}"/></a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/user/quizzes"><fmt:message key="quizzes" bundle="${bundle}"/></a>
                         </li>
                     </c:if>
+
+                    <c:if test="${sessionScope.role == 'ADMIN'}">
+                        <li class="nav-item dropdown show">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <fmt:message key="admin" bundle="${bundle}"/> <span class="caret"></span></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/users">
+                                    <fmt:message key="users" bundle="${bundle}"/>
+                                </a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/quizzes">
+                                    <fmt:message key="quizzes" bundle="${bundle}"/>
+                                </a>
+                            </div>
+                        </li>
+                    </c:if>
+
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/logout"><fmt:message key="signOut" bundle="${bundle}"/></a>
                     </li>
                 </c:if>
 
-                <c:if test="${sessionScope.role == 'ADMIN'}">
-                    <li class="nav-item dropdown show">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <fmt:message key="admin" bundle="${bundle}"/> <span class="caret"></span></a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown01">
-                            <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/users">
-                                <fmt:message key="users" bundle="${bundle}"/>
-                            </a>
-                            <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/quizzes">
-                                <fmt:message key="quizzes" bundle="${bundle}"/>
-                            </a>
-                        </div>
-                    </li>
-                </c:if>
+
 
                 <%--<li class="nav-item"><a class="nav-link disabled" href="#">Disabled</a></li>--%>
             </ul>
-            <form class="form-inline mt-2 mt-md-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="<fmt:message key="search" bundle="${bundle}"/>" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><fmt:message key="search" bundle="${bundle}"/></button>
-            </form>
         </div>
     </nav>
 </header>

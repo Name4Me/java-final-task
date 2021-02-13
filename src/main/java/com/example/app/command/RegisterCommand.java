@@ -6,6 +6,7 @@ import com.example.app.model.user.UserBuilder;
 import com.example.app.model.user.UserType;
 import com.example.app.properties.MappingProperties;
 import com.example.app.service.UserService;
+import com.example.app.util.Password;
 import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +40,7 @@ public class RegisterCommand implements ServletCommand {
 			LOGGER.info("New user registration");
 			User user = new UserBuilder().setFirstName(request.getParameter("firstName"))
 					                     .setEmail(request.getParameter("email"))
-					                     .setPassword(request.getParameter("password"))
+					                     .setPassword(Password.getPasswordHash(request.getParameter("password")))
 					                     .setUserType(UserType.USER)
 					                     .build();
 			if(userService.registerUser(user)) {

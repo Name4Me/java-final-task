@@ -30,13 +30,16 @@ public class UserAssignmentCommand implements ServletCommand {
 
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("UserAssignmentCommand executing command");
+        System.out.println(request.getHeader("content-type"));
         if (request.getParameter("quizId") == null) return "{'error':500}";
         UserQuiz userQuiz = null;
         try {
             HttpSession session = request.getSession();
             userQuiz = userQuizService.getUserQuizByUserIdQuizId(
                     Math.toIntExact((Long) session.getAttribute("userId")),
-                    Integer.parseInt(request.getParameter("quizId")));
+                    Integer.parseInt(request.getParameter("quizId")),
+                    false
+            );
             request.setAttribute("isJson", false);
             request.setAttribute("quiz", userQuiz);
         }

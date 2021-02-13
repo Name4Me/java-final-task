@@ -5,7 +5,7 @@ public class UserBuilder {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private String password;
+	private byte[] password;
 	private UserType userType;
 	private UserStatus userStatus;
 	private String address;
@@ -30,7 +30,7 @@ public class UserBuilder {
 		return this;
 	}
 
-	public UserBuilder setPassword(String password) {
+	public UserBuilder setPassword(byte[] password) {
 		this.password = password;
 		return this;
 	}

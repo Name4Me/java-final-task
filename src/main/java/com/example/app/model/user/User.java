@@ -7,14 +7,14 @@ public class User implements Serializable{
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
+    private byte[] password;
     private UserType userType;
     private UserStatus userStatus;
 
     public User() {}
 
     public User(Long id, String firstName, String lastName, String email,
-                String password, UserType userType, UserStatus userStatus) {
+                byte[] password, UserType userType, UserStatus userStatus) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,11 +48,11 @@ public class User implements Serializable{
         this.lastName = lastName;
     }
 
-    public String getPassword() {
+    public byte[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(byte[] password) {
         this.password = password;
     }
 

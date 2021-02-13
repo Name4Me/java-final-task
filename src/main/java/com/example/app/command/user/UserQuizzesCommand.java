@@ -9,6 +9,7 @@ import com.example.app.util.Page;
 import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * This class is used to GET requests to the admin page to view quizzes.
@@ -28,7 +29,9 @@ public class UserQuizzesCommand implements ServletCommand {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("UserQuizzesCommand executing command");
         try {
-            Page<Quiz> page = quizService.getPageByQuiz(
+            HttpSession session = request.getSession();
+            Page<Quiz> page = quizService.getPageByUserId(
+                    Math.toIntExact((Long) session.getAttribute("userId")),
                     request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page")),
                     request.getParameter("size") == null ? 5 :Integer.parseInt(request.getParameter("size")));
             request.setAttribute("page", page);

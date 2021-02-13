@@ -23,6 +23,7 @@ public class QuizDao {
     private static String findByIdQuery;
     private static String findByNameQuery;
     private static String findAllQuery;
+    private static String findAllQuizzesForUser;
 
     public QuizDao() {
         LOGGER.info("Initializing MysqlQuizDaoImpl");
@@ -36,6 +37,7 @@ public class QuizDao {
         findByIdQuery = properties.getProperty("findQuizById");
         findByNameQuery = properties.getProperty("findQuizByName");
         findAllQuery = properties.getProperty("findAllQuizzes");
+        findAllQuizzesForUser = properties.getProperty("findAllQuizzesForUser");
     }
 
     public static QuizDao getInstance() {
@@ -148,30 +150,41 @@ public class QuizDao {
         return quiz;
     }
 
+    public List<Quiz> findAllForUser(Integer userId, Integer offset, Integer size) {
+        LOGGER.info("Getting findAllForUser");
+        List<Quiz> res = new ArrayList<>();
+
+        try(Connection connection = connectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(findAllQuizzesForUser);
+            statement.setInt(1, userId);
+            statement.setInt(2, offset);
+            statement.setInt(3, size);
+            ResultSet result = statement.executeQuery();
+            res = getQuizzes(result);
+        } catch (SQLException e) { LOGGER.error(e.getMessage()); }
+        return res;
+    }
     public List<Quiz> findAll(Integer offset, Integer size) {
         LOGGER.info("Getting all quizzes");
         List<Quiz> res = new ArrayList<>();
-
         try(Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(findAllQuery);
             statement.setInt(1, offset);
             statement.setInt(2, size);
             ResultSet result = statement.executeQuery();
-
-            while(result.next()) {
-                Quiz quiz = new Quiz();
-                quiz.setId(result.getInt("id"));
-                quiz.setName(result.getString("name"));
-                quiz.setDescription(result.getString("description"));
-                quiz.setDifficulty(QuizDifficulty.values()[result.getInt("difficulty")]);
-                quiz.setTime(result.getInt("time"));
-                quiz.setNumberOfQuestion(result.getInt("numberOfQuestion"));
-                res.add(quiz);
-            }
+            res = getQuizzes(result);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }
 
+        return res;
+    }
+
+    private List<Quiz> getQuizzes(ResultSet resultSet) throws SQLException {
+        List<Quiz> res = new ArrayList<>();
+        while(resultSet.next()) {
+            res.add(getQuiz(resultSet));
+        }
         return res;
     }
 

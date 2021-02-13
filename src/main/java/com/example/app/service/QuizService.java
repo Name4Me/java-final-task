@@ -48,7 +48,7 @@ public class QuizService {
     public Page<Quiz> getPageByUserId(Integer userId, Integer page, Integer size) {
         LOGGER.info("Getting page number " + page + ", of size " + size);
         if(page == null || size == null || page < 1 || size < 1) { return null; }
-        List<Quiz> items =  quizDao.findAll((page - 1) * size, size);
+        List<Quiz> items =  quizDao.findAllForUser(userId,(page - 1) * size, size);
         return new Page<>(items, page, size);
     }
 }

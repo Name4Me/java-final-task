@@ -35,40 +35,27 @@ public class QuestionDao {
 
     public Question createQuestion(Question question) {
         LOGGER.info("Creating new question");
-
-        try(Connection connection = connectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
+        try(Connection connection = connectionPool.getConnection();
+            PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, question.getQuizId());
             statement.setString(2, question.getText());
             statement.setInt(3, question.getType().ordinal());
-            int affectedRows = statement.executeUpdate();
-
-            if(affectedRows == 0) {
-                LOGGER.info("Question creation failed");
-            }
-            else {
+            if (statement.executeUpdate() != 0) {
                 LOGGER.info("Question creation successful");
-
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         question.setId(generatedKeys.getInt(1));
-                    }
-                    else {
-                        LOGGER.error("Failed to create question, no ID obtained.");
-                    }
+                    } else { LOGGER.error("Failed to create question, no ID obtained."); }
                 }
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-
+            } else { LOGGER.info("Question creation failed"); }
+        } catch (Exception e) { LOGGER.error(e.getMessage()); }
         return question;
     }
 
     public Question updateQuestion(Question question) {
         LOGGER.info("Updating question");
-        try(Connection connection = connectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(updateQuery);
+        try(Connection connection = connectionPool.getConnection();
+            PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setLong(1, question.getQuizId());
             statement.setString(2, question.getText());
             statement.setInt(3, question.getType().ordinal());
@@ -81,8 +68,8 @@ public class QuestionDao {
     public boolean deleteQuestionById(int id) {
         LOGGER.info("Deleting question");
         boolean result = false;
-        try(Connection connection = connectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(deleteQuery);
+        try(Connection connection = connectionPool.getConnection();
+            PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
             statement.setLong(1, id);
             result = !statement.execute();
             LOGGER.info("Question deletion "+(result ? "successfully" : "failed"));
@@ -93,12 +80,12 @@ public class QuestionDao {
     public List<Question> findAll(Integer quizId, Integer offset, Integer size) {
         LOGGER.info("QuestionDao getting page with offset " + offset + ", size " + size + " for quizId " + quizId);
         List<Question> res = new ArrayList<>();
-        try(Connection connection = connectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(findAllQuery);
+        try(Connection connection = connectionPool.getConnection();
+            PreparedStatement statement = connection.prepareStatement(findAllQuery)) {
             statement.setInt(1, quizId);
             statement.setInt(2, offset);
             statement.setInt(3, size);
-            res = getQuestions(statement.executeQuery());
+            try(ResultSet resultSet = statement.executeQuery()){ res = getQuestions(resultSet); }
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
         return res;
     }
@@ -111,7 +98,7 @@ public class QuestionDao {
         return res;
     }
 
-    private Question getQuestion(ResultSet resultSet) throws SQLException {
+    private Question getQuestion(ResultSet resultSet) throws Exception {
         return new Question(
                 resultSet.getInt("id"),
                 resultSet.getInt("quizId"),

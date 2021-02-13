@@ -56,7 +56,7 @@ public class UserDao{
 					} else { LOGGER.error("Failed to create user, no ID obtained."); }
 				}
 			} else { LOGGER.error("User creation failed"); }
-		} catch (SQLException e) { LOGGER.error(e.getMessage()); }
+		} catch (Exception e) { LOGGER.error(e.getMessage()); }
 		return user;
 	}
 
@@ -71,7 +71,7 @@ public class UserDao{
 			if(statement.execute()) {
 				LOGGER.error("User update failed");
 			} else { LOGGER.info("User updated successfully"); }
-		} catch (SQLException e) { LOGGER.error(e.getMessage()); }
+		} catch (Exception e) { LOGGER.error(e.getMessage()); }
 		return user;
 	}
 
@@ -82,7 +82,6 @@ public class UserDao{
 			PreparedStatement statement = connection.prepareStatement(findByIdQuery)) {
 			statement.setInt(1, id);
 			try (ResultSet result = statement.executeQuery()) { user = getUser(result); }
-				catch (Exception e) { LOGGER.error(e.getMessage()); }
 		} catch (Exception e) { LOGGER.error(e.getMessage()); }
 		return user;
 	}
@@ -94,7 +93,6 @@ public class UserDao{
 			PreparedStatement statement = connection.prepareStatement(findByEmailQuery)) {
 			statement.setString(1, email);
 			try(ResultSet result = statement.executeQuery()) { user = getUser(result); }
-				catch (Exception e) { LOGGER.error(e.getMessage()); }
 		} catch (Exception e) { LOGGER.error(e.getMessage()); }
 		return user;
 	}
@@ -107,7 +105,6 @@ public class UserDao{
 			statement.setString(1, email);
 			statement.setBytes(2, password);
 			try(ResultSet result = statement.executeQuery()) { user = getUser(result); }
-				catch (SQLException e) { LOGGER.error(e.getMessage()); }
 		} catch (SQLException e) { LOGGER.error(e.getMessage()); }
 		return user;
 	}
@@ -121,7 +118,6 @@ public class UserDao{
 			statement.setInt(2, offset);
 			statement.setInt(3, size);
 			try(ResultSet result = statement.executeQuery()) { res = getUsers(result); }
-				catch (Exception e) { LOGGER.error(e.getMessage()); }
 		} catch (Exception e) { LOGGER.error(e.getMessage()); }
 		return res;
 	}

@@ -16,4 +16,11 @@
             serverTimezone="-1"
             auth="Container"
             name="jdbc/mysql"/>
+    <Resource name="jdbc_app" auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="org.h2.Driver"
+              url="jdbc:h2:mem:app"
+              username="testuser" password="testpass"
+              maxActive="20" maxIdle="10" maxWait="-1"
+              description="Datasource to employee database"  />
 </Context>

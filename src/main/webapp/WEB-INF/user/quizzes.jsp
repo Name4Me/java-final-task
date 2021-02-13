@@ -54,6 +54,7 @@
     <div class="row">
         <div class="col-md-6">
             <h1><fmt:message key="quizzes" bundle="${bundle}"/></h1>
+
         </div>
     </div>
     <form id="save-form">

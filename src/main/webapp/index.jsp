@@ -11,6 +11,7 @@
     <body>
     <navbar:navbar/>
     <div class="container">
+        <h1>${msg.header}</h1>
         <c:if test="${errorMessage != null}">
             <div class="row alert alert-danger" role="alert" style="display: block">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true">${errorMessage}</span>

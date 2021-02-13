@@ -27,13 +27,15 @@ public class Servlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
+		LOGGER.info("Processing get request");
 		ServletCommand command = commandManager.getGetCommand(request);
 		String addr = commandManager.getMappting(request);
 		LOGGER.info("Processing get request: "+addr);
 
-		//System.out.println(commandManager.getMappting(request));
+		System.out.println(addr);
         if((request.getSession().getAttribute("authenticated") == null ||
-                request.getSession().getAttribute("authenticated").equals(false)) && !("/login".equals(addr) || "/register".equals(addr))) {
+                request.getSession().getAttribute("authenticated").equals(false)) && !(addr == null || "/login".equals(addr)
+				|| "/register".equals(addr) || "/setLocale".equals(addr))) {
 			try {
 				response.sendRedirect(request.getContextPath() + "/login");
 				return;
@@ -46,8 +48,7 @@ public class Servlet extends HttpServlet {
 		request.getRequestDispatcher(page).forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-		throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LOGGER.info("Processing post request");
 
 		ServletCommand command = commandManager.getPostCommand(request);

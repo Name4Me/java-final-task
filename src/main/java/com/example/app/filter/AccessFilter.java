@@ -59,6 +59,9 @@ public class AccessFilter implements Filter {
             if(command.startsWith("/")) {
                 command = command.substring(1);
             }
+            if(command.indexOf('?') > 0) {
+                command.substring(command.lastIndexOf('?'));
+            }
         }
         if (command.isEmpty()) {
             LOGGER.info("Filter command isEmpty");
@@ -66,7 +69,7 @@ public class AccessFilter implements Filter {
         }
 
         if (outOfControl.contains(command)){
-            LOGGER.info("Filter command outOfControl");
+            LOGGER.info("Filter command: '"+command+"' outOfControl");
             return true;
         }
 
@@ -75,10 +78,12 @@ public class AccessFilter implements Filter {
             LOGGER.info("Filter command session is null");
             return false;
         }
-
-        UserType userRole = UserType.valueOf((String) session.getAttribute("role"));
-
-        return command.contains(userRole.toString().toLowerCase()+"/");
+        if (session.getAttribute("role") != null) {
+            UserType userRole = UserType.valueOf((String) session.getAttribute("role"));
+            return command.contains(userRole.toString().toLowerCase()+"/");
+        } else {
+            return false;
+        }
     }
 
 

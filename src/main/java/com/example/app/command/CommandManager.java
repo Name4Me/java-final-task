@@ -24,6 +24,7 @@ import com.example.app.properties.MappingProperties;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 /**
@@ -48,6 +49,7 @@ public class CommandManager {
         //===================GET commands===================
 
         getCommands.put("/", new GetMainPageCommand());
+        getCommands.put("/setLocale", new GetMainPageCommand());
         getCommands.put("/login", new GetLoginPageCommand());
         getCommands.put("/logout", new LogoutCommand());
         getCommands.put("/register", new GetRegisterPageCommand());
@@ -134,7 +136,7 @@ public class CommandManager {
      */
     public String getMappting(HttpServletRequest request) {
         String mapping = request.getRequestURI().substring(request.getContextPath().length());
-        if(mapping.endsWith("/")) {
+        if(mapping.endsWith("/") && mapping.length() > 1) {
             mapping = mapping.substring(0, mapping.length() - 1);
         }
         return mapping;

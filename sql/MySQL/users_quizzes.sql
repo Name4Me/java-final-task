@@ -24,3 +24,20 @@ ALTER TABLE app.users_quizzes
 ALTER TABLE app.users_quizzes
     ADD CONSTRAINT users_quizzes_ibfk_2 FOREIGN KEY (quizId)
         REFERENCES app.quizzes (id) ON DELETE CASCADE;
+       
+BEGIN
+  IF OLD.status = 0 and NEW.status = 1 THEN 
+    set NEW.startedAt = CURRENT_TIMESTAMP; 
+  END IF;
+  IF OLD.status = 1 THEN 
+    select time FROM quizzes WHERE quizzes.id = OLD.quizId INTO @t;
+    IF TIMESTAMPDIFF(MINUTE, startedAt, CURRENT_TIMESTAMP) > (@t+1) OR NEW.status = 2 THEN 
+      set NEW.finishedAt = CURRENT_TIMESTAMP; 
+      set NEW.score = OLD.score; 
+      set NEW.status = 2;
+    END IF;  
+  END IF;
+  IF OLD.status = 2 THEN 
+    set NEW.score = OLD.score; 
+  END IF;
+END

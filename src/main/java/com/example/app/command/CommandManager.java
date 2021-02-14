@@ -16,10 +16,7 @@ import com.example.app.command.admin.users.BlockUserCommand;
 import com.example.app.command.admin.users.GetUserInfoAdminCommand;
 import com.example.app.command.admin.users.UnBlockUserCommand;
 import com.example.app.command.admin.users.UsersAdminPageCommand;
-import com.example.app.command.user.AddUsersQuizzesCommand;
-import com.example.app.command.user.UserAssignmentCommand;
-import com.example.app.command.user.UserAssignmentsCommand;
-import com.example.app.command.user.UserQuizzesCommand;
+import com.example.app.command.user.*;
 import com.example.app.properties.MappingProperties;
 import org.apache.log4j.Logger;
 
@@ -67,6 +64,7 @@ public class CommandManager {
         //getCommands.put("/admin/choices", new ChoicesAdminPageCommand());
         getCommands.put("/admin/questions", new QuestionsCommand());
         getCommands.put("/admin/choices", new ChoicesCommand());
+        getCommands.put("/user/assignments/assignment", new UserStartQuizCommand());
 /*        getCommands.put("/admin/admins", new AdminsAdminPageCommand());
         getCommands.put("/admin/admins/add", new GetAddAdminPageCommand());
         */

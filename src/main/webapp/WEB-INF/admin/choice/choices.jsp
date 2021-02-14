@@ -43,6 +43,12 @@
             pointer-events: none;
             opacity: 0.4;
         }
+        .back{
+            width: auto;
+            float: left;
+            padding-top: 22px;
+            padding-left: 20px;
+        }
     </style>
 </head>
 <body>
@@ -54,7 +60,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <h1><fmt:message key="choices" bundle="${bundle}"/></h1>
+            <h1 style="width: auto; float: left"><fmt:message key="choices" bundle="${bundle}"/></h1>
+            <a class="back" href="${pageContext.request.contextPath}/admin/questions/?quizId=${quizId}&page=1"><fmt:message key="back" bundle="${bundle}"/></a>
         </div>
         <div class="col-md-6">
             <button type="button" class="btn btn-outline-success add">
@@ -121,7 +128,7 @@
             <tbody>
             <c:forEach items="${page.items}" var="choice">
                 <tr id="choice_${choice.id}">
-                    <td align="center">${choice.text}</td>
+                    <td align="center"><c:out value="${choice.text}" escapeXml="true"/></td>
                     <td align="center" data-correct="${choice.isCorrect}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green"
                              class="bi bi-check2-all" viewBox="0 0 16 16" style="display: ${choice.isCorrect ? "block" : "none"}">

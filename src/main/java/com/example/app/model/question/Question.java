@@ -1,6 +1,9 @@
 package com.example.app.model.question;
 
+import com.example.app.model.Choice;
+
 import java.util.Date;
+import java.util.List;
 
 public class Question {
     private int id;
@@ -9,6 +12,7 @@ public class Question {
     private QuestionType type;
     private Date createdAt;
     private Date updatedAt;
+    private List<Choice> choices;
 
     public Question() { }
 
@@ -59,5 +63,13 @@ public class Question {
 
     public Date getUpdatedAt() {
         return updatedAt;
+    }
+
+    public List<Choice> getChoices() {
+        return choices;
+    }
+
+    public void setChoices(List<Choice> choices) {
+        this.choices = choices;
     }
 }

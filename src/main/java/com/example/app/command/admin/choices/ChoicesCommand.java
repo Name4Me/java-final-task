@@ -37,6 +37,7 @@ public class ChoicesCommand implements ServletCommand {
             //Integer size = Integer.parseInt(request.getParameter("s"));
             Page<Choice> page = choiceService.getPage(questionId, pageNum, 5);
             request.setAttribute("questionId", questionId);
+            request.setAttribute("quizId", request.getParameter("quizId"));
             request.setAttribute("page", page);
         }
         catch (NumberFormatException ex) {

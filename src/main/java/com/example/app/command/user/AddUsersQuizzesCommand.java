@@ -28,7 +28,7 @@ public class AddUsersQuizzesCommand implements ServletCommand {
 		UserQuiz userQuiz = new UserQuiz();
 		HttpSession session = request.getSession();
 		if(request.getParameter("quizId") != null && session.getAttribute("userId") != null) {
-			userQuiz.setUserId(Math.toIntExact((Long) session.getAttribute("userId")));
+			userQuiz.setUserId(Math.toIntExact((int) session.getAttribute("userId")));
 			userQuiz.setQuizId(Integer.parseInt(request.getParameter("quizId")));
 			request.setAttribute("success", userQuizService.createUserQuiz(userQuiz));
 		}

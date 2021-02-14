@@ -25,7 +25,7 @@ public class DeleteQuizCommand implements ServletCommand {
 		LOGGER.info("DeleteQuizCommand executing");
 		JsonObject json = new JsonObject();
 		if(request.getParameter("id") != null) {
-			json.addProperty("result", quizService.deleteQuiz(Long.parseLong(request.getParameter("id"))));
+			json.addProperty("result", quizService.deleteQuiz(Integer.parseInt(request.getParameter("id"))));
 		}
 
 		return json.toString();

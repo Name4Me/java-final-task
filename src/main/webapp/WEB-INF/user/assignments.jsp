@@ -1,4 +1,3 @@
-<%@ page import="java.text.SimpleDateFormat" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="navbar" tagdir="/WEB-INF/tags" %>
@@ -44,6 +43,21 @@
         .disabled {
             pointer-events: none;
             opacity: 0.4;
+        }
+        .questions>li {
+            padding-left: 25px;
+            text-align: center;
+        }
+        .questions>li::before {
+            position: absolute;
+            content: "";
+            background-color: rgba(255,0,0,.5);
+            display: block;
+            border-radius: 50%;
+            width: 5px;
+            height: 5px;
+            top: 22px;
+            left: 15px;
         }
     </style>
 </head>
@@ -114,13 +128,26 @@
 
 
 <script>
-    const content = document.getElementById('content');
+    const assignments = document.getElementById('assignments');
     const search = document.getElementById('search');
 
     function get(element){
-        $.post("${pageContext.request.contextPath}/user/assignments/assignment", {quizId : element.dataset.id}, response => content.innerHTML = response);
+        $.post("${pageContext.request.contextPath}/user/assignments/assignment",
+            {quizId : element.dataset.id}, response => {assignments.innerHTML = response; updateListener();});
     }
     //search.onkeyup = event => event.key === 'Enter' && getArticles();
+    function updateListener(){
+        $(".start").off('click').on('click', start);
+        $(".question_item").off('click').on('click', showQuestion);
+    }
+    function start(){
+        $.post("${pageContext.request.contextPath}/user/assignments/assignment",
+            {quizId : this.dataset.id, start : true}, response => {assignments.innerHTML = response; updateListener();});
+    }
+    function showQuestion(){
+        console.log($(this).find("div"));
+        $(".question_content").html($(this).find('div').html());
+    }
 </script>
 
 </body>

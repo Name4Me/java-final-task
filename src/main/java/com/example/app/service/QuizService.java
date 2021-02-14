@@ -28,14 +28,14 @@ public class QuizService {
         return quizDao.updateQuiz(quiz);
     }
 
-    public boolean deleteQuiz(long id) {
+    public boolean deleteQuiz(int id) {
         LOGGER.info("New quiz registration");
         return quizDao.deleteQuizById(id);
     }
 
-    public Quiz findQuizById(Long id) {
+    public Quiz findQuizById(int id) {
         LOGGER.info("Finding quiz by id " + id);
-        return id == null ? null : quizDao.findQuizById(id);
+        return id == 0 ? null : quizDao.findQuizById(id);
     }
 
     public Page<Quiz> getPageByQuiz(Integer page, Integer size) {

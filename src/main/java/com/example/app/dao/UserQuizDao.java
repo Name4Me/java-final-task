@@ -52,8 +52,10 @@ public class UserQuizDao {
             PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setInt(1, userQuiz.getScore());
             statement.setInt(2, userQuiz.getStatus().ordinal());
-            statement.setInt(3, userQuiz.getUserId());
-            statement.setInt(4, userQuiz.getQuizId());
+            statement.setDate(3, (Date) userQuiz.getStartedAt());
+            statement.setDate(4, (Date) userQuiz.getFinishedAt());
+            statement.setInt(5, userQuiz.getUserId());
+            statement.setInt(6, userQuiz.getQuizId());
             LOGGER.info(statement.execute() ? "UserQuiz update failed" : "UserQuiz updated successfully");
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
         return userQuiz;
@@ -64,7 +66,7 @@ public class UserQuizDao {
         UserQuiz userQuiz = null;
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(findByUserIdQuery)) {
-            statement.setLong(1, userId);
+            statement.setInt(1, userId);
             try(ResultSet result = statement.executeQuery()){
                 userQuiz = result.next() ? getUserQuiz(result, false) : null;
             }
@@ -80,7 +82,7 @@ public class UserQuizDao {
             statement.setInt(1, userId);
             statement.setInt(2, quizId);
             try(ResultSet result = statement.executeQuery()){
-                userQuiz = result.next() ? getUserQuiz(result, false) : null;
+                userQuiz = result.next() ? getUserQuiz(result, getQuestions) : null;
             }
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
         return userQuiz;
@@ -115,9 +117,10 @@ public class UserQuizDao {
                 UserQuizStatus.values()[resultSet.getInt("status")],
                 resultSet.getTimestamp("createdAt"),
                 resultSet.getTimestamp("updatedAt"),
+                resultSet.getTimestamp("startedAt"),
                 resultSet.getTimestamp("finishedAt")
         );
-        if (getQuestions) userQuiz.setQuiz(new QuizDao().findQuizById((long) userQuiz.getQuizId()));
+        if (getQuestions) userQuiz.setQuiz(new QuizDao().findQuizById(userQuiz.getQuizId()));
         return userQuiz;
     }
 }

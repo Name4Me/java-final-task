@@ -3,6 +3,9 @@
 <%@ taglib prefix="navbar" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="header"%>
+<jsp:useBean id="date" class="java.util.Date"/>
+<%@ page import="com.example.app.model.question.QuestionType" %>
+
 <html>
 <head>
     <header:header title="${msg.admin} - ${msg.quizzes}"/>
@@ -42,6 +45,53 @@
             pointer-events: none;
             opacity: 0.4;
         }
+        .questions>li {
+            padding-left: 25px;
+            text-align: center;
+        }
+        .questions>li::before {
+            position: absolute;
+            content: "";
+            background-color: rgba(255,0,0,.5);
+            display: block;
+            border-radius: 50%;
+            width: 5px;
+            height: 5px;
+            top: 22px;
+            left: 15px;
+        }
+
+        p { color:  navy; }
+        pre code {
+            background-color: #eee;
+            border: 1px solid #999;
+            display: block;
+            padding: 20px;
+            margin: auto;
+        }
+        .container{
+            margin: auto;
+        }
+        div.question{
+            border: 1px solid #999;
+            display: flow-root;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        input{
+            margin: 5px 10px 0 20px;
+            display: block;
+            float: left;
+        }
+        label{
+            display: block;
+            width: 90%;
+            float: left;
+        }
+        h3{
+            margin: 0 0 10px 20px;
+        }
     </style>
 </head>
 <body>
@@ -50,182 +100,77 @@
 
 <!-- Page Content -->
 
-<div class="container">
+<div class="container" id="assignments">
     <div class="row">
-        <div class="col-md-6">
-            <h1><fmt:message key="quizzes" bundle="${bundle}"/></h1>
+        <div class="col-md-2">
+            <ul class="list-group questions" style="list-style-position: inside;">
+                <c:forEach items="${quiz.quiz.questions}" var="question" varStatus="loopCounter">
+                    <li class="list-group-item question_item" data-id="${question.id}">
+                        <c:out value="${loopCounter.count}"/>
+                        <fmt:message key="question" bundle="${bundle}"/>
+                    </li>
+                </c:forEach>
+            </ul>
         </div>
-    </div>
-    <form id="save-form">
-        <div class="row new-quiz" style="display: none;">
-            <div class="loader" style="display: none;" >
-                <div class="spinner-border text-success"></div>
-            </div>
-            <div class="col-md-2">
-                <input type="text" class="form-control" placeholder="<fmt:message key="name" bundle="${bundle}"/>"
-                       name="name" id="name">
-            </div>
-            <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="<fmt:message key="description" bundle="${bundle}"/>"
-                       name="description" id="description">
-            </div>
-            <div class="col-md-2">
-                <select class="form-control" name="difficulty" id="difficulty">
-                    <option value="0">Low</option>
-                    <option value="1">Medium</option>
-                    <option value="2">High</option>
-                </select>
-            </div>
-            <div class="col-md-1">
-                <input type="text" class="form-control" placeholder="<fmt:message key="time" bundle="${bundle}"/>"
-                       name="time" id="time">
-            </div>
-            <div class="col-md-1">
-                <input type="text" class="form-control"
-                       placeholder="<fmt:message key="numberOfQuestion" bundle="${bundle}"/>" id="numberOfQuestion"
-                       name="numberOfQuestion">
-            </div>
-            <div class="col-md-2">
-                <button type="button" class="btn btn-outline-success add-submit" data-action="save">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
-                        <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
-                    </svg>
-                    Save
-                </button>
-            </div>
+        <div class="col-md-8 question_content">
+
         </div>
-    </form>
 
-
-    <c:if test="${currSize == 0}">
-        <h1><fmt:message key="nothing" bundle="${bundle}"/></h1>
-    </c:if>
-
-    <c:if test="${currSize != 0}">
-        <table class="table">
-            <thead>
-            <tr>
-                <th data-name="name">
-                    <fmt:message key="name" bundle="${bundle}"/>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"></path>
-                    </svg>
-                </th>
-                <th><fmt:message key="description" bundle="${bundle}"/></th>
-                <th data-name="difficulty">
-                    <fmt:message key="difficulty" bundle="${bundle}"/>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"></path>
-                    </svg>
-                </th>
-                <th><fmt:message key="time" bundle="${bundle}"/></th>
-                <th data-name="numberOfQuestion">
-                    <fmt:message key="numberOfQuestion" bundle="${bundle}"/>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"></path>
-                    </svg>
-                </th>
-                <th><fmt:message key="actions" bundle="${bundle}"/></th>
-            </tr>
-            </thead>
-
-            <tbody id="content">
-            <c:forEach items="${page.items}" var="quiz">
-                <tr id="quiz_${quiz.id}">
-                    <td align="center">${quiz.name}</td>
-                    <td align="center">${quiz.description}</td>
-                    <td align="center">${quiz.difficulty}</td>
-                    <td align="center">${quiz.time}</td>
-                    <td align="center">${quiz.numberOfQuestion}</td>
-                    <td align="center">
-                        <button type="button" class="btn btn-outline-success add" data-id="${quiz.id}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
-                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
-                            </svg>
-                            Add
-                        </button>
-                    </td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </c:if>
-
-    <div class="row">
-        <ul class="pager">
-            <c:if test="${!page.first}">
-                <li>
-                    <a href="${pageContext.request.contextPath}/quizzes?page=${page.number-1}&s=${page.size}">
-                        <span aria-hidden="true">&larr;</span>
-                    </a>
-                </li>
-            </c:if>
-
-            <c:if test="${!page.last}">
-                <li>
-                    <a href="${pageContext.request.contextPath}/quizzes?page=${page.number+1}&s=${page.size}">
-                        <span aria-hidden="true">&rarr;</span>
-                    </a>
-                </li>
-            </c:if>
-        </ul>
     </div>
-    <div class="row arrows" style="display: none">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"></path>
-        </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"></path>
-        </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"></path>
-        </svg>
+    <div>
+        <c:forEach items="${quiz.quiz.questions}" var="question" varStatus="loopCounter">
+            <div style="display: none" class="question" id="question${question.id}">
+                <h3><c:out value="${question.text}" escapeXml="true"/></h3>
+                <hr>
+                    <%--<div><pre><code></code></pre></div>--%>
+                <c:forEach items="${question.choices}" var="choice">
+                    <div>
+                        <input class="answer" name="name_${question.id}" id="id_${choice.id}" data-id="${loopCounter.count}"
+                               type="${question.type == QuestionType.Multiple ? "checkbox" : "radio"}">
+                        <label for="id_${choice.id}"><c:out value="${choice.text}" escapeXml="true"/></label>
+                    </div>
+                </c:forEach>
+            </div>
+        </c:forEach>
     </div>
-
 </div>
 <!-- /.container -->
 
 
 <script>
-    const content = document.getElementById('content');
+    const assignments = document.getElementById('assignments');
     const search = document.getElementById('search');
-    $(function() {
-        $(".bi-arrow-down-up, .bi-arrow-down, .bi-arrow-up").on( "click", filter);
-        $(".add").on( "click", add);
-    });
-    function add(){
-        const quizId = $(this).data("id");
-        $.post( "${pageContext.request.contextPath}/quizzes/add", {quizId : quizId}, function(data) {
-            console.log(data);
-        }, "json");
-    }
 
-    function filter(){
-        const svg = $(this);
-        const th = svg.closest("th");
-        const sortField = th.data("name");
-        let sortOrder = 'desc';
-        if (svg.hasClass("bi-arrow-down-up")){
-            $("th:has(.bi-arrow-down, .bi-arrow-up)").append($(".arrows .bi-arrow-down-up").clone())
-            $("th>.bi-arrow-down, th>.bi-arrow-up").remove();
-        }
-        if (svg.hasClass("bi-arrow-down-up")|| svg.hasClass("bi-arrow-up")) {
-            th.append($(".arrows .bi-arrow-down").clone());
-        }
-        if (svg.hasClass("bi-arrow-down")) {
-            th.append($(".arrows .bi-arrow-up").clone());
-            sortOrder = 'asc';
-        }
-        svg.remove();
-        $(".bi-arrow-down-up, .bi-arrow-down, .bi-arrow-up").off( "click").on( "click", filter);
-        console.log("sortOrder: ", sortOrder, " sortField: ", sortField);
-    }
-
-    function sort(){
-        $.post("${pageContext.request.contextPath}/quizzes/searchAjax", {search : search.value}, response => content.innerHTML = response);
+    function get(element){
+        $.post("${pageContext.request.contextPath}/user/assignments/assignment",
+            {quizId : element.dataset.id}, response => {assignments.innerHTML = response; updateListener();});
     }
     //search.onkeyup = event => event.key === 'Enter' && getArticles();
+    function updateListener(){
+        $(".start").off('click').on('click', start);
+        $("li.question_item").off('click').on('click', showQuestion);
+        $(".answer").off('change').on('change', saveAnswer);
+    }
+    function start(){
+        $.post("${pageContext.request.contextPath}/user/assignments/assignment",
+            {quizId : this.dataset.id, start : true}, response => {assignments.innerHTML = response; updateListener();});
+    }
+    function showQuestion(){
+        const id = this.dataset.id
+        $(".question_content").html($('div#question'+id).html());
+        updateListener();
+    }
+
+    function saveAnswer(){
+        const id = this.dataset.id;
+        console.log(id);
+        const inputs = $(this).closest("div.question_content").find("input");
+        let result = 0;
+        $.each(inputs, function(index, element){ result += (element.checked ? 1 : 0) << index });
+        $.post("${pageContext.request.contextPath}/user/assignments/assignment", {id : id, result : result,  action : "saveAnswer"} , function(){ console.log("+")});
+    }
+    updateListener();
+
 </script>
 
 </body>

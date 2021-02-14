@@ -66,8 +66,8 @@ public class UserDao{
 			PreparedStatement statement = connection.prepareStatement(updateQuery)) {
 			statement.setString(1, user.getEmail());
 			statement.setBytes(2, user.getPassword());
-			statement.setLong(3, user.getUserType().ordinal());
-			statement.setLong(4, user.getId());
+			statement.setInt(3, user.getUserType().ordinal());
+			statement.setInt(4, user.getId());
 			if(statement.execute()) {
 				LOGGER.error("User update failed");
 			} else { LOGGER.info("User updated successfully"); }
@@ -114,7 +114,7 @@ public class UserDao{
 		List<User> res = new ArrayList<>();
 		try(Connection connection = connectionPool.getConnection();
 			PreparedStatement statement = connection.prepareStatement(findPageByUserType)) {
-			statement.setLong(1, userType.ordinal());
+			statement.setInt(1, userType.ordinal());
 			statement.setInt(2, offset);
 			statement.setInt(3, size);
 			try(ResultSet result = statement.executeQuery()) { res = getUsers(result); }

@@ -14,7 +14,7 @@
 <fmt:setBundle basename="localization" var="bundle"/>
 <%----%>
 
-<a href="${pageContext.request.contextPath}/assignments"><fmt:message key="back" bundle="${bundle}"/></a>
+<a href="${pageContext.request.contextPath}/user/assignments"><fmt:message key="back" bundle="${bundle}"/></a>
 
 
 <div class="row">
@@ -31,10 +31,8 @@
 <div class="box">Thank you for passing the Assignment Container! We will contact you after checking the results.</div>
 
 <c:if test="${quiz.status == UserQuizStatus.NotStarted}">
-
-        <a class="btn btn-outline-success add" href="${pageContext.request.contextPath}/quizzes">
+        <button class="btn btn-outline-success start" data-id="${quiz.quizId}">
             Start
-        </a>
-
+        </button>
 </c:if>
 

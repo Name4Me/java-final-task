@@ -37,7 +37,7 @@ public class QuestionDao {
         LOGGER.info("Creating new question");
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setLong(1, question.getQuizId());
+            statement.setInt(1, question.getQuizId());
             statement.setString(2, question.getText());
             statement.setInt(3, question.getType().ordinal());
             if (statement.executeUpdate() != 0) {
@@ -56,7 +56,7 @@ public class QuestionDao {
         LOGGER.info("Updating question");
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(updateQuery)) {
-            statement.setLong(1, question.getQuizId());
+            statement.setInt(1, question.getQuizId());
             statement.setString(2, question.getText());
             statement.setInt(3, question.getType().ordinal());
             statement.setInt(4, question.getId());
@@ -70,7 +70,7 @@ public class QuestionDao {
         boolean result = false;
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
-            statement.setLong(1, id);
+            statement.setInt(1, id);
             result = !statement.execute();
             LOGGER.info("Question deletion "+(result ? "successfully" : "failed"));
         } catch (SQLException e) { LOGGER.error(e.getMessage()); }
@@ -99,7 +99,7 @@ public class QuestionDao {
     }
 
     private Question getQuestion(ResultSet resultSet) throws Exception {
-        return new Question(
+        Question question = new Question(
                 resultSet.getInt("id"),
                 resultSet.getInt("quizId"),
                 resultSet.getString("text"),
@@ -107,6 +107,8 @@ public class QuestionDao {
                 resultSet.getTimestamp("createdAt"),
                 resultSet.getTimestamp("updatedAt")
                 );
+        question.setChoices(ChoiceDao.getInstance().findAll(question.getId()));
+        return question;
     }
 
 }

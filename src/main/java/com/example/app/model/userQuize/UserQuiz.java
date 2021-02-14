@@ -12,13 +12,14 @@ public class UserQuiz {
     private UserQuizStatus status;
     private Date createdAt;
     private Date updatedAt;
+    private Date startedAt;
     private Date finishedAt;
     private Quiz quiz;
 
     public UserQuiz(){ }
 
     public UserQuiz(int userId, int quizId, int score, UserQuizStatus status,
-                    Timestamp createdAt, Timestamp updatedAt, Timestamp finishedAt) {
+                    Timestamp createdAt, Timestamp updatedAt, Timestamp startedAt, Timestamp finishedAt) {
         this.userId = userId;
         this.quizId = quizId;
         this.score = score;
@@ -90,5 +91,13 @@ public class UserQuiz {
 
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
+    }
+
+    public Date getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(Date startedAt) {
+        this.startedAt = startedAt;
     }
 }

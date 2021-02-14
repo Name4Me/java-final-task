@@ -31,7 +31,7 @@ public class UserQuizzesCommand implements ServletCommand {
         try {
             HttpSession session = request.getSession();
             Page<Quiz> page = quizService.getPageByUserId(
-                    Math.toIntExact((Long) session.getAttribute("userId")),
+                    Math.toIntExact((int) session.getAttribute("userId")),
                     request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page")),
                     request.getParameter("size") == null ? 5 :Integer.parseInt(request.getParameter("size")));
             request.setAttribute("page", page);

@@ -11,7 +11,7 @@ public class Quiz {
     private QuizDifficulty difficulty;
     private int time;
     private int numberOfQuestion;
-    private List<Question> Questions;
+    private List<Question> questions;
 
     public Quiz() {}
 
@@ -97,10 +97,10 @@ public class Quiz {
     }
 
     public List<Question> getQuestions() {
-        return Questions;
+        return questions;
     }
 
     public void setQuestions(List<Question> questions) {
-        Questions = questions;
+        this.questions = questions;
     }
 }

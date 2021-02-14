@@ -18,6 +18,7 @@ public class ChoiceDao {
     private static String updateQuery;
     private static String deleteQuery;
     private static String findAllQuery;
+    private static String findAllQueryWithLimits;
 
     private ChoiceDao() {
         LOGGER.info("Initializing ChoiceDao");
@@ -27,6 +28,7 @@ public class ChoiceDao {
         updateQuery = properties.getProperty("updateChoiceById");
         deleteQuery = properties.getProperty("deleteChoiceById");
         findAllQuery = properties.getProperty("findAllChoices");
+        findAllQueryWithLimits = properties.getProperty("findAllChoicesWithLimits");
     }
 
     public static ChoiceDao getInstance() {
@@ -38,7 +40,7 @@ public class ChoiceDao {
         LOGGER.info("Creating new choice");
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setLong(1, choice.getQuestionId());
+            statement.setInt(1, choice.getQuestionId());
             statement.setString(2, choice.getText());
             statement.setBoolean(3, choice.getIsCorrect());
             if (statement.executeUpdate() != 0) {
@@ -57,7 +59,7 @@ public class ChoiceDao {
         LOGGER.info("Updating choice");
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(updateQuery)) {
-            statement.setLong(1, choice.getQuestionId());
+            statement.setInt(1, choice.getQuestionId());
             statement.setString(2, choice.getText());
             statement.setBoolean(3, choice.getIsCorrect());
             statement.setInt(4, choice.getId());
@@ -81,14 +83,19 @@ public class ChoiceDao {
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
         return result;
     }
+    public List<Choice> findAll(Integer questionId) {
+        return findAll(questionId, 0, 0);
+    }
     public List<Choice> findAll(Integer questionId, Integer offset, Integer size) {
         LOGGER.info("ChoiceDao getting page with offset " + offset + ", size " + size + " for questionId " + questionId);
         List<Choice> res = new ArrayList<>();
         try(Connection connection = connectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement(findAllQuery)) {
+            PreparedStatement statement = connection.prepareStatement(size == 0 ? findAllQuery : findAllQueryWithLimits)) {
             statement.setInt(1, questionId);
-            statement.setInt(2, offset);
-            statement.setInt(3, size);
+            if(size != 0){
+                statement.setInt(2, offset);
+                statement.setInt(3, size);
+            }
             try(ResultSet resultSet = statement.executeQuery()){
                 res = getChoices(resultSet);
             }

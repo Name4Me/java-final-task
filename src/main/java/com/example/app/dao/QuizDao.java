@@ -71,7 +71,7 @@ public class QuizDao {
             statement.setInt(3, quiz.getDifficulty().ordinal());
             statement.setInt(4, quiz.getTime());
             statement.setInt(5, quiz.getNumberOfQuestion());
-            statement.setLong(6, quiz.getId());
+            statement.setInt(6, quiz.getId());
             if(statement.execute()) {
                 LOGGER.error("Quiz update failed");
             } else { LOGGER.info("Quiz updated successfully"); }
@@ -79,24 +79,24 @@ public class QuizDao {
         return quiz;
     }
 
-    public boolean deleteQuizById(Long id) {
+    public boolean deleteQuizById(int id) {
         LOGGER.info("Deleting quiz");
         boolean result = false;
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
-            statement.setLong(1, id);
+            statement.setInt(1, id);
             result = !statement.execute();
             LOGGER.info("Quiz deleted " + (result ? "successfully" : "failed"));
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
         return result;
     }
 
-    public Quiz findQuizById(Long id) {
+    public Quiz findQuizById(int id) {
         LOGGER.info("Getting quiz with id " + id);
         Quiz quiz = null;
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(findByIdQuery)) {
-            statement.setLong(1, id);
+            statement.setInt(1, id);
             try(ResultSet result = statement.executeQuery()){
                 if(result.next()) { quiz = getQuiz(result); }
             }

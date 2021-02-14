@@ -1,6 +1,7 @@
 package com.example.app.service;
 
 import com.example.app.dao.UserQuizDao;
+import com.example.app.model.question.Question;
 import com.example.app.model.userQuize.UserQuiz;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
@@ -21,6 +22,11 @@ public class UserQuizService {
     public Object createUserQuiz(UserQuiz userQuiz) {
         LOGGER.info("UserQuizService new userQuiz");
         return userQuizDao.createUserQuiz(userQuiz);
+    }
+
+    public UserQuiz updateUserQuiz(UserQuiz userQuiz) {
+        LOGGER.info("UserQuizService update userQuiz");
+        return userQuizDao.updateUserQuiz(userQuiz);
     }
 
     public UserQuiz getUserQuizByUserIdQuizId(int userId, int quizId, boolean getQuestions) {

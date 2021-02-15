@@ -1,18 +1,17 @@
 package com.example.app.command.user;
 
 import com.example.app.command.ServletCommand;
-import com.example.app.dao.UserQuizDao;
-import com.example.app.model.userQuize.UserQuiz;
-import com.example.app.model.userQuize.UserQuizStatus;
+import com.example.app.dao.AssignmentDao;
+import com.example.app.model.assignment.Assignment;
+import com.example.app.model.assignment.AssignmentStatus;
 import com.example.app.properties.MappingProperties;
-import com.example.app.service.UserQuizService;
+import com.example.app.service.AssignmentService;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,12 +19,12 @@ import java.util.List;
  */
 public class UserAssignmentCommand implements ServletCommand {
     private static final Logger LOGGER = Logger.getLogger(UserAssignmentCommand.class);
-    private static UserQuizService userQuizService;
+    private static AssignmentService assignmentService;
     private static String assignmentPage;
     private static String assignmentsPage;
     public UserAssignmentCommand(){
         LOGGER.info("Initializing UserAssignmentCommand");
-        userQuizService = new UserQuizService(UserQuizDao.getInstance());
+        assignmentService = new AssignmentService(AssignmentDao.getInstance());
         MappingProperties properties = MappingProperties.getInstance();
         assignmentPage = properties.getProperty("assignmentPage");
         assignmentsPage = properties.getProperty("assignmentsPage");
@@ -39,9 +38,9 @@ public class UserAssignmentCommand implements ServletCommand {
                 (int) session.getAttribute("quizId") : Integer.parseInt(request.getParameter("quizId"));
             int userId = session.getAttribute("userId") == null ? 0 : (int) session.getAttribute("userId");
             if (request.getParameter("action") != null && "complete".equals(request.getParameter("action"))){
-                UserQuiz userQuiz = userQuizService.getUserQuizByUserIdQuizId(userId, quizId, false);
-                userQuiz.setStatus(UserQuizStatus.Completed);
-                userQuizService.updateUserQuiz(userQuiz);
+                Assignment assignment = assignmentService.getUserQuizByUserIdQuizId(userId, quizId, false);
+                assignment.setStatus(AssignmentStatus.Completed);
+                assignmentService.updateUserQuiz(assignment);
                 return new Gson().toJson("ok");
             }
 
@@ -57,14 +56,14 @@ public class UserAssignmentCommand implements ServletCommand {
                 System.out.println("score: "+score);
                 session.setAttribute("answers", answers);
                 session.setAttribute("score", score);
-                UserQuiz userQuiz = userQuizService.getUserQuizByUserIdQuizId(userId, quizId, false);
-                userQuiz.setScore((int) score);
-                userQuizService.updateUserQuiz(userQuiz);
+                Assignment assignment = assignmentService.getUserQuizByUserIdQuizId(userId, quizId, false);
+                assignment.setScore((int) score);
+                assignmentService.updateUserQuiz(assignment);
             }
 
-            UserQuiz userQuiz = userQuizService.getUserQuizByUserIdQuizId( userId, quizId, true);
+            Assignment assignment = assignmentService.getUserQuizByUserIdQuizId( userId, quizId, true);
             request.setAttribute("isJson", false);
-            request.setAttribute("quiz", userQuiz);
+            request.setAttribute("quiz", assignment);
         }
         catch (Exception e) { LOGGER.info("Couldn't parse request parameters " + e.getMessage()); }
         return assignmentPage;//new Gson().toJson(userQuiz);

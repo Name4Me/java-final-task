@@ -65,9 +65,6 @@ public class CommandManager {
         getCommands.put("/admin/questions", new QuestionsCommand());
         getCommands.put("/admin/choices", new ChoicesCommand());
         getCommands.put("/user/assignments/assignment", new UserStartQuizCommand());
-/*        getCommands.put("/admin/admins", new AdminsAdminPageCommand());
-        getCommands.put("/admin/admins/add", new GetAddAdminPageCommand());
-        */
 
         //===================POST commands===================
 

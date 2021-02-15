@@ -41,7 +41,6 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th><fmt:message key="name" bundle="${bundle}"/></th>
                     <th><fmt:message key="email" bundle="${bundle}"/></th>
                     <th><fmt:message key="status" bundle="${bundle}"/></th>
                     <th><fmt:message key="actions" bundle="${bundle}"/></th>
@@ -51,7 +50,6 @@
                 <tbody>
                     <c:forEach items="${page.items}" var="user">
                         <tr>
-                            <td align="center">${user.firstName}</td>
                             <td align="center">${user.email}</td>
                             <td align="center">${user.userStatus}</td>
                             <td align="center">

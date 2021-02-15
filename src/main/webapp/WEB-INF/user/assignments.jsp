@@ -4,7 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="header"%>
 <jsp:useBean id="date" class="java.util.Date"/>
-<%@ page import="com.example.app.model.userQuize.UserQuizStatus" %>
+<%@ page import="com.example.app.model.assignment.AssignmentStatus" %>
 
 <html>
 <head>

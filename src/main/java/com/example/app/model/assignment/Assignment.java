@@ -1,25 +1,25 @@
-package com.example.app.model.userQuize;
+package com.example.app.model.assignment;
 
 import com.example.app.model.quiz.Quiz;
 
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class UserQuiz {
+public class Assignment {
     private int userId;
     private int quizId;
     private int score;
-    private UserQuizStatus status;
+    private AssignmentStatus status;
     private Date createdAt;
     private Date updatedAt;
     private Date startedAt;
     private Date finishedAt;
     private Quiz quiz;
 
-    public UserQuiz(){ }
+    public Assignment(){ }
 
-    public UserQuiz(int userId, int quizId, int score, UserQuizStatus status,
-                    Timestamp createdAt, Timestamp updatedAt, Timestamp startedAt, Timestamp finishedAt) {
+    public Assignment(int userId, int quizId, int score, AssignmentStatus status,
+                      Timestamp createdAt, Timestamp updatedAt, Timestamp startedAt, Timestamp finishedAt) {
         this.userId = userId;
         this.quizId = quizId;
         this.score = score;
@@ -53,11 +53,11 @@ public class UserQuiz {
         this.score = score;
     }
 
-    public UserQuizStatus getStatus() {
+    public AssignmentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(UserQuizStatus status) {
+    public void setStatus(AssignmentStatus status) {
         this.status = status;
     }
 

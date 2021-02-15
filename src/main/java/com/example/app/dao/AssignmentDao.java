@@ -1,17 +1,17 @@
 package com.example.app.dao;
 
 import com.example.app.connection.ConnectionPool;
-import com.example.app.model.userQuize.UserQuiz;
-import com.example.app.model.userQuize.UserQuizStatus;
+import com.example.app.model.assignment.Assignment;
+import com.example.app.model.assignment.AssignmentStatus;
 import com.example.app.properties.MysqlQueryProperties;
 import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserQuizDao {
-    private static final Logger LOGGER = Logger.getLogger(UserQuizDao.class);
-    private static UserQuizDao INSTANCE;
+public class AssignmentDao {
+    private static final Logger LOGGER = Logger.getLogger(AssignmentDao.class);
+    private static AssignmentDao INSTANCE;
     private static ConnectionPool connectionPool;
     private static String createQuery;
     private static String updateQuery;
@@ -19,8 +19,8 @@ public class UserQuizDao {
     private static String findByUserIdQuizIdQuery;
     private static String findAllQuery;
 
-    private UserQuizDao() {
-        LOGGER.info("Initializing UserQuizDao");
+    private AssignmentDao() {
+        LOGGER.info("Initializing AssignmentDao");
         connectionPool = ConnectionPool.getInstance();
         MysqlQueryProperties properties = MysqlQueryProperties.getInstance();
         createQuery = properties.getProperty("createUserQuiz");
@@ -30,65 +30,65 @@ public class UserQuizDao {
         findAllQuery = properties.getProperty("findAllUserQuiz");
     }
 
-    public static UserQuizDao getInstance() {
-        if(INSTANCE == null) { INSTANCE = new UserQuizDao(); }
+    public static AssignmentDao getInstance() {
+        if(INSTANCE == null) { INSTANCE = new AssignmentDao(); }
         return INSTANCE;
     }
 
-    public UserQuiz createUserQuiz(UserQuiz userQuiz) {
-        LOGGER.info("Creating new userQuiz");
+    public Assignment createUserQuiz(Assignment assignment) {
+        LOGGER.info("Creating new assignment");
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, userQuiz.getUserId());
-            statement.setInt(2, userQuiz.getQuizId());
-            LOGGER.info("UserQuiz creation " + (statement.executeUpdate() == 0 ? "failed" : "successful"));
+            statement.setInt(1, assignment.getUserId());
+            statement.setInt(2, assignment.getQuizId());
+            LOGGER.info("Assignment creation " + (statement.executeUpdate() == 0 ? "failed" : "successful"));
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
-        return userQuiz;
+        return assignment;
     }
 
-    public UserQuiz updateUserQuiz(UserQuiz userQuiz) {
-        LOGGER.info("Updating userQuiz");
+    public Assignment updateUserQuiz(Assignment assignment) {
+        LOGGER.info("Updating assignment");
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(updateQuery)) {
-            statement.setInt(1, userQuiz.getScore());
-            statement.setInt(2, userQuiz.getStatus().ordinal());
-            statement.setInt(3, userQuiz.getUserId());
-            statement.setInt(4, userQuiz.getQuizId());
-            LOGGER.info(statement.execute() ? "UserQuiz update failed" : "UserQuiz updated successfully");
+            statement.setInt(1, assignment.getScore());
+            statement.setInt(2, assignment.getStatus().ordinal());
+            statement.setInt(3, assignment.getUserId());
+            statement.setInt(4, assignment.getQuizId());
+            LOGGER.info(statement.execute() ? "Assignment update failed" : "Assignment updated successfully");
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
-        return userQuiz;
+        return assignment;
     }
 
-    public UserQuiz findUserQuizByUserId(int userId) {
-        LOGGER.info("Getting userQuiz with userId " + userId);
-        UserQuiz userQuiz = null;
+    public Assignment findUserQuizByUserId(int userId) {
+        LOGGER.info("Getting assignment with userId " + userId);
+        Assignment assignment = null;
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(findByUserIdQuery)) {
             statement.setInt(1, userId);
             try(ResultSet result = statement.executeQuery()){
-                userQuiz = result.next() ? getUserQuiz(result, false) : null;
+                assignment = result.next() ? getUserQuiz(result, false) : null;
             }
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
-        return userQuiz;
+        return assignment;
     }
 
-    public UserQuiz findUserQuizByUserIdQuizId(int userId, int quizId, boolean getQuestions) {
-        LOGGER.info("Getting UserQuiz by userId: " + userId + " quizId: " + quizId);
-        UserQuiz userQuiz = null;
+    public Assignment findUserQuizByUserIdQuizId(int userId, int quizId, boolean getQuestions) {
+        LOGGER.info("Getting Assignment by userId: " + userId + " quizId: " + quizId);
+        Assignment assignment = null;
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(findByUserIdQuizIdQuery)) {
             statement.setInt(1, userId);
             statement.setInt(2, quizId);
             try(ResultSet result = statement.executeQuery()){
-                userQuiz = result.next() ? getUserQuiz(result, getQuestions) : null;
+                assignment = result.next() ? getUserQuiz(result, getQuestions) : null;
             }
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
-        return userQuiz;
+        return assignment;
     }
 
-    public List<UserQuiz> findAll(Integer userId, Integer offset, Integer size) {
-        LOGGER.info("UserQuiz getting page with offset " + offset + ", size " + size + " for userId " + userId);
-        List<UserQuiz> res = new ArrayList<>();
+    public List<Assignment> findAll(Integer userId, Integer offset, Integer size) {
+        LOGGER.info("Assignment getting page with offset " + offset + ", size " + size + " for userId " + userId);
+        List<Assignment> res = new ArrayList<>();
         try(Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(findAllQuery);
             statement.setInt(1, userId);
@@ -99,26 +99,26 @@ public class UserQuizDao {
         return res;
     }
 
-    private List<UserQuiz> getUserQuizzes(ResultSet resultSet) {
-        List<UserQuiz> res = new ArrayList<>();
+    private List<Assignment> getUserQuizzes(ResultSet resultSet) {
+        List<Assignment> res = new ArrayList<>();
         try {
             while (resultSet.next()) { res.add(getUserQuiz(resultSet, true)); }
         } catch (SQLException e) { LOGGER.error(e.getMessage()); }
         return res;
     }
 
-    private UserQuiz getUserQuiz(ResultSet resultSet, boolean getQuestions) throws SQLException {
-        UserQuiz userQuiz = new UserQuiz(
+    private Assignment getUserQuiz(ResultSet resultSet, boolean getQuestions) throws SQLException {
+        Assignment assignment = new Assignment(
                 resultSet.getInt("userId"),
                 resultSet.getInt("quizId"),
                 resultSet.getInt("score"),
-                UserQuizStatus.values()[resultSet.getInt("status")],
+                AssignmentStatus.values()[resultSet.getInt("status")],
                 resultSet.getTimestamp("createdAt"),
                 resultSet.getTimestamp("updatedAt"),
                 resultSet.getTimestamp("startedAt"),
                 resultSet.getTimestamp("finishedAt")
         );
-        if (getQuestions) userQuiz.setQuiz(new QuizDao().findQuizById(userQuiz.getQuizId()));
-        return userQuiz;
+        if (getQuestions) assignment.setQuiz(new QuizDao().findQuizById(assignment.getQuizId()));
+        return assignment;
     }
 }

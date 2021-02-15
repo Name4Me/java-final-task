@@ -52,10 +52,8 @@ public class UserQuizDao {
             PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setInt(1, userQuiz.getScore());
             statement.setInt(2, userQuiz.getStatus().ordinal());
-            statement.setDate(3, (Date) userQuiz.getStartedAt());
-            statement.setDate(4, (Date) userQuiz.getFinishedAt());
-            statement.setInt(5, userQuiz.getUserId());
-            statement.setInt(6, userQuiz.getQuizId());
+            statement.setInt(3, userQuiz.getUserId());
+            statement.setInt(4, userQuiz.getQuizId());
             LOGGER.info(statement.execute() ? "UserQuiz update failed" : "UserQuiz updated successfully");
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
         return userQuiz;
@@ -104,7 +102,7 @@ public class UserQuizDao {
     private List<UserQuiz> getUserQuizzes(ResultSet resultSet) {
         List<UserQuiz> res = new ArrayList<>();
         try {
-            while (resultSet.next()) { res.add(getUserQuiz(resultSet, false)); }
+            while (resultSet.next()) { res.add(getUserQuiz(resultSet, true)); }
         } catch (SQLException e) { LOGGER.error(e.getMessage()); }
         return res;
     }

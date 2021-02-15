@@ -20,24 +20,22 @@ public class UserAssignmentCommand implements ServletCommand {
     private static final Logger LOGGER = Logger.getLogger(UserAssignmentCommand.class);
     private static UserQuizService userQuizService;
     private static String assignmentPage;
-    private static String quizPage;
 
     public UserAssignmentCommand(){
         LOGGER.info("Initializing UserAssignmentCommand");
         userQuizService = new UserQuizService(UserQuizDao.getInstance());
         MappingProperties properties = MappingProperties.getInstance();
         assignmentPage = properties.getProperty("assignmentPage");
-        quizPage = properties.getProperty("quizPage");
     }
 
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("UserAssignmentCommand executing command");
-        //if (request.getParameter("quizId") == null) () return "{'error':500}";
-        String page = request.getParameter("start") == null ? assignmentPage : quizPage;
         try {
             HttpSession session = request.getSession();
-            int userId = Math.toIntExact((int) session.getAttribute("userId"));
-            int quizId = Math.toIntExact((int) session.getAttribute("quizId"));
+            int quizId = session.getAttribute("quizId") == null ? request.getParameter("quizId") == null ? 0 :
+                    Integer.parseInt(request.getParameter("quizId")) : (int) session.getAttribute("quizId");
+            int userId = session.getAttribute("userId") == null ? 0 : (int) session.getAttribute("userId");
+
             if (request.getParameter("action") != null && "saveAnswer".equals(request.getParameter("action"))){
                 int result = Integer.parseInt(request.getParameter("result"));
                 int id = Integer.parseInt(request.getParameter("id"))-1;
@@ -55,15 +53,11 @@ public class UserAssignmentCommand implements ServletCommand {
                 userQuizService.updateUserQuiz(userQuiz);
             }
 
-            UserQuiz userQuiz = userQuizService.getUserQuizByUserIdQuizId(
-                    Math.toIntExact((int) session.getAttribute("userId")),
-                    Integer.parseInt(request.getParameter("quizId")),
-                    request.getParameter("start") != null
-            );
+            UserQuiz userQuiz = userQuizService.getUserQuizByUserIdQuizId( userId, quizId, true);
             request.setAttribute("isJson", false);
             request.setAttribute("quiz", userQuiz);
         }
         catch (Exception e) { LOGGER.info("Couldn't parse request parameters " + e.getMessage()); }
-        return page;//new Gson().toJson(userQuiz);
+        return assignmentPage;//new Gson().toJson(userQuiz);
     }
 }

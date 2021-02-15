@@ -59,6 +59,22 @@
             top: 22px;
             left: 15px;
         }
+        .box {
+            border: 1px solid #999;
+            background: white;
+            height: 60px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .box-item {
+            float: left;
+            margin-right: 20px;
+            text-align: left;
+        }
+        .start {
+            float: right;
+            margin-top: -5px;
+        }
     </style>
 </head>
 <body>
@@ -97,7 +113,11 @@
                     <td align="center">${quiz.quiz.name}</td>
                     <td align="center"><fmt:formatDate value="${quiz.createdAt}" pattern="dd MMM yyyy, hh:mm"/></td>
                     <td align="center"><fmt:message key="${quiz.status}" bundle="${bundle}"/></td>
-                    <td align="center">${quiz.score !=0 ? quiz.score : ''}</td>
+                    <td align="center">
+                        <c:if test="${ quiz.score != 0 }">
+                            ${quiz.score}% <fmt:message key="correct" bundle="${bundle}"/>
+                        </c:if>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -129,25 +149,13 @@
 
 <script>
     const assignments = document.getElementById('assignments');
-    const search = document.getElementById('search');
 
     function get(element){
         $.post("${pageContext.request.contextPath}/user/assignments/assignment",
             {quizId : element.dataset.id}, response => {assignments.innerHTML = response; updateListener();});
     }
-    //search.onkeyup = event => event.key === 'Enter' && getArticles();
-    function updateListener(){
-        $(".start").off('click').on('click', start);
-        $(".question_item").off('click').on('click', showQuestion);
-    }
-    function start(){
-        $.post("${pageContext.request.contextPath}/user/assignments/assignment",
-            {quizId : this.dataset.id, start : true}, response => {assignments.innerHTML = response; updateListener();});
-    }
-    function showQuestion(){
-        console.log($(this).find("div"));
-        $(".question_content").html($(this).find('div').html());
-    }
+    function updateListener(){ $(".question_item").off('click').on('click', showQuestion); }
+    function showQuestion(){ $(".question_content").html($(this).find('div').html()); }
 </script>
 
 </body>

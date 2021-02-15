@@ -86,6 +86,7 @@ public class CommandManager {
 
         postCommands.put("/user/quizzes/add", new AddUsersQuizzesCommand());
         postCommands.put("/user/assignments/assignment", new UserAssignmentCommand());
+        postCommands.put("/user/quizzes", new UserQuizzesCommand());
 
 
         MappingProperties properties = MappingProperties.getInstance();

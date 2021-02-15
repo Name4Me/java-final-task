@@ -51,4 +51,11 @@ public class QuizService {
         List<Quiz> items =  quizDao.findAllForUser(userId,(page - 1) * size, size);
         return new Page<>(items, page, size);
     }
+
+    public Page<Quiz> getPageByUserIdWithSort(Integer userId, String colName, String direction , Integer page, Integer size) {
+        LOGGER.info("Getting page number " + page + ", of size " + size);
+        if(page == null || size == null || page < 1 || size < 1) { return null; }
+        List<Quiz> items =  quizDao.findAllForUserWithSort(userId, colName, direction,(page - 1) * size, size);
+        return new Page<>(items, page, size);
+    }
 }

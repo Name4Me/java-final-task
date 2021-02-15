@@ -192,8 +192,8 @@
     const content = document.getElementById('content');
     const search = document.getElementById('search');
     $(function() {
-        $(".bi-arrow-down-up, .bi-arrow-down, .bi-arrow-up").on( "click", filter);
-        $(".add").on( "click", add);
+        $(".bi-arrow-down-up, .bi-arrow-down, .bi-arrow-up").off("click").on( "click", filter);
+        $(".add").off("click").on( "click", add);
     });
     function add(){
         const quizId = $(this).data("id");
@@ -221,6 +221,12 @@
         svg.remove();
         $(".bi-arrow-down-up, .bi-arrow-down, .bi-arrow-up").off( "click").on( "click", filter);
         console.log("sortOrder: ", sortOrder, " sortField: ", sortField);
+        $.post("${pageContext.request.contextPath}/user/quizzes", {sortOrder : sortOrder, sortField : sortField, isJson : false},
+            response => {
+            content.innerHTML = response;
+                $(".bi-arrow-down-up, .bi-arrow-down, .bi-arrow-up").off("click").on( "click", filter);
+                $(".add").off("click").on( "click", add);
+        });
     }
 
     function sort(){

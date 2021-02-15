@@ -137,7 +137,7 @@
                     <td align="center"><fmt:formatDate value="${quiz.createdAt}" pattern="dd MMM yyyy, hh:mm"/></td>
                     <td align="center"><fmt:message key="${quiz.status}" bundle="${bundle}"/></td>
                     <td align="center">
-                        <c:if test="${ quiz.score != 0 && quiz.status == UserQuizStatus.Completed}">
+                        <c:if test="${ quiz.score != 0 && quiz.status == AssignmentStatus.Completed}">
                             ${quiz.score}% <fmt:message key="correct" bundle="${bundle}"/>
                         </c:if>
                     </td>

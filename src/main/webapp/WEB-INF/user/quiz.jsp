@@ -133,27 +133,22 @@
             </div>
         </c:forEach>
     </div>
+    <button class="btn btn-outline-success complete" data-id="${quiz.quizId}"> <fmt:message key="complete" bundle="${bundle}"/> </button>
 </div>
 <!-- /.container -->
 
 
 <script>
-    const assignments = document.getElementById('assignments');
-    const search = document.getElementById('search');
-
-    function get(element){
-        $.post("${pageContext.request.contextPath}/user/assignments/assignment",
-            {quizId : element.dataset.id}, response => {assignments.innerHTML = response; updateListener();});
+    function complete(){
+        const quizId = this.dataset.id;
+        $.post("${pageContext.request.contextPath}/user/assignments/assignment", {quizId : quizId, action : "complete"},
+            function (){window.location.href="${pageContext.request.contextPath}/user/assignments";});
     }
     //search.onkeyup = event => event.key === 'Enter' && getArticles();
     function updateListener(){
-        $(".start").off('click').on('click', start);
+        $(".complete").off('click').on('click', complete);
         $("li.question_item").off('click').on('click', showQuestion);
         $(".answer").off('change').on('change', saveAnswer);
-    }
-    function start(){
-        $.post("${pageContext.request.contextPath}/user/assignments/assignment",
-            {quizId : this.dataset.id, start : true}, response => {assignments.innerHTML = response; updateListener();});
     }
     function showQuestion(){
         const id = this.dataset.id
@@ -161,12 +156,16 @@
         updateListener();
     }
 
-    function saveAnswer(){
-        const id = this.dataset.id;
-        console.log(id);
-        const inputs = $(this).closest("div.question_content").find("input");
+    function getResult(e){
+        const inputs = $("div.question_content").find("input");
         let result = 0;
         $.each(inputs, function(index, element){ result += (element.checked ? 1 : 0) << index });
+        return result;
+    }
+
+    function saveAnswer(){
+        const id = this.dataset.id;
+        const result = getResult(this);
         $.post("${pageContext.request.contextPath}/user/assignments/assignment", {id : id, result : result,  action : "saveAnswer"} , function(){ console.log("+")});
     }
     updateListener();

@@ -39,7 +39,7 @@
         <div class="ScoreBar">
             <div class="ScoreBarPe" style="width: ${quiz.score}%;"></div>
         </div>
-        <div class="score">${quiz.score}%</div>
+        <div class="score">&nbsp;${quiz.score}%</div>
     </div>
     </c:if>
     <c:if test="${quiz.status == UserQuizStatus.NotStarted}">

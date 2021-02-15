@@ -1,9 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="navbar" tagdir="/WEB-INF/tags" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="header"%>
 <jsp:useBean id="date" class="java.util.Date"/>
+<%@ page import="com.example.app.model.userQuize.UserQuizStatus" %>
 
 <html>
 <head>
@@ -136,7 +137,7 @@
                     <td align="center"><fmt:formatDate value="${quiz.createdAt}" pattern="dd MMM yyyy, hh:mm"/></td>
                     <td align="center"><fmt:message key="${quiz.status}" bundle="${bundle}"/></td>
                     <td align="center">
-                        <c:if test="${ quiz.score != 0 }">
+                        <c:if test="${ quiz.score != 0 && quiz.status == UserQuizStatus.Completed}">
                             ${quiz.score}% <fmt:message key="correct" bundle="${bundle}"/>
                         </c:if>
                     </td>

@@ -34,9 +34,19 @@
         <svg width="19" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M19 15v-2H5v2h14zm0-6V7H5v2h14zM5 3h14V1H5v2zM1 1v2h2V1H1zM0 1a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H1a1 1 0 01-1-1V1zm1 6v2h2V7H1zM0 7a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H1a1 1 0 01-1-1V7zm1 6v2h2v-2H1zm-1 0a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H1a1 1 0 01-1-1v-2z" fill="#009ECC" fill-rule="evenodd"></path></svg>
         ${quiz.quiz.numberOfQuestion} <fmt:message key="questions_short" bundle="${bundle}"/>
     </div>
-    <div class="box-item"><fmt:message key="${quiz.status}" bundle="${bundle}"/></div>
+    <c:if test="${quiz.score != 0 && quiz.status == UserQuizStatus.Completed}">
+    <div class="box-item">
+        <div class="ScoreBar">
+            <div class="ScoreBarPe" style="width: ${quiz.score}%;"></div>
+        </div>
+        <div class="score">${quiz.score}%</div>
+    </div>
+    </c:if>
     <c:if test="${quiz.status == UserQuizStatus.NotStarted}">
         <a class="btn btn-outline-success start" data-id="${quiz.quizId}" href="${pageContext.request.contextPath}/user/assignments/assignment?quizId=${quiz.quizId}"> Start </a>
+    </c:if>
+    <c:if test="${quiz.status != UserQuizStatus.NotStarted}">
+        <div class="box-item status"><fmt:message key="${quiz.status}" bundle="${bundle}"/></div>
     </c:if>
 </div>
 

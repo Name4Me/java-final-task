@@ -75,6 +75,28 @@
             float: right;
             margin-top: -5px;
         }
+        .status {
+            float: right;
+        }
+        .score {
+            float: left;
+        }
+        .ScoreBar {
+            min-width: 0px;
+            flex-grow: 1;
+            flex-basis: 0px;
+            width: 200px;
+            height: 15px;
+            background: #eaedf5;
+            border-radius: 7px;
+            margin-top: 6px;
+            float: left;
+        }
+        .ScoreBarPe {
+            background: rgb(103, 163, 0);
+            height: inherit;
+            border-radius: 7px;
+        }
     </style>
 </head>
 <body>

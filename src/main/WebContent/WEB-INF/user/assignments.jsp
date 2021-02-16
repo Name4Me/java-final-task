@@ -1,3 +1,4 @@
+<%--@elvariable id="page" type="com.example.app.util.Page"--%>
 <%@ include file="/WEB-INF/jspf/directive/page.jspf" %>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 <jsp:useBean id="date" class="java.util.Date"/>
@@ -28,7 +29,6 @@
         </thead>
 
         <tbody>
-        <%--@elvariable id="page" type="javafx.scene.control.cell.ChoiceBoxTreeCell"--%>
         <c:forEach items="${page.items}" var="quiz">
             <tr id="quiz_${quiz.quizId}" onclick="get(this)" data-id="${quiz.quizId}">
                 <td>${quiz.quizId}</td>

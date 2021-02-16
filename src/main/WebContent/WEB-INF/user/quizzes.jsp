@@ -1,3 +1,4 @@
+<%--@elvariable id="page" type="com.example.app.util.Page"--%>
 <%@ include file="/WEB-INF/jspf/directive/page.jspf" %>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 <c:set var="title">:&nbsp;<fmt:message key="quizzes" bundle="${bundle}"/></c:set>
@@ -51,12 +52,12 @@
         <tbody id="content">
         <c:forEach items="${page.items}" var="quiz">
             <tr id="quiz_${quiz.id}">
-                <td align="center">${quiz.name}</td>
-                <td align="center">${quiz.description}</td>
-                <td align="center">${quiz.difficulty}</td>
-                <td align="center">${quiz.time}</td>
-                <td align="center">${quiz.numberOfQuestion}</td>
-                <td align="center">
+                <td>${quiz.name}</td>
+                <td>${quiz.description}</td>
+                <td>${quiz.difficulty}</td>
+                <td>${quiz.time}</td>
+                <td>${quiz.numberOfQuestion}</td>
+                <td>
                     <button type="button" class="btn btn-outline-success addUserQuiz" data-id="${quiz.id}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-plus-square" viewBox="0 0 16 16">
@@ -124,7 +125,7 @@
         const tr = $(this).closest("tr");
         const quizId = $(this).data("id");
         const alert = $(".alert");
-        $.post("${pageContext.request.contextPath}/controller/user/quizzes/add", {quizId: quizId}, function (data) {
+        $.post("${pageContext.request.contextPath}/controller/user/quizzes/add", {quizId: quizId}, () => {
             alert.html("<fmt:message key="quiz" bundle="${bundle}"/>" + " " +
                 tr.find("td")[0].innerText + " " + "<fmt:message key="user.quiz.successfullyAdded" bundle="${bundle}"/>").show();
             tr.remove();
@@ -154,7 +155,7 @@
                 sortField: sortField,
                 isJson: false
             },
-            response => (content.innerHTML = response) && updateListeners());
+            response => {content.innerHTML = response; updateListeners();});
     }
 </script>
 

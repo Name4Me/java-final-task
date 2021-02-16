@@ -17,6 +17,10 @@ header{
 .table>tbody>tr>td{
     text-align: center;
     vertical-align: middle;
+    max-width: 500px;
+}
+.table>tbody>tr>td.question_text{
+    text-align: left;
 }
 button.addUserQuiz{
     float: right;

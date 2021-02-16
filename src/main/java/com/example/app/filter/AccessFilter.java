@@ -52,6 +52,7 @@ public class AccessFilter implements Filter {
     private boolean accessAllowed(ServletRequest request) {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String command = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+
         if (!"/".equals(command)) {
             if(command.endsWith("/")) {
                 command = command.substring(0, command.length() - 1);
@@ -63,6 +64,8 @@ public class AccessFilter implements Filter {
                 command = command.substring(command.lastIndexOf('?'));
             }
         }
+
+        LOGGER.info("Filter command: "+command);
         if (command.isEmpty()) {
             LOGGER.info("Filter command isEmpty");
             return false;
@@ -78,12 +81,11 @@ public class AccessFilter implements Filter {
             LOGGER.info("Filter command session is null");
             return false;
         }
+
         if (session.getAttribute("role") != null) {
             UserType userRole = UserType.valueOf((String) session.getAttribute("role"));
             return command.contains(userRole.toString().toLowerCase()+"/");
-        } else {
-            return false;
-        }
+        } else { return false; }
     }
 
 

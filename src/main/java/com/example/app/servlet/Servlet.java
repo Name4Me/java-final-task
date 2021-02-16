@@ -30,19 +30,20 @@ public class Servlet extends HttpServlet {
 		LOGGER.info("Processing get request");
 		ServletCommand command = commandManager.getGetCommand(request);
 		String addr = commandManager.getMappting(request);
-		LOGGER.info("Processing get request: "+addr);
-
+		LOGGER.info("Processing addr: "+addr);
 		System.out.println(addr);
-        if((request.getSession().getAttribute("authenticated") == null ||
-                request.getSession().getAttribute("authenticated").equals(false)) && !(addr == null || "/login".equals(addr)
-				|| "/register".equals(addr) || "/setLocale".equals(addr))) {
+
+		LOGGER.info("Processing get request: "+addr);
+		if((request.getSession().getAttribute("authenticated") == null ||
+				request.getSession().getAttribute("authenticated").equals(false)) && !(addr == null || "/controller/login".equals(addr)
+				|| "/controller/register".equals(addr) || "/controller/setLocale".equals(addr))) {
 			try {
-				response.sendRedirect(request.getContextPath() + "/login");
+				response.sendRedirect(request.getContextPath() + "/controller/login");
 				return;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-        }
+		}
 
 		String page = command.execute(request, response);
 		request.getRequestDispatcher(page).forward(request, response);

@@ -46,47 +46,49 @@ public class CommandManager {
         //===================GET commands===================
 
         getCommands.put("/", new GetMainPageCommand());
-        getCommands.put("/setLocale", new GetMainPageCommand());
-        getCommands.put("/login", new GetLoginPageCommand());
-        getCommands.put("/logout", new LogoutCommand());
-        getCommands.put("/register", new GetRegisterPageCommand());
-        getCommands.put("/user/quizzes", new UserQuizzesCommand());
-        getCommands.put("/user/assignments", new UserAssignmentsCommand());
+        getCommands.put("/controller", new GetMainPageCommand());
+        getCommands.put("/controller/", new GetMainPageCommand());
+        getCommands.put("/controller/setLocale", new GetMainPageCommand());
+        getCommands.put("/controller/login", new GetLoginPageCommand());
+        getCommands.put("/controller/logout", new LogoutCommand());
+        getCommands.put("/controller/register", new GetRegisterPageCommand());
+        getCommands.put("/controller/user/quizzes", new UserQuizzesCommand());
+        getCommands.put("/controller/user/assignments", new UserAssignmentsCommand());
 /*
         getCommands.put("/account", new GetAccountPageCommand());
         */
 
 
         //admin users
-        getCommands.put("/admin/users", new UsersAdminPageCommand());
-        getCommands.put("/admin/user", new GetUserInfoAdminCommand());
-        getCommands.put("/admin/quizzes", new QuizzesCommand());
+        getCommands.put("/controller/admin/users", new UsersAdminPageCommand());
+        getCommands.put("/controller/admin/user", new GetUserInfoAdminCommand());
+        getCommands.put("/controller/admin/quizzes", new QuizzesCommand());
         //getCommands.put("/admin/choices", new ChoicesAdminPageCommand());
-        getCommands.put("/admin/questions", new QuestionsCommand());
-        getCommands.put("/admin/choices", new ChoicesCommand());
-        getCommands.put("/user/assignments/assignment", new UserStartQuizCommand());
+        getCommands.put("/controller/admin/questions", new QuestionsCommand());
+        getCommands.put("/controller/admin/choices", new ChoicesCommand());
+        getCommands.put("/controller/user/assignments/assignment", new UserStartQuizCommand());
 
         //===================POST commands===================
 
-        postCommands.put("/login", new LoginCommand());
-        postCommands.put("/register", new RegisterCommand());
-        postCommands.put("/admin/user/block", new BlockUserCommand());
-        postCommands.put("/admin/user/unblock", new UnBlockUserCommand());
-        postCommands.put("/admin/quiz/add", new AddQuizCommand());
-        postCommands.put("/admin/quiz/delete", new DeleteQuizCommand());
-        postCommands.put("/admin/quiz/update", new UpdateQuizCommand());
+        postCommands.put("/controller/login", new LoginCommand());
+        postCommands.put("/controller/register", new RegisterCommand());
+        postCommands.put("/controller/admin/user/block", new BlockUserCommand());
+        postCommands.put("/controller/admin/user/unblock", new UnBlockUserCommand());
+        postCommands.put("/controller/admin/quiz/add", new AddQuizCommand());
+        postCommands.put("/controller/admin/quiz/delete", new DeleteQuizCommand());
+        postCommands.put("/controller/admin/quiz/update", new UpdateQuizCommand());
 
-        postCommands.put("/admin/question/add", new AddQuestionCommand());
-        postCommands.put("/admin/question/delete", new DeleteQuestionCommand());
-        postCommands.put("/admin/question/update", new UpdateQuestionCommand());
+        postCommands.put("/controller/admin/question/add", new AddQuestionCommand());
+        postCommands.put("/controller/admin/question/delete", new DeleteQuestionCommand());
+        postCommands.put("/controller/admin/question/update", new UpdateQuestionCommand());
 
-        postCommands.put("/admin/choice/add", new AddChoiceCommand());
-        postCommands.put("/admin/choice/delete", new DeleteChoiceCommand());
-        postCommands.put("/admin/choice/update", new UpdateChoiceCommand());
+        postCommands.put("/controller/admin/choice/add", new AddChoiceCommand());
+        postCommands.put("/controller/admin/choice/delete", new DeleteChoiceCommand());
+        postCommands.put("/controller/admin/choice/update", new UpdateChoiceCommand());
 
-        postCommands.put("/user/quizzes/add", new AddUsersQuizzesCommand());
-        postCommands.put("/user/assignments/assignment", new UserAssignmentCommand());
-        postCommands.put("/user/quizzes", new UserQuizzesCommand());
+        postCommands.put("/controller/user/quizzes/add", new AddUsersQuizzesCommand());
+        postCommands.put("/controller/user/assignments/assignment", new UserAssignmentCommand());
+        postCommands.put("/controller/user/quizzes", new UserQuizzesCommand());
 
 
         MappingProperties properties = MappingProperties.getInstance();
@@ -104,7 +106,7 @@ public class CommandManager {
         LOGGER.info("Getting command " + command);
         //System.out.println("authenticated: "+request.getSession().getAttribute("authenticated"));
         if(getCommands.get(command) == null) {
-            return getCommands.get("/");
+            return getCommands.get("/controller");
         }
         return getCommands.get(command);
     }
@@ -119,7 +121,7 @@ public class CommandManager {
         String command = getMappting(request);
         LOGGER.info("Getting command " + command);
         if(postCommands.get(command) == null) {
-            return getCommands.get("/");
+            return getCommands.get("/controller");
         }
         return postCommands.get(command);
     }

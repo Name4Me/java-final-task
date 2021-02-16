@@ -255,19 +255,12 @@
         function update() {
             $.post("${pageContext.request.contextPath}/controller/admin/question/update",
                 $("#save-form").serialize() + '&id=' + $(".new-question").data("id"), update_row, "json")
-                .fail(function () {
-                    console.log("error");
-                })
                 .always(cancel);
         }
 
         function add() {
             $.post("${pageContext.request.contextPath}/controller/admin/question/add",
-                $("#save-form").serialize(), add_row, "json")
-                .fail(function () {
-                    console.log("error");
-                })
-                .always(cancel);
+                $("#save-form").serialize(), add_row, "json").always(cancel);
         }
 
         function add_row(data) {

@@ -88,12 +88,28 @@
                        name="numberOfQuestion">
             </div>
             <div class="col-md-2">
+                <button type="button" class="btn btn-outline-info update-submit" data-action="update"
+                        style="display: none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-save" viewBox="0 0 16 16">
+                        <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"></path>
+                    </svg>
+                    <fmt:message key="update" bundle="${bundle}"/>
+                </button>
                 <button type="button" class="btn btn-outline-success add-submit" data-action="save">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="bi bi-save" viewBox="0 0 16 16">
                         <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"></path>
                     </svg>
-                    Save
+                    <fmt:message key="save" bundle="${bundle}"/>
+                </button>
+                <button type="button" class="btn btn-outline-danger cancel">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-x-square" viewBox="0 0 16 16">
+                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                    </svg>
+                    <fmt:message key="cancel" bundle="${bundle}"/>
                 </button>
             </div>
         </div>
@@ -210,6 +226,9 @@
 
 <script>
     $(function () {
+        const addBtn = $(".add");
+        const submitBtn =  $(".add-submit, .update-submit");
+        updateListeners();
 
         function edit() {
             const id = $(this).data("id");
@@ -220,13 +239,14 @@
             $("select#difficulty").val(row[2].innerText);
             $("input#time").val(row[3].innerText);
             $("input#numberOfQuestion").val(row[4].innerText);
-            submit.html(submit.html().replace('Save', 'Update')).data("action", "update");
+            $(".update-submit").show();
             $(".new-quiz").data("id", id).show();
 
         }
 
         function del() {
             const id = $(this).data("id");
+
             $.post(
                 "${pageContext.request.contextPath}/controller/admin/quiz/delete",
                 {id: id},
@@ -238,54 +258,42 @@
                 "json");
         }
 
-        $(".edit").on("click", edit);
-        $(".delete").on("click", del);
-        $(".add").on("click", function () {
-            if ($(".new-quiz").is(":visible")) {
-                $(".new-quiz").hide();
-            } else {
-                $(".new-quiz").show();
-            }
+        function cancel() {
+            $(".new-quiz").removeClass('disabled');
+            submitBtn.prop('disabled', false);
+            $("input#text").val("");
+            $("select#type").val(0);
+            $(".new-quiz, .loader, .update-submit").hide();
+            addBtn.show();
+        }
+
+        $(".cancel").on("click", cancel);
+
+        addBtn.on("click", function () {
+            $(".new-quiz").show();
+            $(".add, .update-submit").hide();
         });
 
 
-        $(".add-submit").on("click", function () {
+        submitBtn.on("click", function () {
             $(this).prop('disabled', true);
             $(".new-quiz").toggleClass('disabled');
             $(".loader").show();
             if ($(this).data('action') === 'save') add();
-            if ($(this).data('action') === 'update') {
-                update();
-            }
+            if ($(this).data('action') === 'update')  update();
+            cancel();
         });
 
         function update() {
             $.post("${pageContext.request.contextPath}/controller/admin/quiz/update",
                 $("#save-form").serialize() + '&id=' + $(".new-quiz").data("id"),
                 update_row, "json")
-                .fail(function () {
-                    console.log("error");
-                })
-                .always(function () {
-                    $(".new-quiz, .loader").hide();
-                    $(".new-quiz").toggleClass('disabled');
-                    $(".add-submit").prop('disabled', false);
-                });
+                .always(cancel);
         }
 
         function add() {
             $.post("${pageContext.request.contextPath}/controller/admin/quiz/add",
-                $("#save-form").serialize(),
-                add_row, "json").done(function () {
-                console.log("second success");
-            }).fail(function () {
-                console.log("error");
-            }).always(function () {
-                console.log("finished");
-                $(".new-quiz, .loader").hide();
-                $(".new-quiz").toggleClass('disabled');
-                $(".add-submit").prop('disabled', false);
-            });
+                $("#save-form").serialize(), add_row, "json").always(cancel);
         }
 
         function add_row(data) {
@@ -300,8 +308,7 @@
             row.find(".edit").data("id", data.id);
             $(".table>tbody").append(row);
             row.show();
-            $(".edit").off("click").on("click", edit);
-            $(".delete").off("click").on("click", del);
+            updateListeners();
         }
 
         function update_row(data) {
@@ -311,7 +318,12 @@
             row[2].innerText = data.difficulty;
             row[3].innerText = data.time;
             row[4].innerText = data.numberOfQuestion;
-            $(".add-submit").html($(".add-submit").html().replace('Update', 'Save')).data("action", "save");
+            $(".update-submit").hide();
+        }
+
+        function updateListeners(){
+            $(".edit").off("click").on("click", edit);
+            $(".delete").off("click").on("click", del);
         }
     });
 

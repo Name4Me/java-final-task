@@ -7,14 +7,13 @@ import java.util.Properties;
 public class MappingProperties {
     private static final Logger LOGGER = Logger.getLogger(MappingProperties.class);
     private static MappingProperties instance = null;
-    private Properties properties;
-    private static String propertysFileName = "mapping.properties";
+    private final Properties properties;
+    private static final String propertiesFileName = "mapping.properties";
 
     private MappingProperties() {
         LOGGER.info("Initializing MappingProperties class");
         properties = new Properties();
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertysFileName);
-        try {
+        try(InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertiesFileName)) {
             if (inputStream != null) {
                 properties.load(inputStream);
             } else { LOGGER.error("Mapping properties file not found on the classpath"); }

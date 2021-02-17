@@ -1,6 +1,7 @@
 <%--@elvariable id="page" type="com.example.app.util.Page"--%>
 <%@ include file="/WEB-INF/jspf/directive/page.jspf" %>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
+<%@ page import="com.example.app.model.assignment.AssignmentStatus" %>
 <jsp:useBean id="date" class="java.util.Date"/>
 <c:set var="title" value="true" />
 <c:set var="isAsigments" value="true" />
@@ -28,19 +29,20 @@
         </thead>
 
         <tbody>
-<%--        <c:forEach items="${page.items}" var="assigment">
+        <c:forEach items="${page.items}" var="assigment">
             <tr id="quiz_${assigment.quizId}" onclick="get(this)" data-id="${assigment.quizId}">
                 <td>${assigment.quizId}</td>
                 <td>${assigment.quiz.name}</td>
                 <td><fmt:formatDate value="${assigment.createdAt}" pattern="dd MMM yyyy, hh:mm"/></td>
                 <td><fmt:message key="${assigment.status}" bundle="${bundle}"/></td>
-                <td>
+                <td>xxx
+                        ${assigment.score}
                     <c:if test="${ assigment.score != 0 && assigment.status == AssignmentStatus.Completed}">
                         ${assigment.score}% <fmt:message key="correct" bundle="${bundle}"/>
                     </c:if>
                 </td>
             </tr>
-        </c:forEach>--%>
+        </c:forEach>
         </tbody>
     </table>
 

@@ -5,7 +5,6 @@ import com.example.app.model.user.User;
 import com.example.app.model.user.UserType;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
-
 import java.util.List;
 
 public class UserService {

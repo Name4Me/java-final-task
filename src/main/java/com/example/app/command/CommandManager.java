@@ -53,7 +53,7 @@ public class CommandManager {
         getCommands.put("/controller/logout", new LogoutCommand());
         getCommands.put("/controller/register", new GetRegisterPageCommand());
         getCommands.put("/controller/user/quizzes", new UserQuizzesCommand());
-        getCommands.put("/controller/user/test", new UserAssignmentsCommand());
+        getCommands.put("/controller/user/assignments", new UserAssignmentsCommand());
         getCommands.put("/controller/user/assignments/assignment", new UserStartQuizCommand());
 /*
         getCommands.put("/account", new GetAccountPageCommand());
@@ -134,6 +134,8 @@ public class CommandManager {
      * @return        Command mapping.
      */
     public String getMappting(HttpServletRequest request) {
+        System.out.println(request.getRequestURI());
+        System.out.println(request.getContextPath().length());
         String mapping = request.getRequestURI().substring(request.getContextPath().length());
         if(mapping.endsWith("/") && mapping.length() > 1) {
             mapping = mapping.substring(0, mapping.length() - 1);

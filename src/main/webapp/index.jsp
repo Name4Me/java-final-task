@@ -12,6 +12,7 @@
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true">${errorMessage}</span>
             </div>
         </c:if>
+        <h1>Hello World!</h1>
     </div>
 
 

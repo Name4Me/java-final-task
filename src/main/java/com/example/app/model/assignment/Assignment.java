@@ -68,4 +68,36 @@ public class Assignment {
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(Date startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public Date getFinishedAt() {
+        return finishedAt;
+    }
+
+    public void setFinishedAt(Date finishedAt) {
+        this.finishedAt = finishedAt;
+    }
 }

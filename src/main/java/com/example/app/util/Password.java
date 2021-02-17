@@ -1,7 +1,6 @@
 package com.example.app.util;
 
 import org.apache.log4j.Logger;
-
 import java.security.MessageDigest;
 
 public class Password {

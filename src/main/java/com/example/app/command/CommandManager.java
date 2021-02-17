@@ -53,7 +53,8 @@ public class CommandManager {
         getCommands.put("/controller/logout", new LogoutCommand());
         getCommands.put("/controller/register", new GetRegisterPageCommand());
         getCommands.put("/controller/user/quizzes", new UserQuizzesCommand());
-        getCommands.put("/controller/user/assignments", new UserAssignmentsCommand());
+        getCommands.put("/controller/user/test", new UserAssignmentsCommand());
+        getCommands.put("/controller/user/assignments/assignment", new UserStartQuizCommand());
 /*
         getCommands.put("/account", new GetAccountPageCommand());
         */
@@ -63,10 +64,10 @@ public class CommandManager {
         getCommands.put("/controller/admin/users", new UsersAdminPageCommand());
         getCommands.put("/controller/admin/user", new GetUserInfoAdminCommand());
         getCommands.put("/controller/admin/quizzes", new QuizzesCommand());
-        //getCommands.put("/admin/choices", new ChoicesAdminPageCommand());
         getCommands.put("/controller/admin/questions", new QuestionsCommand());
         getCommands.put("/controller/admin/choices", new ChoicesCommand());
-        getCommands.put("/controller/user/assignments/assignment", new UserStartQuizCommand());
+
+
 
         //===================POST commands===================
 

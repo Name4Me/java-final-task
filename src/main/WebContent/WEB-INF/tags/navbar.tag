@@ -1,7 +1,6 @@
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 <%@tag description="Page navigation bar" pageEncoding="UTF-8"%>
 <%@attribute name="navbar" fragment="true" %>
-<!-- Navigation -->
 <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/">Testing</a>
@@ -95,9 +94,9 @@
 
                 <c:if test="${sessionScope.authenticated != null && sessionScope.authenticated == true}">
                     <c:if test="${sessionScope.role == 'USER'}">
-                        <li class="nav-item">
+<%--                        <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/controller/user/account"><c:out value="${sessionScope.username}"/></a>
-                        </li>
+                        </li>--%>
                         <li class="nav-item">
                             <a class="nav-link" href="${pageContext.request.contextPath}/controller/user/assignments"><fmt:message key="assignments" bundle="${bundle}"/></a>
                         </li>

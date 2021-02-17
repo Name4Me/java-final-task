@@ -34,9 +34,8 @@ public class AssignmentService {
     }
 
     public Page<Assignment> getPageByUserId(Integer userId, Integer page, Integer size) {
-        LOGGER.info("QuestionService getting page number " + page + ", of size " + size);
+        LOGGER.info("QuestionService getting page for userId:" + userId+" number: " + page + ", of size: " + size);
         if(page == null || size == null || page < 1 || size < 1) { return null; }
-
         List<Assignment> items = assignmentDao.findAll(userId,(page - 1) * size, size);
         return new Page<>(items, page, size);
     }

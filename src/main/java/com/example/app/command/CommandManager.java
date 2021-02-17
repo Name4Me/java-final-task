@@ -134,8 +134,6 @@ public class CommandManager {
      * @return        Command mapping.
      */
     public String getMappting(HttpServletRequest request) {
-        System.out.println(request.getRequestURI());
-        System.out.println(request.getContextPath().length());
         String mapping = request.getRequestURI().substring(request.getContextPath().length());
         if(mapping.endsWith("/") && mapping.length() > 1) {
             mapping = mapping.substring(0, mapping.length() - 1);

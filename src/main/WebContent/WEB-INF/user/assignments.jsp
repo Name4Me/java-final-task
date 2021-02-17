@@ -2,8 +2,7 @@
 <%@ include file="/WEB-INF/jspf/directive/page.jspf" %>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 <jsp:useBean id="date" class="java.util.Date"/>
-<%@ page import="com.example.app.model.assignment.AssignmentStatus" %>
-<c:set var="title">:&nbsp;<fmt:message key="assignments" bundle="${bundle}"/></c:set>
+<c:set var="title" value="true" />
 <c:set var="isAsigments" value="true" />
 <!DOCTYPE html>
 <html>
@@ -29,19 +28,19 @@
         </thead>
 
         <tbody>
-        <c:forEach items="${page.items}" var="quiz">
-            <tr id="quiz_${quiz.quizId}" onclick="get(this)" data-id="${quiz.quizId}">
-                <td>${quiz.quizId}</td>
-                <td>${quiz.quiz.name}</td>
-                <td><fmt:formatDate value="${quiz.createdAt}" pattern="dd MMM yyyy, hh:mm"/></td>
-                <td><fmt:message key="${quiz.status}" bundle="${bundle}"/></td>
+<%--        <c:forEach items="${page.items}" var="assigment">
+            <tr id="quiz_${assigment.quizId}" onclick="get(this)" data-id="${assigment.quizId}">
+                <td>${assigment.quizId}</td>
+                <td>${assigment.quiz.name}</td>
+                <td><fmt:formatDate value="${assigment.createdAt}" pattern="dd MMM yyyy, hh:mm"/></td>
+                <td><fmt:message key="${assigment.status}" bundle="${bundle}"/></td>
                 <td>
-                    <c:if test="${ quiz.score != 0 && quiz.status == AssignmentStatus.Completed}">
-                        ${quiz.score}% <fmt:message key="correct" bundle="${bundle}"/>
+                    <c:if test="${ assigment.score != 0 && assigment.status == AssignmentStatus.Completed}">
+                        ${assigment.score}% <fmt:message key="correct" bundle="${bundle}"/>
                     </c:if>
                 </td>
             </tr>
-        </c:forEach>
+        </c:forEach>--%>
         </tbody>
     </table>
 

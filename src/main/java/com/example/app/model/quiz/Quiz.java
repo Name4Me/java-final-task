@@ -15,11 +15,6 @@ public class Quiz {
 
     public Quiz() {}
 
-    public Quiz(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public Quiz(int id, String name, String description, QuizDifficulty difficulty, int time, int numberOfQuestion) {
         this.id = id;
         this.name = name;

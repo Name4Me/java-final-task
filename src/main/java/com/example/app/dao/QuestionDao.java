@@ -103,9 +103,7 @@ public class QuestionDao {
                 resultSet.getInt("id"),
                 resultSet.getInt("quizId"),
                 resultSet.getString("text"),
-                QuestionType.values()[resultSet.getInt("type")],
-                resultSet.getTimestamp("createdAt"),
-                resultSet.getTimestamp("updatedAt")
+                QuestionType.values()[resultSet.getInt("type")]
                 );
         question.setChoices(ChoiceDao.getInstance().findAll(question.getId()));
         return question;

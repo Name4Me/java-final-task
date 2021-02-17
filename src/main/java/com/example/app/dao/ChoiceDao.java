@@ -116,9 +116,7 @@ public class ChoiceDao {
                 resultSet.getInt("id"),
                 resultSet.getInt("questionId"),
                 resultSet.getString("text"),
-                resultSet.getBoolean("isCorrect"),
-                resultSet.getTimestamp("createdAt"),
-                resultSet.getTimestamp("updatedAt")
+                resultSet.getBoolean("isCorrect")
         );
     }
 }

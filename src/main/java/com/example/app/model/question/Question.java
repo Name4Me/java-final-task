@@ -10,19 +10,15 @@ public class Question {
     private int quizId;
     private String text;
     private QuestionType type;
-    private Date createdAt;
-    private Date updatedAt;
     private List<Choice> choices;
 
     public Question() { }
 
-    public Question(int id, int quizId, String text, QuestionType type, Date createdAt, Date updatedAt) {
+    public Question(int id, int quizId, String text, QuestionType type) {
         this.id = id;
         this.quizId = quizId;
         this.text = text;
         this.type = type;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public int getQuizId() {
@@ -55,14 +51,6 @@ public class Question {
 
     public void setType(QuestionType type) {
         this.type = type;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
     }
 
     public List<Choice> getChoices() {

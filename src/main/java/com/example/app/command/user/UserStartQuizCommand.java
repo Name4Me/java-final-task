@@ -42,10 +42,10 @@ public class UserStartQuizCommand implements ServletCommand {
 
             Assignment assignment = assignmentService.getUserQuizByUserIdQuizId(userId, quizId,false);
 
-            if (assignment.getStatus() != AssignmentStatus.NotStarted) {
+/*            if (assignment.getStatus() != AssignmentStatus.NotStarted) {
                 request.setAttribute("errorMessage", "You can not restart quiz.");
                 return "/";
-            }
+            }*/
 
             assignment = assignmentService.getUserQuizByUserIdQuizId(userId, quizId,true);
 

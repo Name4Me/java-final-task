@@ -1,6 +1,8 @@
+<%@ attribute name="isTest" %>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 <%@tag description="Page navigation bar" pageEncoding="UTF-8"%>
 <%@attribute name="navbar" fragment="true" %>
+
 <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/">Testing</a>
@@ -124,6 +126,13 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/controller/logout"><fmt:message key="signOut" bundle="${bundle}"/></a>
                     </li>
                 </c:if>
+                <c:if test="${isTest}">
+                    <li class="nav-item" style="width: auto">
+                        <span id="timer" style="float:right; color: #4af; font-size: 150%; font-weight: bold;">00:00:00</span>
+                    </li>
+                </c:if>
+
+
             </ul>
         </div>
     </nav>

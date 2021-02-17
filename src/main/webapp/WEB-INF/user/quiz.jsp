@@ -1,25 +1,13 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib prefix="navbar" tagdir="/WEB-INF/tags" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="header"%>
-<jsp:useBean id="date" class="java.util.Date"/>
+<%--@elvariable id="page" type="com.example.app.util.Page"--%>
+<%@ include file="/WEB-INF/jspf/directive/page.jspf" %>
+<%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 <%@ page import="com.example.app.model.question.QuestionType" %>
-
+<jsp:useBean id="date" class="java.util.Date"/>
+<c:set var="title" value="true" />
+<c:set var="isTest" value="true" />
+<!DOCTYPE html>
 <html>
-<head>
-    <header:header title="${msg.admin} - ${msg.quizzes}"/>
-
-    <%--Localization--%>
-    <c:if test="${sessionScope.locale == null}">
-        <fmt:setLocale value="ru"/>
-    </c:if>
-    <c:if test="${sessionScope.locale != null}">
-        <fmt:setLocale value="${sessionScope.locale}"/>
-    </c:if>
-
-    <fmt:setBundle basename="localization" var="bundle"/>
-    <%----%>
+<%@ include file="/WEB-INF/jspf/head.jspf" %>
 
 
     <style>
@@ -93,10 +81,9 @@
             margin: 0 0 10px 20px;
         }
     </style>
-</head>
 <body>
 
-<navbar:navbar/>
+<navbar:navbar isTest="true"/>
 
 <!-- Page Content -->
 
@@ -139,6 +126,10 @@
 
 
 <script>
+    let hours = Math.floor(('${quiz.quiz.time}'*1)/60);
+    let minutes = Math.floor(('${quiz.quiz.time}'*1)%60);
+    console.log("hours: "+hours);
+    console.log("minutes: "+minutes);
     function complete(){
         const quizId = this.dataset.id;
         $.post("${pageContext.request.contextPath}/controller/user/assignments/assignment", {quizId : quizId, action : "complete"},
@@ -169,6 +160,37 @@
         $.post("${pageContext.request.contextPath}/controller/user/assignments/assignment", {id : id, result : result,  action : "saveAnswer"} , function(){ console.log("+")});
     }
     updateListener();
+    document.getElementById("timer").innerHTML = (hours.toString().length === 1 ? "0" + hours: hours) + ":" + minutes + ":00";
+    startTimer();
+    function startTimer() {
+        var timer = document.getElementById("timer");
+        var time = timer.innerHTML;
+        var arr = time.split(":");
+        var hh = arr[0];
+        var mm = arr[1];
+        var ss = arr[2];
+        if (ss == 0) {
+            if (mm == 0) {
+                if (hh == 0) {
+                    alert("Время вышло");
+                    window.location.reload();
+                    return;
+                }
+                hh--;
+                mm = 60;
+                if (hh < 10)
+                    hh = "0" + hh;
+            }
+            mm--;
+            if (mm < 10)
+                mm = "0" + mm;
+            ss = 59;
+        } else ss--;
+        if (ss < 10)
+            ss = "0" + ss;
+        document.getElementById("timer").innerHTML = hh+":"+mm+":"+ss;
+        setTimeout(startTimer, 1000);
+    }
 
 </script>
 

@@ -18,6 +18,7 @@ public class AssignmentDao {
     private static String findByUserIdQuery;
     private static String findByUserIdQuizIdQuery;
     private static String findAllQuery;
+    private static String check;
 
     private AssignmentDao() {
         LOGGER.info("Initializing AssignmentDao");
@@ -28,6 +29,7 @@ public class AssignmentDao {
         findByUserIdQuery = properties.getProperty("findUserQuizByUserId");
         findByUserIdQuizIdQuery = properties.getProperty("findUserQuizByUserIdQuizId");
         findAllQuery = properties.getProperty("findAllUserQuiz");
+        check = properties.getProperty("check");
     }
 
     public static AssignmentDao getInstance() {
@@ -64,6 +66,7 @@ public class AssignmentDao {
         Assignment assignment = null;
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(findByUserIdQuery)) {
+            check(connection);
             statement.setInt(1, userId);
             try(ResultSet result = statement.executeQuery()){
                 assignment = result.next() ? getUserQuiz(result, false) : null;
@@ -77,6 +80,7 @@ public class AssignmentDao {
         Assignment assignment = null;
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(findByUserIdQuizIdQuery)) {
+            check(connection);
             statement.setInt(1, userId);
             statement.setInt(2, quizId);
             try(ResultSet result = statement.executeQuery()){
@@ -89,8 +93,9 @@ public class AssignmentDao {
     public List<Assignment> findAll(Integer userId, Integer offset, Integer size) {
         LOGGER.info("Assignment getting page with offset " + offset + ", size " + size + " for userId " + userId);
         List<Assignment> res = new ArrayList<>();
-        try(Connection connection = connectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(findAllQuery);
+        try(Connection connection = connectionPool.getConnection();
+            PreparedStatement statement = connection.prepareStatement(findAllQuery)) {
+            check(connection);
             statement.setInt(1, userId);
             statement.setInt(2, offset);
             statement.setInt(3, size);
@@ -120,5 +125,11 @@ public class AssignmentDao {
         );
         if (getQuestions) assignment.setQuiz(new QuizDao().findQuizById(assignment.getQuizId()));
         return assignment;
+    }
+
+    private void check(Connection connection) {
+        try(PreparedStatement statement = connection.prepareStatement(check)) {
+            statement.execute();
+        } catch (Exception e) { LOGGER.error(e.getMessage()); }
     }
 }

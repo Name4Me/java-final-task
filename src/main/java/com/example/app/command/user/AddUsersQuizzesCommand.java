@@ -27,6 +27,10 @@ public class AddUsersQuizzesCommand implements ServletCommand {
 		LOGGER.info("AddQuestionCommand executing command");
 		Assignment assignment = new Assignment();
 		HttpSession session = request.getSession();
+		if (session.getAttribute("blocked") !=null) {
+			request.setAttribute("errorMessage", "A blocked user cannot do this.");
+			return "/";
+		}
 		if(request.getParameter("quizId") != null && session.getAttribute("userId") != null) {
 			assignment.setUserId(Math.toIntExact((int) session.getAttribute("userId")));
 			assignment.setQuizId(Integer.parseInt(request.getParameter("quizId")));

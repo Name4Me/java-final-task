@@ -23,13 +23,15 @@ public class GetMainPageCommand implements ServletCommand {
         LOGGER.info("Executing command");
         if(request.getParameter("locale") != null) {
             String locale = request.getParameter("locale");
-            System.out.println(locale);
             switch (locale) {
                 case "en":
                     request.getSession().setAttribute("locale", "en");
                     break;
                 case "ru":
                     request.getSession().setAttribute("locale", "ru");
+                    break;
+                case "ua":
+                    request.getSession().setAttribute("locale", "ua");
                     break;
             }
         }

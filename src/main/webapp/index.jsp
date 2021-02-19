@@ -12,14 +12,55 @@
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true">${errorMessage}</span>
             </div>
         </c:if>
-        <h1>Hello World!</h1>
     </div>
+    <div class="container" id="quizzes"></div>
 
 
     <script>
+        const content = document.getElementById('quizzes');
+        updateListeners();
+        $.get("${pageContext.request.contextPath}/controller/user/quizzes",
+            response => {
+                response = response.replace(/\s*<(head|header)[^>]*>[\S\s]*?<\/(head|header)>\s*/gm,'')
+                    .replace(/\s*<(script)[^>]*>[\S\s]*?<\/(script)>\s*/,'')
+                    .replace(/<\/?(html|body)>/gm,'');
+            const code = $('<div>'+response+'</div>');
+            content.innerHTML = code.find('div.container')[1].innerHTML;
+            updateListeners();
+        });
+
         <c:if test="${errorMessage != null}">
             window.history.pushState("error", "Testing", "${pageContext.request.contextPath}/");
         </c:if>
+        function filter() {
+            const svg = $(this);
+            const th = svg.closest("th");
+            const sortField = th.data("name");
+            let sortOrder = 'desc';
+            if (svg.hasClass("bi-arrow-down-up")) {
+                $("th:has(.bi-arrow-down, .bi-arrow-up)").append($(".arrows .bi-arrow-down-up").clone())
+                $("th>.bi-arrow-down, th>.bi-arrow-up").remove();
+            }
+            if (svg.hasClass("bi-arrow-down-up") || svg.hasClass("bi-arrow-up")) {
+                th.append($(".arrows .bi-arrow-down").clone());
+            }
+            if (svg.hasClass("bi-arrow-down")) {
+                th.append($(".arrows .bi-arrow-up").clone());
+                sortOrder = 'asc';
+            }
+            svg.remove();
+            $.post("${pageContext.request.contextPath}/controller/user/quizzes", {
+                    sortOrder: sortOrder,
+                    sortField: sortField,
+                    isJson: false
+                },
+                response => {content.innerHTML = response; updateListeners();});
+        }
+
+
+        function updateListeners() {
+            $(".bi-arrow-down-up, .bi-arrow-down, .bi-arrow-up").off("click").on("click", filter);
+        }
     </script>
     </body>
 </html>

@@ -30,7 +30,7 @@
         <div class="score">&nbsp;${quiz.score}%</div>
     </div>
     </c:if>
-    <c:if test="${quiz.status == AssignmentStatus.NotStarted}">
+    <c:if test="${quiz.status == AssignmentStatus.NotStarted && sessionScope.blocked == null}">
         <a class="btn btn-outline-success start" data-id="${quiz.quizId}" href="${pageContext.request.contextPath}/controller/user/assignments/assignment?quizId=${quiz.quizId}"> Start </a>
     </c:if>
     <c:if test="${quiz.status != AssignmentStatus.NotStarted}">

@@ -2,6 +2,7 @@ package com.example.app.command;
 
 import com.example.app.dao.UserDao;
 import com.example.app.model.user.User;
+import com.example.app.model.user.UserStatus;
 import com.example.app.service.UserService;
 import com.example.app.util.Password;
 import com.google.gson.JsonObject;
@@ -34,6 +35,10 @@ public class LoginCommand implements ServletCommand {
 				session.setAttribute("userId", user.getId());
 				session.setAttribute("authenticated", true);
 				session.setAttribute("role", user.getUserType().name());
+				if (user.getUserStatus() == UserStatus.BLOCKED){
+					session.setAttribute("blocked", true);
+				}
+
 				json.addProperty("result", true);
 			}
 			else {

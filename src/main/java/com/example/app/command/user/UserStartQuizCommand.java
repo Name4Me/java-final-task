@@ -37,8 +37,12 @@ public class UserStartQuizCommand implements ServletCommand {
 
         try {
             HttpSession session = request.getSession();
+            if (session.getAttribute("blocked") !=null) {
+                request.setAttribute("errorMessage", "A blocked user cannot do this.");
+                return "/";
+            }
             int quizId = Integer.parseInt(request.getParameter("quizId"));
-            int userId = Math.toIntExact((int) session.getAttribute("userId"));
+            int userId = (int) session.getAttribute("userId");
 
             Assignment assignment = assignmentService.getUserQuizByUserIdQuizId(userId, quizId,false);
 

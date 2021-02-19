@@ -60,8 +60,8 @@ public class UserAssignmentCommand implements ServletCommand {
                 assignment.setScore((int) score);
                 assignmentService.updateUserQuiz(assignment);
             }
-
             Assignment assignment = assignmentService.getUserQuizByUserIdQuizId( userId, quizId, true);
+
             request.setAttribute("isJson", false);
             request.setAttribute("quiz", assignment);
         }

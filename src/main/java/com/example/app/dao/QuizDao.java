@@ -120,11 +120,18 @@ public class QuizDao {
     public List<Quiz> findAllForUserWithSort(Integer userId, String colName, String direction, Integer offset, Integer size) {
         LOGGER.info("Getting findAllForUser");
         List<Quiz> res = new ArrayList<>();
+        String query = userId == 0 ? findAllQuery : findAllQuizzesForUser;
         try(Connection connection = connectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement(findAllQuizzesForUser.replaceAll("id asc", colName+" "+direction))) {
-            statement.setInt(1, userId);
-            statement.setInt(2, offset);
-            statement.setInt(3, size);
+            PreparedStatement statement = connection.prepareStatement(query.replaceAll("id asc", colName+" "+direction))) {
+            if (userId == 0) {
+                statement.setInt(1, offset);
+                statement.setInt(2, size);
+            } else {
+                statement.setInt(1, userId);
+                statement.setInt(2, offset);
+                statement.setInt(3, size);
+            }
+
             try(ResultSet result = statement.executeQuery()){ res = getQuizzes(result); }
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
         return res;

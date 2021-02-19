@@ -37,8 +37,10 @@ public class UserQuizzesCommand implements ServletCommand {
             direction = "asc desc".contains(direction) ? direction : "asc";
 
             HttpSession session = request.getSession();
+
+            int userId =  session.getAttribute("userId") == null ? 0 : (int) session.getAttribute("userId");
             Page<Quiz> page = quizService.getPageByUserIdWithSort(
-                    Math.toIntExact((int) session.getAttribute("userId")), colName, direction,
+                    userId, colName, direction,
                     request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page")),
                     request.getParameter("size") == null ? 5 :Integer.parseInt(request.getParameter("size")));
             request.setAttribute("page", page);

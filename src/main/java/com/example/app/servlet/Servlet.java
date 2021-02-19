@@ -32,11 +32,10 @@ public class Servlet extends HttpServlet {
 		String addr = commandManager.getMappting(request);
 		LOGGER.info("Processing addr: "+addr);
 		System.out.println(addr);
-
+		String shortAddr = addr.replaceAll("/controller","");
 		LOGGER.info("Processing get request: "+addr);
 		if((request.getSession().getAttribute("authenticated") == null ||
-				request.getSession().getAttribute("authenticated").equals(false)) && !(addr == null || "/controller/login".equals(addr)
-				|| "/controller/register".equals(addr) || "/controller/setLocale".equals(addr))) {
+				request.getSession().getAttribute("authenticated").equals(false)) && !("/login /register /setLocale / /user/quizzes".contains(shortAddr))) {
 			try {
 				response.sendRedirect(request.getContextPath() + "/controller/login");
 				return;

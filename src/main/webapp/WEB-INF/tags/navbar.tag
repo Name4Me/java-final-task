@@ -17,19 +17,19 @@
                         <c:set var = "ua" value="ua"/>
                         <c:set var = "en" value="en"/>
                         <c:if test="${(sessionScope.locale == null || localeCode.equals(ru))}">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="flag-icon-css-ua" viewBox="0 0 640 480" class="flag-icon">
+                                <g fill-rule="evenodd" stroke-width="1pt">
+                                    <path fill="#ffd500" d="M0 0h640v480H0z"/>
+                                    <path fill="#005bbb" d="M0 0h640v240H0z"/>
+                                </g>
+                            </svg>
+                        </c:if>
+                        <c:if test="${(sessionScope.locale != null && localeCode.equals(ua))}">
                             <svg xmlns="http://www.w3.org/2000/svg" id="flag-icon-css-ru" viewBox="0 0 640 480" class="flag-icon">
                                 <g fill-rule="evenodd" stroke-width="1pt">
                                     <path fill="#fff" d="M0 0h640v480H0z"/>
                                     <path fill="#0039a6" d="M0 160h640v320H0z"/>
                                     <path fill="#d52b1e" d="M0 320h640v160H0z"/>
-                                </g>
-                            </svg>
-                        </c:if>
-                        <c:if test="${(sessionScope.locale != null && localeCode.equals(ua))}">
-                            <svg xmlns="http://www.w3.org/2000/svg" id="flag-icon-css-ua" viewBox="0 0 640 480" class="flag-icon">
-                                <g fill-rule="evenodd" stroke-width="1pt">
-                                    <path fill="#ffd500" d="M0 0h640v480H0z"/>
-                                    <path fill="#005bbb" d="M0 0h640v240H0z"/>
                                 </g>
                             </svg>
                         </c:if>
@@ -81,9 +81,6 @@
                             <fmt:message key="russian" bundle="${bundle}"/>
                         </a>
                     </div>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <c:if test="${sessionScope.authenticated == null}">
                     <li class="nav-item">
@@ -137,3 +134,15 @@
         </div>
     </nav>
 </header>
+<div class="container">
+    <c:if test="${sessionScope.blocked != null}">
+        <div class="row alert alert-danger" role="alert" style="display: block">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"><fmt:message key="blockMsg" bundle="${bundle}"/></span>
+        </div>
+    </c:if>
+    <c:if test="${errorMessage != null}">
+        <div class="row alert alert-danger" role="alert" style="display: block">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true">${errorMessage}</span>
+        </div>
+    </c:if>
+</div>

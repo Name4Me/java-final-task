@@ -4,7 +4,7 @@
 
 <%--Localization--%>
 <c:if test="${sessionScope.locale == null}">
-    <fmt:setLocale value="ru"/>
+    <fmt:setLocale value="ua"/>
 </c:if>
 <c:if test="${sessionScope.locale != null}">
     <fmt:setLocale value="${sessionScope.locale}"/>

@@ -3,7 +3,9 @@
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 <c:set var="title">:&nbsp;<fmt:message key="quizzes" bundle="${bundle}"/></c:set>
 <html>
-<%@ include file="/WEB-INF/jspf/head.jspf" %>
+    <head>
+        <%@ include file="/WEB-INF/jspf/head.jspf" %>
+    </head>
 <body>
 <navbar:navbar/>
 <div class="container">

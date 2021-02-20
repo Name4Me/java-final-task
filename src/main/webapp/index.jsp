@@ -3,7 +3,9 @@
 
 <!DOCTYPE html>
 <html>
-<%@ include file="/WEB-INF/jspf/head.jspf" %>
+    <head>
+        <%@ include file="/WEB-INF/jspf/head.jspf" %>
+    </head>
     <body>
     <navbar:navbar/>
     <div class="container">

@@ -5,48 +5,46 @@
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 <!DOCTYPE html>
 <html>
-<%@ include file="/WEB-INF/jspf/head.jspf" %>
-<style>
-    .table thead th {
-        text-align: center;
-        vertical-align: middle;
-    }
+    <head>
+        <%@ include file="/WEB-INF/jspf/head.jspf" %>
+        <style>
+            .table thead th {
+                text-align: center;
+                vertical-align: middle;
+            }
 
-    button.add {
-        float: right;
-    }
+            button.add {
+                float: right;
+            }
 
-    .new-choice {
-        margin: 10px 0;
-        position: relative;
-    }
+            .new-choice {
+                margin: 10px 0;
+                position: relative;
+            }
 
-    .loader {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        text-align: center;
-        padding-top: 3px;
-    }
+            .loader {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                text-align: center;
+                padding-top: 3px;
+            }
 
-    .disabled {
-        pointer-events: none;
-        opacity: 0.4;
-    }
+            .disabled {
+                pointer-events: none;
+                opacity: 0.4;
+            }
 
-    .back {
-        width: auto;
-        float: left;
-        padding-top: 22px;
-        padding-left: 20px;
-    }
-</style>
+            .back {
+                width: auto;
+                float: left;
+                padding-top: 22px;
+                padding-left: 20px;
+            }
+        </style>
+    </head>
 <body>
-
 <navbar:navbar/>
-
-<!-- Page Content -->
-
 <div class="container">
     <div class="row">
         <div class="col-md-6">
@@ -203,9 +201,6 @@
         </ul>
     </div>
 </div>
-<!-- /.container -->
-
-
 <script>
     $(function () {
         const addBtn = $(".add");

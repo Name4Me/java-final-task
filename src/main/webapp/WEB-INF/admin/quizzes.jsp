@@ -3,37 +3,37 @@
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 <!DOCTYPE html>
 <html>
-<%@ include file="/WEB-INF/jspf/head.jspf" %>
+    <head>
+        <%@ include file="/WEB-INF/jspf/head.jspf" %>
+        <style>
+            .table thead th {
+                text-align: center;
+                vertical-align: middle;
+            }
 
+            button.add {
+                float: right;
+            }
 
-<style>
-    .table thead th {
-        text-align: center;
-        vertical-align: middle;
-    }
+            .new-quiz {
+                margin: 10px 0;
+                position: relative;
+            }
 
-    button.add {
-        float: right;
-    }
+            .loader {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                text-align: center;
+                padding-top: 3px;
+            }
 
-    .new-quiz {
-        margin: 10px 0;
-        position: relative;
-    }
-
-    .loader {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        text-align: center;
-        padding-top: 3px;
-    }
-
-    .disabled {
-        pointer-events: none;
-        opacity: 0.4;
-    }
-</style>
+            .disabled {
+                pointer-events: none;
+                opacity: 0.4;
+            }
+        </style>
+    </head>
 <body>
 <navbar:navbar/>
 <div class="container">
@@ -221,9 +221,6 @@
         </ul>
     </div>
 </div>
-<!-- /.container -->
-
-
 <script>
     $(function () {
         const addBtn = $(".add");
@@ -328,6 +325,5 @@
     });
 
 </script>
-
 </body>
 </html>

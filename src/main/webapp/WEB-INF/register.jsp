@@ -39,28 +39,30 @@
 <script>
 
     <fmt:message key="passwordMatchFail" bundle="${bundle}" var="msg"/>
-    const msg = "${msg}";
+    <fmt:message key="passwordEmailIncorect" bundle="${bundle}" var="msgEmail"/>
     const password = document.getElementById("password");
     const confirm_password = document.getElementById("confirm_password");
-
-    function validatePassword() {
-        if (password.value !== confirm_password.value) {
-            confirm_password.setCustomValidity(msg);
-        } else { confirm_password.setCustomValidity(''); }
-    }
+    const email = document.getElementById("inputEmail");
+    const redirect = () =>  window.location.href = "${pageContext.request.contextPath}";
 
     password.onchange = validatePassword;
     confirm_password.onkeyup = validatePassword;
-    const redirect = () =>  window.location.href = "${pageContext.request.contextPath}";
+    email.onchange = validateEmail;
 
-    $(function () {
+    function validatePassword() {
+        confirm_password.setCustomValidity(password.value !== confirm_password.value ? '${msg}' : '');
+    }
 
-        $(".pure-form").on("submit", () => {
-            $(".submit").prop('disabled', true);
-            $.post($(this).attr("action"), $(this).serialize(),
-                data => { data.result ? redirect() : $(".submit").prop('disabled', false) && $(".alert").show(); }, "json");
-            return false;
-        });
+    function validateEmail() {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email.value).toLowerCase());
+    }
+
+    $(".pure-form").on("submit", () => {
+        $(".submit").prop('disabled', true);
+        $.post($(this).attr("action"), $(this).serialize(),
+            data => { data.result ? redirect() : $(".submit").prop('disabled', false) && $(".alert").show(); }, "json");
+        return false;
     });
 
 </script>

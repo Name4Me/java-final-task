@@ -13,7 +13,7 @@
         <fmt:message key="loginFail" bundle="${bundle}"/>
     </div>
     <div class="row">
-        <form class="form-login" accept-charset="UTF-8" role="form" method="post" action="${pageContext.request.contextPath}/controller/login">
+        <form class="form-login" id="loginForm" accept-charset="UTF-8" role="form" method="post" action="${pageContext.request.contextPath}/controller/login">
             <h1 class="h3 mb-3 font-weight-normal"><fmt:message key="signIn" bundle="${bundle}"/></h1>
             <div class="form-group">
                 <label for="inputEmail" class="sr-only">Email address</label>
@@ -35,20 +35,25 @@
 
 
 <script>
-    $(function() {
-        $(".form-login").on('submit',
-            function(){
-                $.post( $(this).attr("action"),
-                    $(this).serialize(),
-                    function(data) {
-                        if (data.result) {
-                            window.location.href="${pageContext.request.contextPath}";
-                        } else { $(".alert").show(); }
-                    },
-                    "json");
-                return false;
-            });
-    });
+    const loginForm = $("#loginForm");
+    const email = document.getElementById("inputEmail");
+    email.onchange = validateEmail;
+
+    function validateEmail() {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email.value).toLowerCase());
+    }
+
+    loginForm.on('submit', login);
+
+    function login(){
+        $.post( loginForm.attr("action"), loginForm.serialize(), processResponse, "json");
+        return false;
+    }
+
+    function processResponse(data){
+        if (data.result) window.location.href="${pageContext.request.contextPath}"; else $(".alert").show();
+    }
 
 </script>
 </body>

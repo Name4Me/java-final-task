@@ -1,0 +1,51 @@
+.table thead th{
+    text-align: center;
+    vertical-align: middle;
+}
+.questions>li {
+    padding-left: 25px;
+    text-align: center;
+}
+.questions>li::before {
+    position: absolute;
+    content: "";
+    background-color: rgba(255,0,0,.5);
+    display: block;
+    border-radius: 50%;
+    width: 5px;
+    height: 5px;
+    top: 22px;
+    left: 15px;
+}
+
+p { color:  navy; }
+pre code {
+    background-color: #eee;
+    border: 1px solid #999;
+    display: block;
+    padding: 20px;
+    margin: auto;
+}
+.container{
+    margin: auto;
+}
+div.question{
+    border: 1px solid #999;
+    display: flow-root;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+}
+input{
+    margin: 5px 10px 0 20px;
+    display: block;
+    float: left;
+}
+label{
+    display: block;
+    width: 90%;
+    float: left;
+}
+h3{
+    margin: 0 0 10px 20px;
+}

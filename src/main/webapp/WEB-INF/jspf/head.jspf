@@ -20,4 +20,8 @@
 	<c:if test="${isSignIn}">
 		<link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/assets/css/login.css"/>
 	</c:if>
+	<c:if test="${isTest}"><%--@elvariable id="assignment" type="com.example.app.model.assignment.Assignment"--%>
+		<link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/assets/css/quiz.css"/>
+		<script src="${pageContext.request.contextPath}/assets/js/quiz.js"></script>
+	</c:if>
 </head>

@@ -123,9 +123,9 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/controller/logout"><fmt:message key="signOut" bundle="${bundle}"/></a>
                     </li>
                 </c:if>
-                <c:if test="${isTest}">
+                <c:if test="${isTest}"><%--@elvariable id="assignment" type="com.example.app.model.assignment.Assignment"--%>
                     <li class="nav-item" style="width: auto">
-                        <span id="timer" style="float:right; color: #4af; font-size: 150%; font-weight: bold;">00:00:00</span>
+                        <span id="timer" style="float:right; color: #4af; font-size: 150%; font-weight: bold;">${assignment.quiz.time < 10 ? 0 : ''}${assignment.quiz.time}:00</span>
                     </li>
                 </c:if>
 

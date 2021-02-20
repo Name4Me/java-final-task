@@ -8,30 +8,10 @@
 <!DOCTYPE html>
 <html>
 <%@ include file="/WEB-INF/jspf/head.jspf" %>
-
-
     <style>
         .table thead th{
             text-align: center;
             vertical-align: middle;
-        }
-        button.add{
-            float: right;
-        }
-        .new-quiz{
-            margin: 10px 0;
-            position: relative;
-        }
-        .loader{
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            text-align: center;
-            padding-top: 3px;
-        }
-        .disabled {
-            pointer-events: none;
-            opacity: 0.4;
         }
         .questions>li {
             padding-left: 25px;
@@ -82,16 +62,13 @@
         }
     </style>
 <body>
-
 <navbar:navbar isTest="true"/>
-
-<!-- Page Content -->
-
 <div class="container" id="assignments">
     <div class="row">
         <div class="col-md-2">
             <ul class="list-group questions" style="list-style-position: inside;">
-                <c:forEach items="${quiz.quiz.questions}" var="question" varStatus="loopCounter">
+                <%--@elvariable id="assignment" type="com.example.app.model.assignment.Assignment"--%>
+                <c:forEach items="${assignment.quiz.questions}" var="question" varStatus="loopCounter">
                     <li class="list-group-item question_item" data-id="${question.id}">
                         <c:out value="${loopCounter.count}"/>
                         <fmt:message key="question" bundle="${bundle}"/>
@@ -100,12 +77,10 @@
             </ul>
         </div>
         <div class="col-md-8 question_content">
-
         </div>
-
     </div>
     <div>
-        <c:forEach items="${quiz.quiz.questions}" var="question" varStatus="loopCounter">
+        <c:forEach items="${assignment.quiz.questions}" var="question" varStatus="loopCounter">
             <div style="display: none" class="question" id="question${question.id}">
                 <h3><c:out value="${question.text}" escapeXml="true"/></h3>
                 <hr>
@@ -120,34 +95,35 @@
             </div>
         </c:forEach>
     </div>
-    <button class="btn btn-outline-success complete" data-id="${quiz.quizId}"> <fmt:message key="complete" bundle="${bundle}"/> </button>
+    <button id="completeBtn" class="btn btn-outline-success complete" data-id="${assignment.quizId}">
+        <fmt:message key="complete" bundle="${bundle}"/>
+    </button>
 </div>
-<!-- /.container -->
-
-
 <script>
-    let hours = Math.floor(('${quiz.quiz.time}'*1)/60);
-    let minutes = Math.floor(('${quiz.quiz.time}'*1)%60);
-    console.log("hours: "+hours);
-    console.log("minutes: "+minutes);
+    const timer = document.getElementById("timer");
+    const completeBtn = $('#completeBtn');
+    let minutes = ${assignment.quiz.time};
+    let seconds = 0;
+
     function complete(){
         const quizId = this.dataset.id;
         $.post("${pageContext.request.contextPath}/controller/user/assignments/assignment", {quizId : quizId, action : "complete"},
             function (){window.location.href="${pageContext.request.contextPath}/controller/user/assignments";});
     }
-    //search.onkeyup = event => event.key === 'Enter' && getArticles();
+
     function updateListener(){
-        $(".complete").off('click').on('click', complete);
+        completeBtn.off('click').on('click', complete);
         $("li.question_item").off('click').on('click', showQuestion);
         $(".answer").off('change').on('change', saveAnswer);
     }
+
     function showQuestion(){
         const id = this.dataset.id
         $(".question_content").html($('div#question'+id).html());
         updateListener();
     }
 
-    function getResult(e){
+    function getResult(){
         const inputs = $("div.question_content").find("input");
         let result = 0;
         $.each(inputs, function(index, element){ result += (element.checked ? 1 : 0) << index });
@@ -159,36 +135,21 @@
         const result = getResult(this);
         $.post("${pageContext.request.contextPath}/controller/user/assignments/assignment", {id : id, result : result,  action : "saveAnswer"} , function(){ console.log("+")});
     }
+
     updateListener();
-    document.getElementById("timer").innerHTML = (hours.toString().length === 1 ? "0" + hours: hours) + ":" + minutes + ":00";
+
+    const updateTimer = () => {
+        timer.innerHTML = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+    };
+
+
     startTimer();
     function startTimer() {
-        var timer = document.getElementById("timer");
-        var time = timer.innerHTML;
-        var arr = time.split(":");
-        var hh = arr[0];
-        var mm = arr[1];
-        var ss = arr[2];
-        if (ss == 0) {
-            if (mm == 0) {
-                if (hh == 0) {
-                    alert("Время вышло");
-                    window.location.reload();
-                    return;
-                }
-                hh--;
-                mm = 60;
-                if (hh < 10)
-                    hh = "0" + hh;
-            }
-            mm--;
-            if (mm < 10)
-                mm = "0" + mm;
-            ss = 59;
-        } else ss--;
-        if (ss < 10)
-            ss = "0" + ss;
-        document.getElementById("timer").innerHTML = hh+":"+mm+":"+ss;
+        if (--seconds === 0) {
+            if (--minutes === 0) return completeBtn.click();
+            seconds = 59;
+        }
+        updateTimer();
         setTimeout(startTimer, 1000);
     }
 

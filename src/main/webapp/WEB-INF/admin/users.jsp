@@ -22,8 +22,8 @@
                         <tbody>
                             <c:forEach items="${page.items}" var="user">
                                 <tr>
-                                    <td>${user.email}</td>
-                                    <td>${user.userStatus}</td>
+                                    <td><c:out value="${user.email}" escapeXml="true"/></td>
+                                    <td><c:out value="${user.userStatus}" escapeXml="true"/></td>
                                     <td>
                                         <a type="button" class="btn btn-outline-success" href="${pageContext.request.contextPath}/controller/admin/user?id=${user.id}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">

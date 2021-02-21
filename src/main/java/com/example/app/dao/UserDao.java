@@ -114,9 +114,11 @@ public class UserDao{
 		List<User> res = new ArrayList<>();
 		try(Connection connection = connectionPool.getConnection();
 			PreparedStatement statement = connection.prepareStatement(findPageByUserType)) {
+			LOGGER.info(findPageByUserType);
 			statement.setInt(1, userType.ordinal());
 			statement.setInt(2, offset);
 			statement.setInt(3, size);
+			LOGGER.info(statement.toString());
 			try(ResultSet result = statement.executeQuery()) { res = getUsers(result); }
 		} catch (Exception e) { LOGGER.error(e.getMessage()); }
 		return res;
@@ -170,6 +172,7 @@ public class UserDao{
 						resultSet.getBytes("password"),
 						UserType.values()[resultSet.getInt("userType")],
 						UserStatus.values()[resultSet.getInt("status")]);
+				LOGGER.info("getUser id: "+user.getId()+" email: "+user.getEmail());
 			}
 		} catch (Exception e) { LOGGER.error(e.getMessage()); }
 		return user;

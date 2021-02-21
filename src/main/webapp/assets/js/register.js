@@ -23,7 +23,7 @@ $(function() {
     $(".registerForm").on("submit", () => {
         $(".submit").prop('disabled', true);
         $.post(registerForm.attr("action"), registerForm.serialize(),
-            data => { data.result ? redirect() : $(".submit").prop('disabled', false) && $(".alert").show(); }, "json");
+            data => { data ? redirect() : $(".submit").prop('disabled', false) && $(".alert").show(); }, "json");
         return false;
     });
 });

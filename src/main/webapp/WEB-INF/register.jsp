@@ -5,7 +5,6 @@
     <head>
         <%@ include file="/WEB-INF/jspf/head.jspf" %>
         <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/assets/css/register.css"/>
-        <script src="${pageContext.request.contextPath}/assets/js/register.js"></script>
     </head>
     <body class="text-center">
         <navbar:navbar/>
@@ -17,7 +16,7 @@
             <div class="row">
                 <input type="hidden" id="msgEmail" value="<fmt:message key="emailWarning" bundle="${bundle}"/>">
                 <input type="hidden" id="msgPass" value="<fmt:message key="passwordMatchFail" bundle="${bundle}"/>">
-                <form class="registerForm" action="${pageContext.request.contextPath}/controller/register">
+                <form class="registerForm" id="registerForm" action="${pageContext.request.contextPath}/controller/register">
                     <h1 class="h3 mb-3 font-weight-normal"><fmt:message key="signup" bundle="${bundle}"/></h1>
                     <%@ include file="/WEB-INF/jspf/login.jspf" %>
                     <div class="form-group">
@@ -30,6 +29,7 @@
                            value="<fmt:message key="signup" bundle="${bundle}"/>">
                 </form>
             </div>
+            <script src="${pageContext.request.contextPath}/assets/js/register.js"></script>
         </div>
     </body>
 </html>

@@ -1,4 +1,4 @@
-CREATE TABLE app.users_quizzes (
+CREATE TABLE app.assignments (
                                    userId int NOT NULL,
                                    quizId int NOT NULL,
                                    score int NOT NULL DEFAULT 0,
@@ -8,21 +8,17 @@ CREATE TABLE app.users_quizzes (
                                    startedAt timestamp NULL DEFAULT NULL,
                                    finishedAt timestamp NULL DEFAULT NULL,
                                    PRIMARY KEY (userId, quizId)
-)
-    ENGINE = INNODB,
-    AVG_ROW_LENGTH = 8192,
-    CHARACTER SET utf8mb4,
-    COLLATE utf8mb4_0900_ai_ci;
+);
 
-ALTER TABLE app.users_quizzes
+ALTER TABLE app.assignments
     ADD INDEX users_quizes_ibfk_2 (quizId);
 
-ALTER TABLE app.users_quizzes
-    ADD CONSTRAINT users_quizzes_ibfk_1 FOREIGN KEY (userId)
+ALTER TABLE app.assignments
+    ADD CONSTRAINT assignments_ibfk_1 FOREIGN KEY (userId)
         REFERENCES app.users (id) ON DELETE CASCADE;
 
-ALTER TABLE app.users_quizzes
-    ADD CONSTRAINT users_quizzes_ibfk_2 FOREIGN KEY (quizId)
+ALTER TABLE app.assignments
+    ADD CONSTRAINT assignments_ibfk_2 FOREIGN KEY (quizId)
         REFERENCES app.quizzes (id) ON DELETE CASCADE;
 
 --

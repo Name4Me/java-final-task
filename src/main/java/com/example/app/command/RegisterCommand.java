@@ -26,9 +26,10 @@ public class RegisterCommand implements ServletCommand {
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.info("RegisterCommand executing command");
 		boolean result = false;
-		if(request.getParameter("firstName") != null &&
-			request.getParameter("email") != null && request.getParameter("password") != null &&
-			userService.checkEmailAvailability(request.getParameter("email"))){
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		if(email != null && password != null &&
+			userService.checkEmailAvailability(email)){
 			LOGGER.info("New user registration");
 			User user = new User(
 					request.getParameter("email"),

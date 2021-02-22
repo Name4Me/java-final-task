@@ -68,7 +68,7 @@ public class UserStartQuizCommand implements ServletCommand {
             session.setAttribute("answers", answers);
             session.setAttribute("quizId", quizId);
             request.setAttribute("isJson", false);
-            request.setAttribute("quiz", assignment);
+            request.setAttribute("assignment", assignment);
             assignment.setStatus(AssignmentStatus.Started);
             assignmentService.updateUserQuiz(assignment);
         }

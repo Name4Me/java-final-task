@@ -46,9 +46,12 @@
                     </div>
                 </c:forEach>
             </div>
-            <button id="completeBtn" class="btn btn-outline-success complete" data-id="${assignment.quizId}">
-                <fmt:message key="complete" bundle="${bundle}"/>
-            </button>
+            <form id="saveForm" action="${pageContext.request.contextPath}/controller/user/assignments">
+                <button id="completeBtn" class="btn btn-outline-success complete" data-id="${assignment.quizId}">
+                    <fmt:message key="complete" bundle="${bundle}"/>
+                </button>
+            </form>
+
         </div>
     </body>
 </html>

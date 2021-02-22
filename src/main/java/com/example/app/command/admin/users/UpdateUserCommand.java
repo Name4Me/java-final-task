@@ -40,7 +40,6 @@ public class UpdateUserCommand implements ServletCommand {
 					doUpdate = true;
 				}
 				if (status != null && "ACTIVE BLOCKED".contains(status) && !user.getUserStatus().toString().equals(status)){
-					System.out.println(user.getUserStatus().toString().equals(status));
 					user.setUserStatus("ACTIVE".equals(status) ? UserStatus.ACTIVE : UserStatus.BLOCKED);
 					doUpdate = true;
 				}

@@ -37,7 +37,9 @@ public class UserAssignmentCommand implements ServletCommand {
             int quizId = request.getParameter("quizId") == null ? session.getAttribute("quizId") == null ? 0 :
                 (int) session.getAttribute("quizId") : Integer.parseInt(request.getParameter("quizId"));
             int userId = session.getAttribute("userId") == null ? 0 : (int) session.getAttribute("userId");
+
             if (request.getParameter("action") != null && "complete".equals(request.getParameter("action"))){
+                System.out.println("complete");
                 Assignment assignment = assignmentService.getUserQuizByUserIdQuizId(userId, quizId, false);
                 assignment.setStatus(AssignmentStatus.Completed);
                 assignmentService.updateUserQuiz(assignment);
@@ -63,7 +65,7 @@ public class UserAssignmentCommand implements ServletCommand {
             Assignment assignment = assignmentService.getUserQuizByUserIdQuizId( userId, quizId, true);
 
             request.setAttribute("isJson", false);
-            request.setAttribute("quiz", assignment);
+            request.setAttribute("assignment", assignment);
         }
         catch (Exception e) { LOGGER.info("Couldn't parse request parameters " + e.getMessage()); }
         return assignmentPage;//new Gson().toJson(userQuiz);

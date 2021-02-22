@@ -7,7 +7,6 @@ import com.example.app.properties.MappingProperties;
 import com.example.app.service.AssignmentService;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,7 +24,6 @@ public class UserAssignmentsCommand implements ServletCommand {
         assignmentService = new AssignmentService(AssignmentDao.getInstance());
         MappingProperties properties = MappingProperties.getInstance();
         page = properties.getProperty("assignmentsPage");
-        System.out.println(page);
     }
 
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -39,7 +37,6 @@ public class UserAssignmentsCommand implements ServletCommand {
             request.setAttribute("page", page);
         }
         catch (Exception e) { LOGGER.info("Couldn't parse request parameters " + e.getMessage()); }
-        System.out.println("page: " + page);
         return page;
     }
 }

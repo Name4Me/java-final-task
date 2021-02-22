@@ -70,9 +70,9 @@ public class CommandManager {
 
         postCommands.put("/controller/login", new LoginCommand());
         postCommands.put("/controller/register", new RegisterCommand());
-        postCommands.put("/controller/admin/user/block", new BlockUserCommand());
-        postCommands.put("/controller/admin/user/unblock", new UnBlockUserCommand());
+
         postCommands.put("/controller/admin/user/update", new UpdateUserCommand());
+
         postCommands.put("/controller/admin/quiz/add", new AddQuizCommand());
         postCommands.put("/controller/admin/quiz/delete", new DeleteQuizCommand());
         postCommands.put("/controller/admin/quiz/update", new UpdateQuizCommand());

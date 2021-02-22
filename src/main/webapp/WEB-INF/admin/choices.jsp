@@ -47,13 +47,13 @@
 <navbar:navbar/>
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <h1 style="width: auto; float: left"><fmt:message key="choices" bundle="${bundle}"/></h1>
             <a class="back"
                href="${pageContext.request.contextPath}/controller/admin/questions/?quizId=${quizId}&page=1"><fmt:message
                     key="back" bundle="${bundle}"/></a>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <button type="button" class="btn btn-outline-success add">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      class="bi bi-plus-square" viewBox="0 0 16 16">
@@ -64,7 +64,7 @@
             </button>
         </div>
     </div>
-    <form id="save-form">
+    <form id="saveForm">
         <div class="row new-choice" style="display: none;">
             <div class="loader" style="display: none;">
                 <div class="spinner-border text-success"></div>
@@ -74,7 +74,7 @@
                        required>
                 <label for="text" class="sr-only"><fmt:message key="choice" bundle="${bundle}" var="choice"/></label>
                 <textarea name="text" cols="50" rows="3" class="form-control" placeholder="${choice}"
-                          id="text"></textarea>
+                          id="text" required></textarea>
             </div>
             <div class="col-md-2">
                 <label for="isCorrect" class="sr-only"><fmt:message key="correct" bundle="${bundle}"/></label>
@@ -203,6 +203,7 @@
 </div>
 <script>
     $(function () {
+        const saveForm = document.getElementById("saveForm");
         const addBtn = $(".add");
         const submitBtn = $(".add-submit, .update-submit");
         updateListeners();
@@ -259,10 +260,9 @@
 
 
         submitBtn.on("click", function () {
-            const applicationForm = document.getElementById("save-form");
-            if (!applicationForm.checkValidity()) {
-                applicationForm.reportValidity();
-                return;
+            if (!saveForm.checkValidity()) {
+                saveForm.reportValidity();
+                return false;
             }
             $(this).prop('disabled', true);
             $(".new-choice").toggleClass('disabled');
@@ -276,7 +276,7 @@
 
         function update() {
             $.post("${pageContext.request.contextPath}/controller/admin/choice/update",
-                $("#save-form").serialize() + '&id=' + $(".new-choice").data("id"), update_row, "json")
+                $("#saveForm").serialize() + '&id=' + $(".new-choice").data("id"), update_row, "json")
                 .fail(function () {
                     console.log("error");
                 })
@@ -285,7 +285,7 @@
 
         function add() {
             $.post("${pageContext.request.contextPath}/controller/admin/choice/add",
-                $("#save-form").serialize(), add_row, "json")
+                $("#saveForm").serialize(), add_row, "json")
                 .fail(function () {
                     console.log("error");
                 })

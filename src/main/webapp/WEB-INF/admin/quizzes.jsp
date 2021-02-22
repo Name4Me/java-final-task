@@ -52,7 +52,7 @@
             </button>
         </div>
     </div>
-    <form id="save-form">
+    <form id="saveForm">
         <div class="row new-quiz" style="display: none;">
             <div class="loader" style="display: none;">
                 <div class="spinner-border text-success"></div>
@@ -60,17 +60,16 @@
             <div class="col-md-2">
                 <label for="name" class="sr-only"><fmt:message key="name" bundle="${bundle}" var="name"/></label>
                 <input type="text" class="form-control" placeholder="${name}"
-                       name="name" id="name">
+                       name="name" id="name" required>
             </div>
             <div class="col-md-4">
                 <label for="description" class="sr-only"><fmt:message key="description" bundle="${bundle}" var="description"/></label>
-                <input type="text" class="form-control"
-                       placeholder="${description}"
-                       name="description" id="description">
+                <input type="text" class="form-control" placeholder="${description}" name="description"
+                       id="description" required>
             </div>
             <div class="col-md-2">
                 <label for="difficulty" class="sr-only"><fmt:message key="difficulty" bundle="${bundle}" var="difficulty"/></label>
-                <select class="form-control" name="difficulty" id="difficulty">
+                <select class="form-control" name="difficulty" id="difficulty" required>
                     <option value="0">Low</option>
                     <option value="1">Medium</option>
                     <option value="2">High</option>
@@ -79,13 +78,13 @@
             <div class="col-md-1">
                 <label for="time" class="sr-only"><fmt:message key="time" bundle="${bundle}" var="time"/></label>
                 <input type="text" class="form-control" placeholder="${time}"
-                       name="time" id="time">
+                       name="time" id="time" min="1" max="60" required>
             </div>
             <div class="col-md-1">
                 <label for="numberOfQuestion" class="sr-only"><fmt:message key="numberOfQuestion" bundle="${bundle}" var="numberOfQuestion"/></label>
                 <input type="text" class="form-control"
                        placeholder="${numberOfQuestion}" id="numberOfQuestion"
-                       name="numberOfQuestion">
+                       name="numberOfQuestion" required min="1">
             </div>
             <div class="col-md-2">
                 <button type="button" class="btn btn-outline-info update-submit" data-action="update"
@@ -225,12 +224,29 @@
     $(function () {
         const addBtn = $(".add");
         const submitBtn =  $(".add-submit, .update-submit");
+        const saveForm = document.getElementById("saveForm");
         updateListeners();
+
+        $('#time, #numberOfQuestion').keypress(validateNumber).on('focusout', function (){
+            if (isNaN(this.value*1)){
+                this.value = '';
+            } else if (this.min !== '' && this.min*1 > this.value*1) {
+                this.value = this.min;
+            } else if (this.max !== '' && this.max*1 < this.value*1) {
+                this.value = this.max;
+            }
+        });
+
+        function validateNumber(event) {
+            const key = window.event ? event.keyCode : event.which;
+            if (event.keyCode === 8 || event.keyCode === 46) {
+                return true;
+            } else return !(key < 48 || key > 57);
+        }
 
         function edit() {
             const id = $(this).data("id");
             const row = $("tr#quiz_" + id).children();
-            const submit = $(".add-submit");
             $("input#name").val(row[0].innerText);
             $("input#description").val(row[1].innerText);
             $("select#difficulty").val(row[2].innerText);
@@ -273,6 +289,10 @@
 
 
         submitBtn.on("click", function () {
+            if (!saveForm.checkValidity()) {
+                saveForm.reportValidity();
+                return false;
+            }
             $(this).prop('disabled', true);
             $(".new-quiz").toggleClass('disabled');
             $(".loader").show();
@@ -282,15 +302,23 @@
         });
 
         function update() {
+            if (!saveForm.checkValidity()) {
+                saveForm.reportValidity();
+                return
+            }
             $.post("${pageContext.request.contextPath}/controller/admin/quiz/update",
-                $("#save-form").serialize() + '&id=' + $(".new-quiz").data("id"),
+                $("#saveForm").serialize() + '&id=' + $(".new-quiz").data("id"),
                 update_row, "json")
                 .always(cancel);
         }
 
         function add() {
+            if (!saveForm.checkValidity()) {
+                saveForm.reportValidity();
+                return
+            }
             $.post("${pageContext.request.contextPath}/controller/admin/quiz/add",
-                $("#save-form").serialize(), add_row, "json").always(cancel);
+                $("#saveForm").serialize(), add_row, "json").always(cancel);
         }
 
         function add_row(data) {

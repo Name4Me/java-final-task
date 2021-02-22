@@ -3,6 +3,7 @@ package com.example.app.command.admin.quizzes;
 import com.example.app.command.ServletCommand;
 import com.example.app.dao.QuizDao;
 import com.example.app.model.quiz.Quiz;
+import com.example.app.model.user.UserType;
 import com.example.app.properties.MappingProperties;
 import com.example.app.service.QuizService;
 import com.example.app.util.Page;
@@ -39,14 +40,11 @@ public class QuizzesCommand implements ServletCommand {
                 pageNum = Integer.parseInt(request.getParameter("p"));
             }
             //Integer size = Integer.parseInt(request.getParameter("s"));
-            Page<Quiz> page = quizService.getPageByQuiz(pageNum, 5);
+            Page<Quiz> page = quizService.getPageByQuiz(UserType.ADMIN, pageNum, 5);
 
             request.setAttribute("page", page);
         }
-        catch (NumberFormatException ex) {
-            LOGGER.info("Couldn't parse " + request.getParameter("p") + ", "
-                    + request.getParameter("s") +" to long");
-        }
+        catch (Exception e) { LOGGER.info("QuizzesCommand: " + e.getMessage()); }
 
         return page;
     }

@@ -3,6 +3,8 @@ package com.example.app.dao;
 import com.example.app.connection.ConnectionPool;
 import com.example.app.model.quiz.Quiz;
 import com.example.app.model.quiz.QuizDifficulty;
+import com.example.app.model.user.UserStatus;
+import com.example.app.model.user.UserType;
 import com.example.app.properties.MysqlQueryProperties;
 import org.apache.log4j.Logger;
 
@@ -22,6 +24,7 @@ public class QuizDao {
     private static String deleteQuery;
     private static String findByIdQuery;
     private static String findAllQuery;
+    private static String findAllForAdmin;
     private static String findAllQuizzesForUser;
 
     public QuizDao() {
@@ -33,6 +36,7 @@ public class QuizDao {
         deleteQuery = properties.getProperty("deleteQuizById");
         findByIdQuery = properties.getProperty("findQuizById");
         findAllQuery = properties.getProperty("findAllQuizzes");
+        findAllForAdmin = properties.getProperty("findAllQuizzesForAdmin");
         findAllQuizzesForUser = properties.getProperty("findAllQuizzesForUser");
     }
 
@@ -138,11 +142,11 @@ public class QuizDao {
         return res;
     }
 
-    public List<Quiz> findAll(Integer offset, Integer size) {
+    public List<Quiz> findAll(UserType type, Integer offset, Integer size) {
         LOGGER.info("Getting all quizzes");
         List<Quiz> res = new ArrayList<>();
         try(Connection connection = connectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement(findAllQuery)) {
+            PreparedStatement statement = connection.prepareStatement(type == UserType.USER ? findAllQuery : findAllForAdmin)) {
             statement.setInt(1, offset);
             statement.setInt(2, size);
             try(ResultSet result = statement.executeQuery()) { res = getQuizzes(result); }

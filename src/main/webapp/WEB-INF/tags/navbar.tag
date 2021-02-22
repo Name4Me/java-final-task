@@ -142,7 +142,12 @@
 </header>
 <div class="container">
     <div class="row alert alert-danger" role="alert" style="display: ${sessionScope.blocked != null || errorMessage != null ? "block" : "none"}" id="errorAlert" >
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"><fmt:message key="blockMsg" bundle="${bundle}"/> ${errorMessage} </span>
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true">
+            <c:if test="${sessionScope.blocked != null}">
+                <fmt:message key="blockMsg" bundle="${bundle}"/>&nbsp;
+            </c:if>
+            ${errorMessage}
+        </span>
     </div>
     <div class="row alert alert-info" role="alert" style="display: none;" id="infoAlert" >
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"><fmt:message key="regMsg" bundle="${bundle}"/></span>

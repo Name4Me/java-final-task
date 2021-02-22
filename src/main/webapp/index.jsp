@@ -8,16 +8,7 @@
     </head>
     <body>
     <navbar:navbar/>
-    <div class="container">
-        <c:if test="${errorMessage != null}">
-            <div class="row alert alert-danger" role="alert" style="display: block">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true">${errorMessage}</span>
-            </div>
-        </c:if>
-    </div>
     <div class="container" id="quizzes"></div>
-
-
     <script>
         $(function() {
             const container = document.getElementById('quizzes');

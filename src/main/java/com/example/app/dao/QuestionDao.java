@@ -39,7 +39,6 @@ public class QuestionDao {
             PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, question.getQuizId());
             statement.setString(2, question.getText());
-            statement.setInt(3, question.getType().ordinal());
             if (statement.executeUpdate() != 0) {
                 LOGGER.info("Question creation successful");
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
@@ -58,8 +57,7 @@ public class QuestionDao {
             PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setInt(1, question.getQuizId());
             statement.setString(2, question.getText());
-            statement.setInt(3, question.getType().ordinal());
-            statement.setInt(4, question.getId());
+            statement.setInt(3, question.getId());
             LOGGER.info("Question update "+ (statement.execute() ? "failed" : "successfully"));
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
         return question;

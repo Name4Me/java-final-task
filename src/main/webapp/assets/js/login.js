@@ -1,6 +1,7 @@
 $(function() {
     const loginForm = $("#loginForm");
     const email = document.getElementById("inputEmail");
+    const msgPass = document.getElementById("msgPass");
     email.onchange = validateEmail;
 
     loginForm.on('submit', login);
@@ -16,6 +17,6 @@ $(function() {
     }
 
     function processResponse(data){
-        if (data.result) window.location.href="${pageContext.request.contextPath}"; else $(".alert").show();
+        if (data.result) window.location.href="${pageContext.request.contextPath}"; else $(".alert-danger").html(msgPass.value).show();
     }
 });

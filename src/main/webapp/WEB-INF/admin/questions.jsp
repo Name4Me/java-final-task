@@ -28,16 +28,25 @@
                 pointer-events: none;
                 opacity: 0.4;
             }
+            .back {
+                width: auto;
+                float: left;
+                padding-top: 22px;
+                padding-left: 20px;
+            }
         </style>
     </head>
     <body>
         <navbar:navbar/>
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <h1><fmt:message key="questions" bundle="${bundle}"/></h1>
+                <div class="col-md-8">
+                    <h1 style="width: auto; float: left;"><fmt:message key="questions" bundle="${bundle}"/></h1>
+                    <a class="back"
+                       href="${pageContext.request.contextPath}/controller/admin/quizzes"><fmt:message
+                            key="back" bundle="${bundle}"/></a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <button type="button" class="btn btn-outline-success add">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-plus-square" viewBox="0 0 16 16">
@@ -48,24 +57,15 @@
                     </button>
                 </div>
             </div>
-            <form id="save-form">
+            <form id="saveForm">
                 <div class="row new-question" style="display: none;">
                     <div class="loader" style="display: none;">
                         <div class="spinner-border text-success"></div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-7">
                         <input type="hidden" class="form-control" name="quizId" id="quizId" value="${quizId}">
                         <label for="text" class="sr-only"><fmt:message key="question" bundle="${bundle}" var="question"/></label>
-                        <textarea name="text" cols="50" rows="3" class="form-control" placeholder="${question}" id="text"></textarea>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="type" class="sr-only"><fmt:message key="questionType" bundle="${bundle}"/></label>
-                        <select class="form-control" name="type" id="type">
-                            <option value="0" data-type="Single"><fmt:message key="questionType.Single"
-                                                                              bundle="${bundle}"/></option>
-                            <option value="1" data-type="Multiple"><fmt:message key="questionType.Multiple"
-                                                                                bundle="${bundle}"/></option>
-                        </select>
+                        <textarea name="text" cols="50" rows="3" class="form-control" placeholder="${question}" id="text" required></textarea>
                     </div>
                     <div class="col-md-5">
                         <button type="button" class="btn btn-outline-info update-submit" data-action="update"
@@ -139,7 +139,7 @@
                     </tr>
                 </c:forEach>
                 <tr class="template" style="display: none">
-                    <td></td>
+                    <td class="question_text"></td>
                     <td></td>
                     <td>
                         <button type="button" class="btn btn-outline-success edit" data-id="">
@@ -194,6 +194,7 @@
         </div>
         <script>
             $(function () {
+                const saveForm = document.getElementById("saveForm");
                 const addBtn = $(".add");
                 const submitBtn =  $(".add-submit, .update-submit");
                 updateListeners();
@@ -239,6 +240,10 @@
 
 
                 submitBtn.on("click", function () {
+                    if (!saveForm.checkValidity()) {
+                        saveForm.reportValidity();
+                        return false;
+                    }
                     $(this).prop('disabled', true);
                     $(".new-question").toggleClass('disabled');
                     $(".loader").show();
@@ -249,13 +254,13 @@
 
                 function update() {
                     $.post("${pageContext.request.contextPath}/controller/admin/question/update",
-                        $("#save-form").serialize() + '&id=' + $(".new-question").data("id"), update_row, "json")
+                        $("#saveForm").serialize() + '&id=' + $(".new-question").data("id"), update_row, "json")
                         .always(cancel);
                 }
 
                 function add() {
                     $.post("${pageContext.request.contextPath}/controller/admin/question/add",
-                        $("#save-form").serialize(), add_row, "json").always(cancel);
+                        $("#saveForm").serialize(), add_row, "json").always(cancel);
                 }
 
                 function add_row(data) {
@@ -263,7 +268,7 @@
                     const choice = row.find(".choices");
                     row.attr('id', 'question_' + data.id);
                     row.children()[0].append(data.text);
-                    row.children()[1].append($("option[data-type='" + data.type + "']").text());
+                    row.children()[1].append(data.type);
                     row.find(".delete").data("id", data.id);
                     row.find(".edit").data("id", data.id);
                     choice.data("id", data.id).attr("href", choice.attr("href").replace("questionId=0", "questionId=" + data.id));
@@ -276,7 +281,6 @@
                 function update_row(data) {
                     const row = $("tr#question_" + data.id).children();
                     row[0].innerText = data.text;
-                    row[1].innerText = $("option[data-type='" + data.type + "']").text();
                     $(".update-submit").hide();
                 }
 

@@ -3,6 +3,7 @@ package com.example.app.service;
 import com.example.app.dao.QuizDao;
 import com.example.app.model.quiz.Quiz;
 import com.example.app.model.quiz.QuizDifficulty;
+import com.example.app.model.user.UserType;
 import com.example.app.util.Page;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,10 +62,10 @@ class QuizServiceTest {
     void getPageByQuiz() {
         List<Quiz> items =  new ArrayList<>();
         items.add(quiz);
-        Mockito.when(quizDao.findAll( 0, 5)).thenReturn(items);
+        Mockito.when(quizDao.findAll(UserType.USER, 0, 5)).thenReturn(items);
         Page<Quiz> actual = quizService.getPageByQuiz( 1, 5);
         assertEquals(quiz, actual.getItems().get(0));
-        Mockito.verify(quizDao).findAll( 0, 5);
+        Mockito.verify(quizDao).findAll(UserType.USER, 0, 5);
     }
 
     @Test

@@ -26,11 +26,12 @@ public class UpdateQuestionCommand implements ServletCommand {
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.info("UpdateQuestionCommand executing command");
 		Question question = new Question();
-		if(request.getParameter("quizId") != null && request.getParameter("text") != null &&
-				request.getParameter("type") != null && request.getParameter("id") != null) {
+		String text = request.getParameter("text");
+		int quizId = request.getParameter("quizId") == null ? 0 : Integer.parseInt(request.getParameter("quizId"));
+		int id = request.getParameter("id") == null ? 0 : Integer.parseInt(request.getParameter("id"));
+		if(id != 0 && quizId != 0 && text != null && text.length()!=0) {
 			question.setQuizId(Integer.parseInt(request.getParameter("quizId")));
 			question.setText(request.getParameter("text"));
-			question.setType(QuestionType.values()[Integer.parseInt(request.getParameter("type"))]);
 			question.setId(Integer.parseInt(request.getParameter("id")));
 			request.setAttribute("success", questionService.updateQuestion(question));
 		}

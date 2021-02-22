@@ -27,7 +27,6 @@ public class AddQuizCommand implements ServletCommand {
 		LOGGER.info("Executing command");
 		Quiz quiz = new Quiz();
 		if(request.getParameter("name") != null) {
-
 			quiz.setName(request.getParameter("name"));
 			quiz.setDescription(request.getParameter("description"));
 			quiz.setDifficulty(QuizDifficulty.values()[Integer.parseInt(request.getParameter("difficulty"))]);

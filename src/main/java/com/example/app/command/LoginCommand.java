@@ -38,7 +38,6 @@ public class LoginCommand implements ServletCommand {
 				if (user.getUserStatus() == UserStatus.BLOCKED){
 					session.setAttribute("blocked", true);
 				}
-
 				json.addProperty("result", true);
 			}
 			else {

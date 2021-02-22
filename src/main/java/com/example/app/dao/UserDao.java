@@ -81,7 +81,7 @@ public class UserDao{
 		try(Connection connection = connectionPool.getConnection();
 			PreparedStatement statement = connection.prepareStatement(findByIdQuery)) {
 			statement.setInt(1, id);
-			try (ResultSet result = statement.executeQuery()) { user = getUser(result); }
+			try (ResultSet result = statement.executeQuery()) { if(result.next()) user = getUser(result); }
 		} catch (Exception e) { LOGGER.error(e.getMessage()); }
 		return user;
 	}
@@ -92,7 +92,7 @@ public class UserDao{
 		try(Connection connection = connectionPool.getConnection();
 			PreparedStatement statement = connection.prepareStatement(findByEmailQuery)) {
 			statement.setString(1, email);
-			try(ResultSet result = statement.executeQuery()) { user = getUser(result); }
+			try(ResultSet result = statement.executeQuery()) { if(result.next()) user = getUser(result); }
 		} catch (Exception e) { LOGGER.error(e.getMessage()); }
 		return user;
 	}
@@ -104,7 +104,7 @@ public class UserDao{
 			PreparedStatement statement = connection.prepareStatement(findByEmailAndPasswordQuery)) {
 			statement.setString(1, email);
 			statement.setBytes(2, password);
-			try(ResultSet result = statement.executeQuery()) { user = getUser(result); }
+			try(ResultSet result = statement.executeQuery()) { if(result.next()) user = getUser(result); }
 		} catch (SQLException e) { LOGGER.error(e.getMessage()); }
 		return user;
 	}
@@ -119,7 +119,7 @@ public class UserDao{
 			statement.setInt(2, offset);
 			statement.setInt(3, size);
 			LOGGER.info(statement.toString());
-			try(ResultSet result = statement.executeQuery()) { res = getUsers(result); }
+			try(ResultSet result = statement.executeQuery()) { if(result.next()) res = getUsers(result); }
 		} catch (Exception e) { LOGGER.error(e.getMessage()); }
 		return res;
 	}
@@ -166,14 +166,12 @@ public class UserDao{
 	private User getUser(ResultSet resultSet) {
 		User user = null;
 		try {
-			if(resultSet.next()) {
 				user = new User(resultSet.getInt("id"),
 						resultSet.getString("email"),
 						resultSet.getBytes("password"),
 						UserType.values()[resultSet.getInt("userType")],
 						UserStatus.values()[resultSet.getInt("status")]);
 				LOGGER.info("getUser id: "+user.getId()+" email: "+user.getEmail());
-			}
 		} catch (Exception e) { LOGGER.error(e.getMessage()); }
 		return user;
 	}

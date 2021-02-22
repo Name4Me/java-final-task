@@ -121,6 +121,7 @@ public class QuizDao {
         LOGGER.info("Getting findAllForUser");
         List<Quiz> res = new ArrayList<>();
         String query = userId == 0 ? findAllQuery : findAllQuizzesForUser;
+
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement statement = connection.prepareStatement(query.replaceAll("id asc", colName+" "+direction))) {
             if (userId == 0) {
@@ -131,7 +132,7 @@ public class QuizDao {
                 statement.setInt(2, offset);
                 statement.setInt(3, size);
             }
-
+            LOGGER.info(statement.toString());
             try(ResultSet result = statement.executeQuery()){ res = getQuizzes(result); }
         } catch (Exception e) { LOGGER.error(e.getMessage()); }
         return res;

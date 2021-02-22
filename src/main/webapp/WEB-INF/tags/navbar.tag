@@ -1,11 +1,17 @@
 <%@ attribute name="isTest" %>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
-<%@tag description="Page navigation bar" pageEncoding="UTF-8"%>
-<%@attribute name="navbar" fragment="true" %>
+<%@ tag description="Page navigation bar" pageEncoding="UTF-8"%>
+<%@ attribute name="navbar" fragment="true" %>
 
 <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="${pageContext.request.contextPath}/">Testing</a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/">
+            Testing
+            <c:if test="${sessionScope.email != null}">
+                &nbsp;[<c:out value="${sessionScope.email}" escapeXml="true"/>]
+            </c:if>
+
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -135,14 +141,10 @@
     </nav>
 </header>
 <div class="container">
-    <c:if test="${sessionScope.blocked != null}">
-        <div class="row alert alert-danger" role="alert" style="display: block">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"><fmt:message key="blockMsg" bundle="${bundle}"/></span>
-        </div>
-    </c:if>
-    <c:if test="${errorMessage != null}">
-        <div class="row alert alert-danger" role="alert" style="display: block">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true">${errorMessage}</span>
-        </div>
-    </c:if>
+    <div class="row alert alert-danger" role="alert" style="display: ${sessionScope.blocked != null || errorMessage != null ? "block" : "none"}" id="errorAlert" >
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"><fmt:message key="blockMsg" bundle="${bundle}"/> ${errorMessage} </span>
+    </div>
+    <div class="row alert alert-info" role="alert" style="display: none;" id="infoAlert" >
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"><fmt:message key="regMsg" bundle="${bundle}"/></span>
+    </div>
 </div>

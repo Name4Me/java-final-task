@@ -14,7 +14,7 @@
             <h1><fmt:message key="quizzes" bundle="${bundle}"/></h1>
         </div>
         <div class="col-md-9">
-            <div class="alert alert-success" role="alert" style="display: none;">
+            <div class="alert alert-success" role="alert" style="display: none;" id="quizzesAlert">
             </div>
         </div>
     </div>
@@ -127,7 +127,7 @@
     function addUserQuiz() {
         const tr = $(this).closest("tr");
         const quizId = $(this).data("id");
-        const alert = $(".alert");
+        const alert = $("#quizzesAlert");
         $.post("${pageContext.request.contextPath}/controller/user/quizzes/add", {quizId: quizId}, () => {
             alert.html("<fmt:message key="quiz" bundle="${bundle}"/>" + " " +
                 tr.find("td")[0].innerText + " " + "<fmt:message key="user.quiz.successfullyAdded" bundle="${bundle}"/>").show();

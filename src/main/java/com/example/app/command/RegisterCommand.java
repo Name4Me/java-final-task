@@ -40,6 +40,7 @@ public class RegisterCommand implements ServletCommand {
 				session.setAttribute("email", user.getEmail());
 				session.setAttribute("authenticated", true);
 				session.setAttribute("role", user.getUserType().name());
+				session.setAttribute("userId", user.getId());
 				result = true;
 			}
 		}

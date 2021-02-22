@@ -26,7 +26,11 @@ public class UserService {
     public boolean registerUser(User user) {
         LOGGER.info("New user registration");
         return user != null && userDao.createUser(user).getId() != 0;
+    }
 
+    public boolean updateUser(User user) {
+        LOGGER.info("Update user");
+        return user != null && userDao.updateUser(user);
     }
 
     public User getUserByCredentials(String email, byte[] password) {

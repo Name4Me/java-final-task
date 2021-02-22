@@ -60,19 +60,21 @@ public class UserDao{
 		return user;
 	}
 
-	public User updateUser(User user) {
+	public boolean updateUser(User user) {
 		LOGGER.info("Updating user");
+		boolean result = false;
 		try(Connection connection = connectionPool.getConnection();
 			PreparedStatement statement = connection.prepareStatement(updateQuery)) {
 			statement.setString(1, user.getEmail());
-			statement.setBytes(2, user.getPassword());
-			statement.setInt(3, user.getUserType().ordinal());
+			statement.setInt(2, user.getUserType().ordinal());
+			statement.setInt(3, user.getUserStatus().ordinal());
 			statement.setInt(4, user.getId());
-			if(statement.execute()) {
-				LOGGER.error("User update failed");
-			} else { LOGGER.info("User updated successfully"); }
+			result = !statement.execute();
+			if(result) {
+				LOGGER.info("User updated successfully");
+			} else { LOGGER.error("User update failed"); }
 		} catch (Exception e) { LOGGER.error(e.getMessage()); }
-		return user;
+		return result;
 	}
 
 	public User findUserById(int id) {
@@ -119,7 +121,7 @@ public class UserDao{
 			statement.setInt(2, offset);
 			statement.setInt(3, size);
 			LOGGER.info(statement.toString());
-			try(ResultSet result = statement.executeQuery()) { if(result.next()) res = getUsers(result); }
+			try(ResultSet result = statement.executeQuery()) { res = getUsers(result); }
 		} catch (Exception e) { LOGGER.error(e.getMessage()); }
 		return res;
 	}

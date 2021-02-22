@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.regex.Pattern;
 
 /**
  * This class is used to handle POST requests to authenticate users.
@@ -27,8 +28,11 @@ public class LoginCommand implements ServletCommand {
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.info("Executing command");
 		JsonObject json = new JsonObject();
-		if (request.getParameter("email") != null && request.getParameter("password") != null) {
-			User user = userService.getUserByCredentials(request.getParameter("email"), Password.getPasswordHash(request.getParameter("password")) );
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+		if (email != null && Pattern.compile(regex).matcher(email).matches() && password != null && password.length() >0) {
+			User user = userService.getUserByCredentials(email, Password.getPasswordHash(password));
 			if (user != null) {
 				HttpSession session = request.getSession();
 				session.setAttribute("email", user.getEmail());

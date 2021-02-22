@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.regex.Pattern;
 
 /**
  * This class is used to handle POST requests to register user.
@@ -28,8 +29,11 @@ public class RegisterCommand implements ServletCommand {
 		boolean result = false;
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		if(email != null && password != null &&
-			userService.checkEmailAvailability(email)){
+		String confirmPassword = request.getParameter("confirm_password");
+		String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+		if(email != null && Pattern.compile(regex).matcher(email).matches() && password != null
+				&& confirmPassword != null && password.length() > 0 && password.equals(confirmPassword)
+				&& userService.checkEmailAvailability(email)){
 			LOGGER.info("New user registration");
 			User user = new User(
 					request.getParameter("email"),

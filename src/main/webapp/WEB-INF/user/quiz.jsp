@@ -30,7 +30,7 @@
                 <div class="col-md-8 question_content">
                 </div>
             </div>
-            <div>
+            <div id="questions">
                 <c:forEach items="${assignment.quiz.questions}" var="question" varStatus="loopCounter">
                     <div style="display: none" class="question" id="question${question.id}">
                         <h3><c:out value="${question.text}" escapeXml="true"/></h3>

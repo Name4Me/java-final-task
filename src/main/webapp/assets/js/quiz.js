@@ -24,8 +24,9 @@ $(function() {
     }
 
     function showQuestion(){
-        const id = this.dataset.id
-        $(".question_content").html($('div#question'+id).html());
+        const id = this.dataset.id;
+        $('#questions').append($(".question_content>div").hide());
+        $(".question_content").append($('div#question'+id).show());
         updateListener();
     }
 
@@ -39,7 +40,7 @@ $(function() {
     function saveAnswer(){
         const id = this.dataset.id;
         const result = getResult(this);
-        $.post(saveForm.action+"/assignment", {id : id, result : result,  action : "saveAnswer"} , function(){ console.log("+")});
+        $.post(saveForm.action+"/assignment", {id : id, result : result,  action : "saveAnswer"});
     }
 
     function startTimer() {

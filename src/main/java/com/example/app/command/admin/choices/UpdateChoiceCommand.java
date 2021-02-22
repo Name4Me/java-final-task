@@ -6,7 +6,6 @@ import com.example.app.model.Choice;
 import com.example.app.service.ChoiceService;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

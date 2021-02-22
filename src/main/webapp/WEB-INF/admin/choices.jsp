@@ -13,6 +13,9 @@
                 vertical-align: middle;
             }
 
+            .choice_text {
+                text-align: left;
+            }
             button.add {
                 float: right;
             }
@@ -121,7 +124,7 @@
         <tbody>
         <c:forEach items="${page.items}" var="choice">
             <tr id="choice_${choice.id}">
-                <td><c:out value="${choice.text}" escapeXml="true"/></td>
+                <td class="choice_text"><c:out value="${choice.text}" escapeXml="true"/></td>
                 <td data-correct="${choice.isCorrect}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green"
                          class="bi bi-check2-all" viewBox="0 0 16 16"
@@ -151,7 +154,7 @@
             </tr>
         </c:forEach>
         <tr class="template" style="display: none">
-            <td></td>
+            <td class="choice_text"></td>
             <td>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green"
                      class="bi bi-check2-all" viewBox="0 0 16 16" style="display: none">

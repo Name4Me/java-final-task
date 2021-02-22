@@ -22,6 +22,9 @@ header{
 .table>tbody>tr>td.question_text{
     text-align: left;
 }
+.table>tbody>tr>td.choice_text{
+    text-align: left;
+}
 button.addUserQuiz{
     float: right;
 }

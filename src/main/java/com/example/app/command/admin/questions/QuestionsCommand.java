@@ -7,15 +7,12 @@ import com.example.app.properties.MappingProperties;
 import com.example.app.service.QuestionService;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class QuestionsCommand implements ServletCommand {
     private static final Logger LOGGER = Logger.getLogger(QuestionsCommand.class);
-
     private static QuestionService questionService;
-
     private static String page;
 
     public QuestionsCommand(){
@@ -27,23 +24,20 @@ public class QuestionsCommand implements ServletCommand {
 
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("QuestionsCommand executing command");
-
         try {
-            int pageNum = 1;
-            if (request.getParameter("page") != null) {
-                pageNum = Integer.parseInt(request.getParameter("page"));
+            Page<Question> page = null;
+            int quizId = request.getParameter("quizId") == null ? 0 : Integer.parseInt(request.getParameter("quizId"));
+            if (quizId != 0 ){
+                page = questionService.getPage(
+                    quizId,
+                    request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page")),
+                    request.getParameter("size") == null ? 5 : Integer.parseInt(request.getParameter("size"))
+                );
             }
-            Integer quizId = Integer.parseInt(request.getParameter("quizId"));
-            //Integer size = Integer.parseInt(request.getParameter("s"));
-            Page<Question> page = questionService.getPage(quizId, pageNum, 5);
             request.setAttribute("quizId", quizId);
             request.setAttribute("page", page);
         }
-        catch (NumberFormatException ex) {
-            LOGGER.info("QuestionsCommand couldn't parse " + request.getParameter("page") + ", "
-                    + request.getParameter("s") +" to long");
-        }
-
+        catch (Exception e) { LOGGER.info("QuestionsCommand: " + e.getMessage()); }
         return page;
     }
 }

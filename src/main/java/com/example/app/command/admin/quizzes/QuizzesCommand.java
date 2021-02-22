@@ -35,13 +35,11 @@ public class QuizzesCommand implements ServletCommand {
         LOGGER.info("Executing command");
 
         try {
-            Integer pageNum = 1;
-            if (request.getParameter("p") != null) {
-                pageNum = Integer.parseInt(request.getParameter("p"));
-            }
-            //Integer size = Integer.parseInt(request.getParameter("s"));
-            Page<Quiz> page = quizService.getPageByQuiz(UserType.ADMIN, pageNum, 5);
-
+            Page<Quiz> page = quizService.getPageByQuiz(
+                    UserType.ADMIN,
+                    request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page")),
+                    request.getParameter("size") == null ? 5 : Integer.parseInt(request.getParameter("size"))
+                    );
             request.setAttribute("page", page);
         }
         catch (Exception e) { LOGGER.info("QuizzesCommand: " + e.getMessage()); }

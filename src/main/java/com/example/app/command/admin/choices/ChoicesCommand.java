@@ -29,21 +29,25 @@ public class ChoicesCommand implements ServletCommand {
         LOGGER.info("ChoicesCommand executing command");
 
         try {
-            int pageNum = 1;
-            if (request.getParameter("page") != null) {
-                pageNum = Integer.parseInt(request.getParameter("page"));
+            Page<Choice> page = null;
+            int questionId = request.getParameter("questionId") == null ? 0 :
+                    Integer.parseInt(request.getParameter("questionId"));
+            int quizId = request.getParameter("quizId") == null ? 0 :
+                    Integer.parseInt(request.getParameter("quizId"));
+            if (questionId != 0 ){
+                page = choiceService.getPage(
+                        questionId,
+                        request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page")),
+                        request.getParameter("size") == null ? 5 : Integer.parseInt(request.getParameter("size"))
+                );
+                request.setAttribute("questionId", questionId);
+                request.setAttribute("quizId", quizId);
+                request.setAttribute("page", page);
+            } else {
+                request.setAttribute("errorMessage", "Incorrect request");
             }
-            Integer questionId = Integer.parseInt(request.getParameter("questionId"));
-            //Integer size = Integer.parseInt(request.getParameter("s"));
-            Page<Choice> page = choiceService.getPage(questionId, pageNum, 5);
-            request.setAttribute("questionId", questionId);
-            request.setAttribute("quizId", request.getParameter("quizId"));
-            request.setAttribute("page", page);
         }
-        catch (NumberFormatException ex) {
-            LOGGER.info("ChoicesCommand couldn't parse " + request.getParameter("page") + ", "
-                    + request.getParameter("s") +" to long");
-        }
+        catch (Exception e) { LOGGER.info("ChoicesCommand: " + e.getMessage()); }
 
         return page;
     }

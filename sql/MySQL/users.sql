@@ -1,6 +1,5 @@
 CREATE TABLE app.users (
                            id int NOT NULL AUTO_INCREMENT,
-                           login varchar(20) NOT NULL,
                            password blob NOT NULL,
                            email varchar(50) NOT NULL,
                            userType int NOT NULL DEFAULT 1,

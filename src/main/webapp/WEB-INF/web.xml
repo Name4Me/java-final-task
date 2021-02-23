@@ -15,12 +15,22 @@
     </resource-ref>
 
 
+    <servlet>
+        <servlet-name>GeneratePDF</servlet-name>
+        <servlet-class>com.example.app.servlet.GeneratePDF</servlet-class>
+    </servlet>
 
+    <servlet-mapping>
+        <servlet-name>GeneratePDF</servlet-name>
+        <url-pattern>/pdf/*</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>Servlet</servlet-name>
         <servlet-class>com.example.app.servlet.Servlet</servlet-class>
     </servlet>
+
+
 
     <servlet-mapping>
         <servlet-name>Servlet</servlet-name>

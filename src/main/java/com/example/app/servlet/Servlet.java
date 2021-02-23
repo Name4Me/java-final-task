@@ -2,6 +2,7 @@ package com.example.app.servlet;
 
 import com.example.app.command.CommandManager;
 import com.example.app.command.ServletCommand;
+import com.example.app.util.PdfHelper;
 import org.apache.log4j.Logger;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;

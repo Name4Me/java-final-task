@@ -6,6 +6,7 @@ import com.example.app.model.assignment.Assignment;
 import com.example.app.model.assignment.AssignmentStatus;
 import com.example.app.properties.MappingProperties;
 import com.example.app.service.AssignmentService;
+import com.example.app.util.MailHelper;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
@@ -40,6 +41,9 @@ public class UserAssignmentCommand implements ServletCommand {
 
             if (request.getParameter("action") != null && "complete".equals(request.getParameter("action"))){
                 System.out.println("complete");
+
+                (new Thread(() -> MailHelper.getInstance().send("7380003@gmail.com", "Testing notification",
+                        "Congratulations on taking the test."))).start();
                 Assignment assignment = assignmentService.getUserQuizByUserIdQuizId(userId, quizId, false);
                 assignment.setStatus(AssignmentStatus.Completed);
                 assignmentService.updateUserQuiz(assignment);

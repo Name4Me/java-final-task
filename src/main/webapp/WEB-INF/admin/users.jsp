@@ -59,7 +59,7 @@
         <ul class="pager">
             <c:if test="${!page.first}">
                 <li>
-                    <a href="${pageContext.request.contextPath}/controller/admin/users?p=${page.number-1}&s=${page.size}">
+                    <a href="${pageContext.request.contextPath}/controller/admin/users?page=${page.number-1}&size=${page.size}">
                         <span aria-hidden="true">&larr;</span>
                     </a>
                 </li>
@@ -67,7 +67,7 @@
 
             <c:if test="${!page.last}">
                 <li>
-                    <a href="${pageContext.request.contextPath}/controller/admin/users?p=${page.number+1}&s=${page.size}">
+                    <a href="${pageContext.request.contextPath}/controller/admin/users?page=${page.number+1}&size=${page.size}">
                         <span aria-hidden="true">&rarr;</span>
                     </a>
                 </li>

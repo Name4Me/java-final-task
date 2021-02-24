@@ -19,6 +19,11 @@ public class GetMainPageCommand implements ServletCommand {
         page = properties.getProperty("mainPage");
     }
 
+    /**
+     * @param request  Http request from servlet.
+     * @param response Http response from servlet.
+     * @return page
+     */
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Executing command");
         if(request.getParameter("locale") != null) {

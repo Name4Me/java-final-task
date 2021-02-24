@@ -16,7 +16,6 @@ public class MailHelper {
     private static MailHelper instance = null;
     private static final String propertiesFileName = "mail.properties";
     private final String from;
-    private final String host;
     private final String user;
     private final String password;
     private final Session session;
@@ -33,11 +32,10 @@ public class MailHelper {
         }
         catch (IOException e) { LOGGER.error(e.getMessage()); }
         from = properties.getProperty("from");
-        host = properties.getProperty("host");
         user = properties.getProperty("user");
         password = properties.getProperty("password");
         Properties props = new Properties();
-        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.host", properties.getProperty("host"));
         props.put("mail.smtp.auth", "true");
         session = Session.getInstance(props,
                 new javax.mail.Authenticator() {

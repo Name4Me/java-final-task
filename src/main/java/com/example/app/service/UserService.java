@@ -42,7 +42,7 @@ public class UserService {
     public Page<User> getPageByUserType(Integer page, Integer size, UserType userType) {
         LOGGER.info("Getting page number " + page + ", of size " + size + ", for user type " + userType.name());
         if(page == null || size == null || page < 1 || size < 1) { return null; }
-        return new Page<>(userDao.findPageByUserType(userType, (page - 1) * size, size), page, size);
+        return new Page<>(userDao.findPageByUserType(userType, (page - 1) * size, size+1), page, size);
     }
 
     public User findUserByEmail(String email) {

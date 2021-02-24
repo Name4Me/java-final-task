@@ -23,4 +23,12 @@ public class TestResult {
         return score;
     }
 
+    @Override
+    public String toString() {
+        return "TestResult{" +
+                "email='" + email + '\'' +
+                ", testName='" + testName + '\'' +
+                ", score=" + score +
+                '}';
+    }
 }

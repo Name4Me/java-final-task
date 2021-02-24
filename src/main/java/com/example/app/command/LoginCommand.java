@@ -25,6 +25,11 @@ public class LoginCommand implements ServletCommand {
 		userService = new UserService(UserDao.getInstance());
 	}
 
+	/**
+	 * @param request  Http request from servlet.
+	 * @param response Http response from servlet.
+	 * @return page or json data
+	 */
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.info("Executing command");
 		JsonObject json = new JsonObject();

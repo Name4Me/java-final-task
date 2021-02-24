@@ -55,10 +55,10 @@ class UserServiceTest {
     void getPageByUserType() {
         List<User> items =  new ArrayList<>();
         items.add(user);
-        Mockito.when(userDao.findPageByUserType(UserType.USER, 0, 5)).thenReturn(items);
+        Mockito.when(userDao.findPageByUserType(UserType.USER, 0, 6)).thenReturn(items);
         Page<User> actual = userService.getPageByUserType(1, 5, UserType.USER);
         assertEquals(user, actual.getItems().get(0));
-        Mockito.verify(userDao).findPageByUserType(UserType.USER, 0, 5);
+        Mockito.verify(userDao).findPageByUserType(UserType.USER, 0, 6);
     }
 
     @Test

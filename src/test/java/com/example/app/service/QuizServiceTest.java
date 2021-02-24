@@ -62,29 +62,29 @@ class QuizServiceTest {
     void getPageByQuiz() {
         List<Quiz> items =  new ArrayList<>();
         items.add(quiz);
-        Mockito.when(quizDao.findAll(UserType.USER, 0, 5)).thenReturn(items);
+        Mockito.when(quizDao.findAll(UserType.USER, 0, 6)).thenReturn(items);
         Page<Quiz> actual = quizService.getPageByQuiz( 1, 5);
         assertEquals(quiz, actual.getItems().get(0));
-        Mockito.verify(quizDao).findAll(UserType.USER, 0, 5);
+        Mockito.verify(quizDao).findAll(UserType.USER, 0, 6);
     }
 
     @Test
     void getPageByUserId() {
         List<Quiz> items =  new ArrayList<>();
         items.add(quiz);
-        Mockito.when(quizDao.findAllForUser(1, 0, 5)).thenReturn(items);
+        Mockito.when(quizDao.findAllForUser(1, 0, 6)).thenReturn(items);
         Page<Quiz> actual = quizService.getPageByUserId(1, 1, 5);
         assertEquals(quiz, actual.getItems().get(0));
-        Mockito.verify(quizDao).findAllForUser(1, 0, 5);
+        Mockito.verify(quizDao).findAllForUser(1, 0, 6);
     }
 
     @Test
     void getPageByUserIdWithSort() {
         List<Quiz> items =  new ArrayList<>();
         items.add(quiz);
-        Mockito.when(quizDao.findAllForUserWithSort(1, "id", "asc",0, 5)).thenReturn(items);
+        Mockito.when(quizDao.findAllForUserWithSort(1, "id", "asc",0, 6)).thenReturn(items);
         Page<Quiz> actual = quizService.getPageByUserIdWithSort(1, "id", "asc",1, 5);
         assertEquals(quiz, actual.getItems().get(0));
-        Mockito.verify(quizDao).findAllForUserWithSort(1, "id", "asc",0, 5);
+        Mockito.verify(quizDao).findAllForUserWithSort(1, "id", "asc",0, 6);
     }
 }

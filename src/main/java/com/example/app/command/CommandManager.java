@@ -14,11 +14,9 @@ import com.example.app.command.admin.quizzes.QuizzesCommand;
 import com.example.app.command.admin.quizzes.UpdateQuizCommand;
 import com.example.app.command.admin.users.*;
 import com.example.app.command.user.*;
-import com.example.app.properties.MappingProperties;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 /**
@@ -30,9 +28,8 @@ public class CommandManager {
 
     private static final Logger LOGGER = Logger.getLogger(CommandManager.class);
 
-    private HashMap<String, ServletCommand> getCommands;
-    private HashMap<String, ServletCommand> postCommands;
-    private static String errorPage;
+    private final HashMap<String, ServletCommand> getCommands;
+    private final HashMap<String, ServletCommand> postCommands;
 
     public CommandManager(){
         LOGGER.info("Initializing CommandManager");
@@ -52,10 +49,6 @@ public class CommandManager {
         getCommands.put("/controller/user/quizzes", new UserQuizzesCommand());
         getCommands.put("/controller/user/assignments", new UserAssignmentsCommand());
         getCommands.put("/controller/user/assignments/assignment", new UserStartQuizCommand());
-/*
-        getCommands.put("/account", new GetAccountPageCommand());
-        */
-
 
         //admin users
         getCommands.put("/controller/admin/users", new UsersAdminPageCommand());
@@ -64,10 +57,7 @@ public class CommandManager {
         getCommands.put("/controller/admin/questions", new QuestionsCommand());
         getCommands.put("/controller/admin/choices", new ChoicesCommand());
 
-
-
         //===================POST commands===================
-
         postCommands.put("/controller/login", new LoginCommand());
         postCommands.put("/controller/register", new RegisterCommand());
 
@@ -89,9 +79,6 @@ public class CommandManager {
         postCommands.put("/controller/user/assignments/assignment", new UserAssignmentCommand());
         postCommands.put("/controller/user/quizzes", new UserQuizzesCommand());
 
-
-        MappingProperties properties = MappingProperties.getInstance();
-        errorPage = properties.getProperty("errorPage");
     }
 
     /**
@@ -101,7 +88,7 @@ public class CommandManager {
      * @return        A servlet command instance.
      */
     public ServletCommand getGetCommand(HttpServletRequest request) {
-        String command = getMappting(request);
+        String command = getMapping(request);
         LOGGER.info("Getting command " + command);
         if(getCommands.get(command) == null) {
             return getCommands.get("/controller");
@@ -116,7 +103,7 @@ public class CommandManager {
      * @return        A servlet command instance.
      */
     public ServletCommand getPostCommand(HttpServletRequest request) {
-        String command = getMappting(request);
+        String command = getMapping(request);
         LOGGER.info("Getting command " + command);
         if(postCommands.get(command) == null) {
             return getCommands.get("/controller");
@@ -130,7 +117,7 @@ public class CommandManager {
      * @param request http request from servlet.
      * @return        Command mapping.
      */
-    public String getMappting(HttpServletRequest request) {
+    public String getMapping(HttpServletRequest request) {
         String mapping = request.getRequestURI().substring(request.getContextPath().length());
         if(mapping.endsWith("/") && mapping.length() > 1) {
             mapping = mapping.substring(0, mapping.length() - 1);

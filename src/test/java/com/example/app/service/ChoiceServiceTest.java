@@ -28,10 +28,10 @@ class ChoiceServiceTest {
     void getPage() {
         List<Choice> items =  new ArrayList<>();
         items.add(choice);
-        Mockito.when(choiceDao.findAll(1, 0, 5)).thenReturn(items);
+        Mockito.when(choiceDao.findAll(1, 0, 6)).thenReturn(items);
         Page<Choice> actual = choiceService.getPage(1, 1, 5);
         assertEquals(choice, actual.getItems().get(0));
-        Mockito.verify(choiceDao).findAll(1, 0, 5);
+        Mockito.verify(choiceDao).findAll(1, 0, 6);
     }
 
     @Test

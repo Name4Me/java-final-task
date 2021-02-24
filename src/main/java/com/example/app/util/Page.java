@@ -9,44 +9,46 @@ import java.util.List;
  */
 public class Page<T> {
 
-	private List<T> items;
-	private Integer number;
-	private Integer size;
-	private Integer currentSize;
-	private boolean first;
-	private boolean last;
+    private List<T> items;
+    private Integer number;
+    private Integer size;
+    private Integer currentSize;
+    private boolean first;
+    private boolean last;
 
-	public Page(List<T> items, Integer number, Integer size) {
-		this.items = items;
-		this.number = number;
-		this.size = size;
+    public Page(List<T> items, Integer number, Integer size) {
+        this.items = items;
+        this.number = number;
+        this.size = size;
+        currentSize = items.size();
+        first = number == 1;
+        last = currentSize <= size;
+        if (!last) {
+            this.items.remove(currentSize - 1);
+        }
+    }
 
-		currentSize = items.size();
-		first = number == 1;
-		last = currentSize < size;
-	}
+    public List<T> getItems() {
+        return items;
+    }
 
-	public List<T> getItems() {
-		return items;
-	}
+    public Integer getNumber() {
+        return number;
+    }
 
-	public Integer getNumber() {
-		return number;
-	}
+    public Integer getSize() {
+        return size;
+    }
 
-	public Integer getSize() {
-		return size;
-	}
+    public Integer getCurrentSize() {
+        return currentSize;
+    }
 
-	public Integer getCurrentSize() {
-		return currentSize;
-	}
+    public boolean isFirst() {
+        return first;
+    }
 
-	public boolean isFirst() {
-		return first;
-	}
-
-	public boolean isLast() {
-		return last;
-	}
+    public boolean isLast() {
+        return last;
+    }
 }

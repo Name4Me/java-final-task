@@ -30,10 +30,10 @@ class QuestionServiceTest {
     void getPage() {
         List<Question> items =  new ArrayList<>();
         items.add(question);
-        Mockito.when(questionDao.findAll(1, 0, 5)).thenReturn(items);
+        Mockito.when(questionDao.findAll(1, 0, 6)).thenReturn(items);
         Page<Question> actual = questionService.getPage(1, 1, 5);
         assertEquals(question, actual.getItems().get(0));
-        Mockito.verify(questionDao).findAll(1, 0, 5);
+        Mockito.verify(questionDao).findAll(1, 0, 6);
     }
 
     @Test

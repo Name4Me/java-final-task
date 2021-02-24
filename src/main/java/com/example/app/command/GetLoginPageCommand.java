@@ -20,14 +20,18 @@ public class GetLoginPageCommand implements ServletCommand{
         mainPage = properties.getProperty("mainPage");
     }
 
+    /**
+     * @param request  Http request from servlet.
+     * @param response Http response from servlet.
+     * @return page
+     */
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Executing command");
         String resultPage = loginPage;
         if(request.getSession().getAttribute("authenticated") != null &&
             request.getSession().getAttribute("authenticated").equals(true)) {
             resultPage = mainPage;
-        }
-        else if(request.getParameter("email") == null && request.getParameter("password") == null) {
+        } else if(request.getParameter("email") == null && request.getParameter("password") == null) {
             LOGGER.info("Returning login page");
             return resultPage;
         }

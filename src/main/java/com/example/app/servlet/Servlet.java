@@ -2,7 +2,6 @@ package com.example.app.servlet;
 
 import com.example.app.command.CommandManager;
 import com.example.app.command.ServletCommand;
-import com.example.app.util.PdfHelper;
 import org.apache.log4j.Logger;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -26,7 +25,7 @@ public class Servlet extends HttpServlet {
 		throws ServletException, IOException {
 		LOGGER.info("Processing get request");
 		ServletCommand command = commandManager.getGetCommand(request);
-		String addr = commandManager.getMappting(request);
+		String addr = commandManager.getMapping(request);
 		String shortAddr = addr.replaceAll("/controller","");
 		LOGGER.info("Processing get request: "+addr);
 		if((request.getSession().getAttribute("authenticated") == null ||

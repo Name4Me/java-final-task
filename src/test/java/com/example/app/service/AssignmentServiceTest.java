@@ -55,9 +55,9 @@ class AssignmentServiceTest {
     void getPageByUserId() {
         List<Assignment> items =  new ArrayList<>();
         items.add(assignment);
-        Mockito.when(assignmentDao.findAll(1, 0, 5)).thenReturn(items);
+        Mockito.when(assignmentDao.findAll(1, 0, 6)).thenReturn(items);
         Page<Assignment> actual = assignmentService.getPageByUserId(1, 1, 5);
         assertEquals(assignment, actual.getItems().get(0));
-        Mockito.verify(assignmentDao).findAll(1, 0, 5);
+        Mockito.verify(assignmentDao).findAll(1, 0, 6);
     }
 }

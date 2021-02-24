@@ -24,6 +24,11 @@ public class RegisterCommand implements ServletCommand {
 		userService = new UserService(UserDao.getInstance());
 	}
 
+	/**
+	 * @param request  Http request from servlet.
+	 * @param response Http response from servlet.
+	 * @return page or json data
+	 */
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.info("RegisterCommand executing command");
 		boolean result = false;
@@ -32,7 +37,7 @@ public class RegisterCommand implements ServletCommand {
 		String confirmPassword = request.getParameter("confirm_password");
 		String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 		if(email != null && Pattern.compile(regex).matcher(email).matches() && password != null
-				&& confirmPassword != null && password.length() > 0 && password.equals(confirmPassword)
+				&& password.length() > 0 && password.equals(confirmPassword)
 				&& userService.checkEmailAvailability(email)){
 			LOGGER.info("New user registration");
 			User user = new User(

@@ -63,7 +63,7 @@ class CommandManagerTest {
     void getMappting() {
         Mockito.when(request.getRequestURI()).thenReturn("/app/controller/login");
         Mockito.when(request.getContextPath()).thenReturn("/app");
-        String command = commandManager.getMappting(request);
+        String command = commandManager.getMapping(request);
         assertEquals("/controller/login", command);
     }
 

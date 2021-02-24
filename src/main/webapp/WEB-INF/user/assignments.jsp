@@ -29,7 +29,6 @@
                  <th><fmt:message key="result" bundle="${bundle}"/></th>
               </tr>
               </thead>
-
               <tbody>
                       <c:forEach items="${page.items}" var="assigment">
                           <tr id="quiz_${assigment.quizId}" onclick="get(this)" data-id="${assigment.quizId}">
@@ -46,7 +45,6 @@
                       </c:forEach>
               </tbody>
            </table>
-
            <div class="row">
               <ul class="pager">
                  <c:if test="${!page.first}">
@@ -68,13 +66,15 @@
            </div>
         </div>
         <script>
-           const assignments = document.getElementById('assignments');
-           $("tr").on("click", get)
-           function get(){
-              const id = $(this).data('id');
-              $.post("${pageContext.request.contextPath}/controller/user/assignments/assignment",
-                      {quizId : id}, response => assignments.innerHTML = response);
-           }
+            $(function() {
+                const assignments = document.getElementById('assignments');
+                $("tr").on("click", get)
+                function get(){
+                    const id = $(this).data('id');
+                    if (id) $.post("${pageContext.request.contextPath}/controller/user/assignments/assignment",
+                        {quizId : id}, response => assignments.innerHTML = response);
+                }
+            });
         </script>
     </body>
 </html>

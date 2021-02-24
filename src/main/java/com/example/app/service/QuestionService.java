@@ -22,7 +22,7 @@ public class QuestionService {
         LOGGER.info("QuestionService getting page number " + page + ", of size " + size);
         if(page == null || size == null || page < 1 || size < 1) { return null; }
 
-        List<Question> items =  questionDao.findAll(quizId,(page - 1) * size, size);
+        List<Question> items =  questionDao.findAll(quizId,(page - 1) * size, size+1);
         return new Page<>(items, page, size);
     }
 

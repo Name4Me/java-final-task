@@ -8,10 +8,7 @@ import com.example.app.command.admin.questions.AddQuestionCommand;
 import com.example.app.command.admin.questions.DeleteQuestionCommand;
 import com.example.app.command.admin.questions.QuestionsCommand;
 import com.example.app.command.admin.questions.UpdateQuestionCommand;
-import com.example.app.command.admin.quizzes.AddQuizCommand;
-import com.example.app.command.admin.quizzes.DeleteQuizCommand;
-import com.example.app.command.admin.quizzes.QuizzesCommand;
-import com.example.app.command.admin.quizzes.UpdateQuizCommand;
+import com.example.app.command.admin.quizzes.*;
 import com.example.app.command.admin.users.*;
 import com.example.app.command.user.*;
 import org.apache.log4j.Logger;
@@ -56,6 +53,7 @@ public class CommandManager {
         getCommands.put("/controller/admin/quizzes", new QuizzesCommand());
         getCommands.put("/controller/admin/questions", new QuestionsCommand());
         getCommands.put("/controller/admin/choices", new ChoicesCommand());
+        getCommands.put("/controller/admin/pdf", new GetResultsCommand());
 
         //===================POST commands===================
         postCommands.put("/controller/login", new LoginCommand());
@@ -74,6 +72,7 @@ public class CommandManager {
         postCommands.put("/controller/admin/choice/add", new AddChoiceCommand());
         postCommands.put("/controller/admin/choice/delete", new DeleteChoiceCommand());
         postCommands.put("/controller/admin/choice/update", new UpdateChoiceCommand());
+
 
         postCommands.put("/controller/user/quizzes/add", new AddUsersQuizzesCommand());
         postCommands.put("/controller/user/assignments/assignment", new UserAssignmentCommand());

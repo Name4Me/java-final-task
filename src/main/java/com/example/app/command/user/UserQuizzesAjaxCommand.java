@@ -19,22 +19,28 @@ public class UserQuizzesAjaxCommand implements ServletCommand {
     private static QuizService quizService;
     private static String page;
 
-    public UserQuizzesAjaxCommand(){
+    public UserQuizzesAjaxCommand() {
         LOGGER.info("Initializing UserQuizzesCommand");
         quizService = new QuizService(QuizDao.getInstance());
         MappingProperties properties = MappingProperties.getInstance();
         page = properties.getProperty("quizzesPage");
     }
 
+    /**
+     * @param request  Http request from servlet.
+     * @param response Http response from servlet.
+     * @return page.
+     */
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("UserQuizzesCommand executing command");
         try {
             Page<Quiz> page = quizService.getPageByQuiz(
                     request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page")),
-                    request.getParameter("size") == null ? 5 :Integer.parseInt(request.getParameter("size")));
+                    request.getParameter("size") == null ? 5 : Integer.parseInt(request.getParameter("size")));
             request.setAttribute("page", page);
+        } catch (Exception e) {
+            LOGGER.info("Couldn't parse request parameters " + e.getMessage());
         }
-        catch (Exception e) { LOGGER.info("Couldn't parse request parameters " + e.getMessage()); }
         return page;
     }
 }

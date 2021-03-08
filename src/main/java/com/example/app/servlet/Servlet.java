@@ -17,7 +17,7 @@ public class Servlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(Servlet.class);
     private CommandManager commandManager;
 
-    public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) {
         LOGGER.info("Initializing Servlet");
         commandManager = new CommandManager();
     }
@@ -34,10 +34,10 @@ public class Servlet extends HttpServlet {
                 !("/login /register /setLocale / /user/quizzes".contains(shortAddr))) {
             try {
                 response.sendRedirect(request.getContextPath() + "/controller/login");
-                return;
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
             }
+            return;
         }
         String page = command.execute(request, response);
         if (page != null) {
@@ -50,7 +50,7 @@ public class Servlet extends HttpServlet {
         ServletCommand command = commandManager.getPostCommand(request);
         String page = command.execute(request, response);
         if (page != null) {
-            if (request.getAttribute("isJson") != null && (boolean) request.getAttribute("isJson") == false) {
+            if (request.getAttribute("isJson") != null && !((boolean) request.getAttribute("isJson"))) {
                 request.getRequestDispatcher(page).forward(request, response);
             } else {
                 response.setContentType("application/json");

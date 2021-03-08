@@ -1,6 +1,7 @@
 package com.example.app.properties;
 
 import org.apache.log4j.Logger;
+
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -13,16 +14,21 @@ public class MappingProperties {
     private MappingProperties() {
         LOGGER.info("Initializing MappingProperties class");
         properties = new Properties();
-        try(InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertiesFileName)) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertiesFileName)) {
             if (inputStream != null) {
                 properties.load(inputStream);
-            } else { LOGGER.error("Mapping properties file not found on the classpath"); }
+            } else {
+                LOGGER.error("Mapping properties file not found on the classpath");
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
         }
-        catch (Exception e) { LOGGER.error(e.getMessage()); }
     }
 
     public static synchronized MappingProperties getInstance() {
-        if(instance == null) { instance = new MappingProperties(); }
+        if (instance == null) {
+            instance = new MappingProperties();
+        }
         return instance;
     }
 

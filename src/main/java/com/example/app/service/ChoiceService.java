@@ -19,8 +19,10 @@ public class ChoiceService {
 
     public Page<Choice> getPage(Integer questionId, Integer page, Integer size) {
         LOGGER.info("ChoiceService getting page number " + page + ", of size " + size);
-        if(page == null || size == null || page < 1 || size < 1) { return null; }
-        List<Choice> items =  choiceDao.findAll(questionId,(page - 1) * size, size+1);
+        if (page == null || size == null || page < 1 || size < 1) {
+            return null;
+        }
+        List<Choice> items = choiceDao.findAll(questionId, (page - 1) * size, size + 1);
         return new Page<>(items, page, size);
     }
 

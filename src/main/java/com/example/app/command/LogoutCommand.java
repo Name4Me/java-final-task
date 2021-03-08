@@ -2,17 +2,18 @@ package com.example.app.command;
 
 import com.example.app.properties.MappingProperties;
 import org.apache.log4j.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class is used to handle GET requests to user logout.
  */
-public class LogoutCommand implements ServletCommand{
+public class LogoutCommand implements ServletCommand {
     private static final Logger LOGGER = Logger.getLogger(GetLoginPageCommand.class);
     private static String mainPage;
 
-    public LogoutCommand(){
+    public LogoutCommand() {
         LOGGER.info("Initializing LogoutCommand");
         MappingProperties properties = MappingProperties.getInstance();
         mainPage = properties.getProperty("mainPage");

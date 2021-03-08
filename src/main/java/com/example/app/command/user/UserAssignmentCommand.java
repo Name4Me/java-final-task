@@ -22,13 +22,12 @@ public class UserAssignmentCommand implements ServletCommand {
     private static final Logger LOGGER = Logger.getLogger(UserAssignmentCommand.class);
     private static AssignmentService assignmentService;
     private static String assignmentPage;
-    private static String assignmentsPage;
-    public UserAssignmentCommand(){
+
+    public UserAssignmentCommand() {
         LOGGER.info("Initializing UserAssignmentCommand");
         assignmentService = new AssignmentService(AssignmentDao.getInstance());
         MappingProperties properties = MappingProperties.getInstance();
         assignmentPage = properties.getProperty("assignmentPage");
-        assignmentsPage = properties.getProperty("assignmentsPage");
     }
 
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -36,12 +35,10 @@ public class UserAssignmentCommand implements ServletCommand {
         try {
             HttpSession session = request.getSession();
             int quizId = request.getParameter("quizId") == null ? session.getAttribute("quizId") == null ? 0 :
-                (int) session.getAttribute("quizId") : Integer.parseInt(request.getParameter("quizId"));
+                    (int) session.getAttribute("quizId") : Integer.parseInt(request.getParameter("quizId"));
             int userId = session.getAttribute("userId") == null ? 0 : (int) session.getAttribute("userId");
 
-            if (request.getParameter("action") != null && "complete".equals(request.getParameter("action"))){
-                System.out.println("complete");
-
+            if (request.getParameter("action") != null && "complete".equals(request.getParameter("action"))) {
                 (new Thread(() -> MailHelper.getInstance().send("7380003@gmail.com", "Testing notification",
                         "Congratulations on taking the test."))).start();
                 Assignment assignment = assignmentService.getUserQuizByUserIdQuizId(userId, quizId, false);
@@ -50,28 +47,29 @@ public class UserAssignmentCommand implements ServletCommand {
                 return new Gson().toJson("ok");
             }
 
-            if (request.getParameter("action") != null && "saveAnswer".equals(request.getParameter("action"))){
+            if (request.getParameter("action") != null && "saveAnswer".equals(request.getParameter("action"))) {
                 int result = Integer.parseInt(request.getParameter("result"));
-                int id = Integer.parseInt(request.getParameter("id"))-1;
+                int id = Integer.parseInt(request.getParameter("id")) - 1;
                 int[] answers = (int[]) session.getAttribute("answers");
                 int numberOfQuestion = (int) session.getAttribute("numberOfQuestion");
                 List<Integer> answersForCheck = (List<Integer>) session.getAttribute("answersForCheck");
                 answers[id] = answersForCheck.get(id) == result ? 1 : 0;
                 double score = 0;
-                for ( int a : answers ) { score += 100/numberOfQuestion * a; }
-                System.out.println("score: "+score);
+                for (int a : answers) {
+                    score += 100.0 / numberOfQuestion * a;
+                }
                 session.setAttribute("answers", answers);
                 session.setAttribute("score", score);
                 Assignment assignment = assignmentService.getUserQuizByUserIdQuizId(userId, quizId, false);
                 assignment.setScore((int) score);
                 assignmentService.updateUserQuiz(assignment);
             }
-            Assignment assignment = assignmentService.getUserQuizByUserIdQuizId( userId, quizId, true);
-
+            Assignment assignment = assignmentService.getUserQuizByUserIdQuizId(userId, quizId, true);
             request.setAttribute("isJson", false);
             request.setAttribute("assignment", assignment);
+        } catch (Exception e) {
+            LOGGER.info("Couldn't parse request parameters " + e.getMessage());
         }
-        catch (Exception e) { LOGGER.info("Couldn't parse request parameters " + e.getMessage()); }
-        return assignmentPage;//new Gson().toJson(userQuiz);
+        return assignmentPage;
     }
 }

@@ -10,6 +10,9 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * This class is used to handle requests to receive questions.
+ */
 public class QuestionsCommand implements ServletCommand {
     private static final Logger LOGGER = Logger.getLogger(QuestionsCommand.class);
     private static QuestionService questionService;

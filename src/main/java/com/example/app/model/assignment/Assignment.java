@@ -16,7 +16,8 @@ public class Assignment {
     private Date finishedAt;
     private Quiz quiz;
 
-    public Assignment(){ }
+    public Assignment() {
+    }
 
     public Assignment(int userId, int quizId, int score, AssignmentStatus status,
                       Timestamp createdAt, Timestamp updatedAt, Timestamp startedAt, Timestamp finishedAt) {

@@ -29,14 +29,16 @@ public class AssignmentService {
     }
 
     public Assignment getUserQuizByUserIdQuizId(int userId, int quizId, boolean getQuestions) {
-        LOGGER.info("AssignmentService get Assignment by userId: "+userId+" quizId: "+quizId);
+        LOGGER.info("AssignmentService get Assignment by userId: " + userId + " quizId: " + quizId);
         return assignmentDao.findUserQuizByUserIdQuizId(userId, quizId, getQuestions);
     }
 
     public Page<Assignment> getPageByUserId(Integer userId, Integer page, Integer size) {
-        LOGGER.info("QuestionService getting page for userId:" + userId+" number: " + page + ", of size: " + size);
-        if(page == null || size == null || page < 1 || size < 1) { return null; }
-        List<Assignment> items = assignmentDao.findAll(userId,(page - 1) * size, size+1);
+        LOGGER.info("QuestionService getting page for userId:" + userId + " number: " + page + ", of size: " + size);
+        if (page == null || size == null || page < 1 || size < 1) {
+            return null;
+        }
+        List<Assignment> items = assignmentDao.findAll(userId, (page - 1) * size, size + 1);
         return new Page<>(items, page, size);
     }
 }

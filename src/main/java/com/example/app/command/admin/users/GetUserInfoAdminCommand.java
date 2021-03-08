@@ -6,7 +6,6 @@ import com.example.app.model.user.User;
 import com.example.app.properties.MappingProperties;
 import com.example.app.service.UserService;
 import org.apache.log4j.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

@@ -13,7 +13,7 @@ public class GetMainPageCommand implements ServletCommand {
     private static final Logger LOGGER = Logger.getLogger(GetMainPageCommand.class);
     private static String page;
 
-    public GetMainPageCommand(){
+    public GetMainPageCommand() {
         LOGGER.info("Initializing GetMainPageCommand");
         MappingProperties properties = MappingProperties.getInstance();
         page = properties.getProperty("mainPage");
@@ -26,7 +26,7 @@ public class GetMainPageCommand implements ServletCommand {
      */
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Executing command");
-        if(request.getParameter("locale") != null) {
+        if (request.getParameter("locale") != null) {
             String locale = request.getParameter("locale");
             switch (locale) {
                 case "en":

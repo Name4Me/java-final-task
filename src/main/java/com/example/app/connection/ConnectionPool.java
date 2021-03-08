@@ -3,10 +3,8 @@ package com.example.app.connection;
 import org.apache.log4j.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class ConnectionPool {
     private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
@@ -24,9 +22,8 @@ public class ConnectionPool {
             ctx = new InitialContext();
             DataSource ds = (DataSource) ctx.lookup(lookupName);
             connection = ds.getConnection();
-        } catch (NamingException | SQLException e) {
+        } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            e.printStackTrace();
         }
         return connection;
     }

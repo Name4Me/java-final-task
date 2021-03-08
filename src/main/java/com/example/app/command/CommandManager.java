@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 /**
  * This is a helper class that is used to work with servlet commands.
- *
+ * <p>
  * It handles mapping of the url paths to the commands.
  */
 public class CommandManager {
@@ -28,7 +28,7 @@ public class CommandManager {
     private final HashMap<String, ServletCommand> getCommands;
     private final HashMap<String, ServletCommand> postCommands;
 
-    public CommandManager(){
+    public CommandManager() {
         LOGGER.info("Initializing CommandManager");
 
         getCommands = new HashMap<>();
@@ -73,7 +73,6 @@ public class CommandManager {
         postCommands.put("/controller/admin/choice/delete", new DeleteChoiceCommand());
         postCommands.put("/controller/admin/choice/update", new UpdateChoiceCommand());
 
-
         postCommands.put("/controller/user/quizzes/add", new AddUsersQuizzesCommand());
         postCommands.put("/controller/user/assignments/assignment", new UserAssignmentCommand());
         postCommands.put("/controller/user/quizzes", new UserQuizzesCommand());
@@ -84,12 +83,12 @@ public class CommandManager {
      * This method is used to get a command instance mapped to http get method, based on a request.
      *
      * @param request http request from servlet.
-     * @return        A servlet command instance.
+     * @return A servlet command instance.
      */
     public ServletCommand getGetCommand(HttpServletRequest request) {
         String command = getMapping(request);
         LOGGER.info("Getting command " + command);
-        if(getCommands.get(command) == null) {
+        if (getCommands.get(command) == null) {
             return getCommands.get("/controller");
         }
         return getCommands.get(command);
@@ -99,12 +98,12 @@ public class CommandManager {
      * This method is used to get a command instance mapped to http post method, based on a request.
      *
      * @param request http request from servlet.
-     * @return        A servlet command instance.
+     * @return A servlet command instance.
      */
     public ServletCommand getPostCommand(HttpServletRequest request) {
         String command = getMapping(request);
         LOGGER.info("Getting command " + command);
-        if(postCommands.get(command) == null) {
+        if (postCommands.get(command) == null) {
             return getCommands.get("/controller");
         }
         return postCommands.get(command);
@@ -114,11 +113,11 @@ public class CommandManager {
      * This is a helper method to get command mapping from uri.
      *
      * @param request http request from servlet.
-     * @return        Command mapping.
+     * @return Command mapping.
      */
     public String getMapping(HttpServletRequest request) {
         String mapping = request.getRequestURI().substring(request.getContextPath().length());
-        if(mapping.endsWith("/") && mapping.length() > 1) {
+        if (mapping.endsWith("/") && mapping.length() > 1) {
             mapping = mapping.substring(0, mapping.length() - 1);
         }
         return mapping;

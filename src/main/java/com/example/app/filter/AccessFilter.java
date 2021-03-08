@@ -54,25 +54,25 @@ public class AccessFilter implements Filter {
         String command = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
         if (!"/".equals(command)) {
-            if(command.endsWith("/")) {
+            if (command.endsWith("/")) {
                 command = command.substring(0, command.length() - 1);
             }
-            if(command.startsWith("/")) {
+            if (command.startsWith("/")) {
                 command = command.substring(1);
             }
-            if(command.indexOf('?') > 0) {
+            if (command.indexOf('?') > 0) {
                 command = command.substring(command.lastIndexOf('?'));
             }
         }
 
-        LOGGER.info("Filter command: "+command);
+        LOGGER.info("Filter command: " + command);
         if (command.isEmpty()) {
             LOGGER.info("Filter command isEmpty");
             return false;
         }
 
-        if (outOfControl.contains(command)){
-            LOGGER.info("Filter command: '"+command+"' outOfControl");
+        if (outOfControl.contains(command)) {
+            LOGGER.info("Filter command: '" + command + "' outOfControl");
             return true;
         }
 
@@ -84,17 +84,17 @@ public class AccessFilter implements Filter {
 
         if (session.getAttribute("role") != null) {
             UserType userRole = UserType.valueOf((String) session.getAttribute("role"));
-            return command.contains(userRole.toString().toLowerCase()+"/");
-        } else { return false; }
+            return command.contains(userRole.toString().toLowerCase() + "/");
+        } else {
+            return false;
+        }
     }
-
 
 
     /**
      * Extracts parameter values from string.
      *
-     * @param str
-     *            parameter values string.
+     * @param str parameter values string.
      * @return list of parameter values.
      */
     private List<String> asList(String str) {

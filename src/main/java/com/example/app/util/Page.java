@@ -9,12 +9,12 @@ import java.util.List;
  */
 public class Page<T> {
 
-    private List<T> items;
-    private Integer number;
-    private Integer size;
-    private Integer currentSize;
-    private boolean first;
-    private boolean last;
+    private final List<T> items;
+    private final Integer number;
+    private final Integer size;
+    private final Integer currentSize;
+    private final boolean first;
+    private final boolean last;
 
     public Page(List<T> items, Integer number, Integer size) {
         this.items = items;

@@ -10,24 +10,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This class is used to handle POST requests to delete quiz.
+ * This class is used to handle POST requests to delete question.
  */
 public class DeleteQuestionCommand implements ServletCommand {
-	private static final Logger LOGGER = Logger.getLogger(DeleteQuestionCommand.class);
-	private static QuestionService questionService;
+    private static final Logger LOGGER = Logger.getLogger(DeleteQuestionCommand.class);
+    private static QuestionService questionService;
 
-	public DeleteQuestionCommand(){
-		LOGGER.info("Initializing DeleteQuizCommand");
-		questionService = new QuestionService(QuestionDao.getInstance());
-	}
+    public DeleteQuestionCommand() {
+        LOGGER.info("Initializing DeleteQuizCommand");
+        questionService = new QuestionService(QuestionDao.getInstance());
+    }
 
-	public String execute(HttpServletRequest request, HttpServletResponse response) {
-		LOGGER.info("Executing command Delete Quiz");
-		JsonObject json = new JsonObject();
-		if(request.getParameter("id") != null) {
-			json.addProperty("result", questionService.deleteQuestion(Integer.parseInt(request.getParameter("id"))));
-		}
+	/**
+	 * @param request  Http request from servlet.
+	 * @param response Http response from servlet.
+	 * @return json result.
+	 */
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
+        LOGGER.info("Executing command Delete Quiz");
+        JsonObject json = new JsonObject();
+        if (request.getParameter("id") != null) {
+            json.addProperty("result", questionService.deleteQuestion(Integer.parseInt(request.getParameter("id"))));
+        }
 
-		return json.toString();
-	}
+        return json.toString();
+    }
 }

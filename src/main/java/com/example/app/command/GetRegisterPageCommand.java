@@ -2,6 +2,7 @@ package com.example.app.command;
 
 import com.example.app.properties.MappingProperties;
 import org.apache.log4j.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,7 +14,7 @@ public class GetRegisterPageCommand implements ServletCommand {
     private static String registerPage;
     private static String mainPage;
 
-    public GetRegisterPageCommand(){
+    public GetRegisterPageCommand() {
         LOGGER.info("Initializing GetRegisterPageCommand");
         MappingProperties properties = MappingProperties.getInstance();
         registerPage = properties.getProperty("registerPage");
@@ -28,10 +29,10 @@ public class GetRegisterPageCommand implements ServletCommand {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Executing command");
         String resultPage = registerPage;
-        if(request.getSession().getAttribute("authenticated") != null &&
-            request.getSession().getAttribute("authenticated").equals(true)) {
+        if (request.getSession().getAttribute("authenticated") != null &&
+                request.getSession().getAttribute("authenticated").equals(true)) {
             resultPage = mainPage;
-        } else if(request.getParameter("email") == null && request.getParameter("password") == null) {
+        } else if (request.getParameter("email") == null && request.getParameter("password") == null) {
             LOGGER.info("Returning registration page");
             return resultPage;
         }

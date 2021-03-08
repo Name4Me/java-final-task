@@ -15,26 +15,31 @@ import javax.servlet.http.HttpServletResponse;
  * This class is used to handle POST requests to add new quiz.
  */
 public class AddQuizCommand implements ServletCommand {
-	private static final Logger LOGGER = Logger.getLogger(AddQuizCommand.class);
-	private static QuizService quizService;
+    private static final Logger LOGGER = Logger.getLogger(AddQuizCommand.class);
+    private static QuizService quizService;
 
-	public AddQuizCommand(){
-		LOGGER.info("Initializing AddQuizCommand");
-		quizService = new QuizService(QuizDao.getInstance());
-	}
+    public AddQuizCommand() {
+        LOGGER.info("Initializing AddQuizCommand");
+        quizService = new QuizService(QuizDao.getInstance());
+    }
 
-	public String execute(HttpServletRequest request, HttpServletResponse response) {
-		LOGGER.info("Executing command");
-		Quiz quiz = new Quiz();
-		if(request.getParameter("name") != null) {
-			quiz.setName(request.getParameter("name"));
-			quiz.setDescription(request.getParameter("description"));
-			quiz.setDifficulty(QuizDifficulty.values()[Integer.parseInt(request.getParameter("difficulty"))]);
-			quiz.setTime(Integer.parseInt(request.getParameter("time")));
-			quiz.setNumberOfQuestion(Integer.parseInt(request.getParameter("numberOfQuestion")));
-			request.setAttribute("success", quizService.createQuiz(quiz));
-		}
+    /**
+     * @param request  Http request from servlet.
+     * @param response Http response from servlet.
+     * @return json result.
+     */
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
+        LOGGER.info("Executing command");
+        Quiz quiz = new Quiz();
+        if (request.getParameter("name") != null) {
+            quiz.setName(request.getParameter("name"));
+            quiz.setDescription(request.getParameter("description"));
+            quiz.setDifficulty(QuizDifficulty.values()[Integer.parseInt(request.getParameter("difficulty"))]);
+            quiz.setTime(Integer.parseInt(request.getParameter("time")));
+            quiz.setNumberOfQuestion(Integer.parseInt(request.getParameter("numberOfQuestion")));
+            request.setAttribute("success", quizService.createQuiz(quiz));
+        }
 
-		return new Gson().toJson(quiz);
-	}
+        return new Gson().toJson(quiz);
+    }
 }

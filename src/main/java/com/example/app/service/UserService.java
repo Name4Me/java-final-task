@@ -5,7 +5,6 @@ import com.example.app.model.user.User;
 import com.example.app.model.user.UserType;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
-import java.util.List;
 
 public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class);
@@ -18,7 +17,9 @@ public class UserService {
 
     public boolean checkEmailAvailability(String email) {
         LOGGER.info("Checking availability of email");
-        if(email == null) { return false; }
+        if (email == null) {
+            return false;
+        }
         User user = userDao.findUserByEmail(email);
         return user == null;
     }
@@ -35,14 +36,18 @@ public class UserService {
 
     public User getUserByCredentials(String email, byte[] password) {
         LOGGER.info("Getting user by credentials");
-        if(email == null || password == null) { return null; }
+        if (email == null || password == null) {
+            return null;
+        }
         return userDao.findUserByEmailAndPassword(email, password);
     }
 
     public Page<User> getPageByUserType(Integer page, Integer size, UserType userType) {
         LOGGER.info("Getting page number " + page + ", of size " + size + ", for user type " + userType.name());
-        if(page == null || size == null || page < 1 || size < 1) { return null; }
-        return new Page<>(userDao.findPageByUserType(userType, (page - 1) * size, size+1), page, size);
+        if (page == null || size == null || page < 1 || size < 1) {
+            return null;
+        }
+        return new Page<>(userDao.findPageByUserType(userType, (page - 1) * size, size + 1), page, size);
     }
 
     public User findUserByEmail(String email) {

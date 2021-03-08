@@ -20,9 +20,11 @@ public class QuestionService {
 
     public Page<Question> getPage(Integer quizId, Integer page, Integer size) {
         LOGGER.info("QuestionService getting page number " + page + ", of size " + size);
-        if(page == null || size == null || page < 1 || size < 1) { return null; }
+        if (page == null || size == null || page < 1 || size < 1) {
+            return null;
+        }
 
-        List<Question> items =  questionDao.findAll(quizId,(page - 1) * size, size+1);
+        List<Question> items = questionDao.findAll(quizId, (page - 1) * size, size + 1);
         return new Page<>(items, page, size);
     }
 

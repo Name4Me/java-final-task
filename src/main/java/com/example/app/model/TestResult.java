@@ -1,11 +1,11 @@
 package com.example.app.model;
 
 public class TestResult {
-    private String email;
-    private String testName;
-    private int score;
+    private final String email;
+    private final String testName;
+    private final int score;
 
-    public TestResult(String email, String testName, int score){
+    public TestResult(String email, String testName, int score) {
         this.email = email;
         this.testName = testName;
         this.score = score;

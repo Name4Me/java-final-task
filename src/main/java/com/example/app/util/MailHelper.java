@@ -1,6 +1,7 @@
 package com.example.app.util;
 
 import org.apache.log4j.Logger;
+
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -20,17 +21,20 @@ public class MailHelper {
     private final String password;
     private final Session session;
 
-    private MailHelper(){
+    private MailHelper() {
         LOGGER.info("Initializing MailProperties class");
         Properties properties = new Properties();
-        try(InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertiesFileName)) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertiesFileName)) {
             if (inputStream != null) {
                 properties.load(inputStream);
 
-            } else { LOGGER.error("Mail property file not found on the classpath"); }
+            } else {
+                LOGGER.error("Mail property file not found on the classpath");
+            }
 
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
         }
-        catch (IOException e) { LOGGER.error(e.getMessage()); }
         from = properties.getProperty("from");
         user = properties.getProperty("user");
         password = properties.getProperty("password");
@@ -45,12 +49,15 @@ public class MailHelper {
                 });
 
     }
+
     public static synchronized MailHelper getInstance() {
-        if(instance == null) { instance = new MailHelper(); }
+        if (instance == null) {
+            instance = new MailHelper();
+        }
         return instance;
     }
 
-    public void send(String to, String subject, String text){
+    public void send(String to, String subject, String text) {
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
@@ -58,7 +65,9 @@ public class MailHelper {
             message.setSubject(subject);
             message.setText(text);
             Transport.send(message);
-        } catch (Exception e) { LOGGER.error(e.getMessage()); }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
 }

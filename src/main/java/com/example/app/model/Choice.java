@@ -6,7 +6,9 @@ public class Choice {
     private String text;
     private boolean isCorrect;
 
-    public Choice(){ }
+    public Choice() {
+    }
+
     public Choice(int id, int questionId, String text, Boolean isCorrect) {
         this.id = id;
         this.questionId = questionId;

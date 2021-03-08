@@ -2,7 +2,6 @@ package com.example.app.service;
 
 import com.example.app.dao.QuizDao;
 import com.example.app.model.quiz.Quiz;
-import com.example.app.model.user.UserStatus;
 import com.example.app.model.user.UserType;
 import com.example.app.util.Page;
 import org.apache.log4j.Logger;
@@ -39,28 +38,35 @@ public class QuizService {
         LOGGER.info("Finding quiz by id " + id);
         return id == 0 ? null : quizDao.findQuizById(id);
     }
+
     public Page<Quiz> getPageByQuiz(Integer page, Integer size) {
         return getPageByQuiz(UserType.USER, page, size);
     }
 
     public Page<Quiz> getPageByQuiz(UserType type, Integer page, Integer size) {
         LOGGER.info("Getting page number " + page + ", of size " + size);
-        if(page == null || size == null || page < 1 || size < 1) { return null; }
-        List<Quiz> items =  quizDao.findAll(type,(page - 1) * size, size+1);
+        if (page == null || size == null || page < 1 || size < 1) {
+            return null;
+        }
+        List<Quiz> items = quizDao.findAll(type, (page - 1) * size, size + 1);
         return new Page<>(items, page, size);
     }
 
     public Page<Quiz> getPageByUserId(Integer userId, Integer page, Integer size) {
         LOGGER.info("Getting page number " + page + ", of size " + size);
-        if(page == null || size == null || page < 1 || size < 1) { return null; }
-        List<Quiz> items =  quizDao.findAllForUser(userId,(page - 1) * size, size+1);
+        if (page == null || size == null || page < 1 || size < 1) {
+            return null;
+        }
+        List<Quiz> items = quizDao.findAllForUser(userId, (page - 1) * size, size + 1);
         return new Page<>(items, page, size);
     }
 
-    public Page<Quiz> getPageByUserIdWithSort(Integer userId, String colName, String direction , Integer page, Integer size) {
+    public Page<Quiz> getPageByUserIdWithSort(Integer userId, String colName, String direction, Integer page, Integer size) {
         LOGGER.info("Getting userId: " + userId + " page number " + page + ", of size " + size);
-        if(page == null || size == null || page < 1 || size < 1) { return null; }
-        List<Quiz> items =  quizDao.findAllForUserWithSort(userId, colName, direction,(page - 1) * size, size+1);
+        if (page == null || size == null || page < 1 || size < 1) {
+            return null;
+        }
+        List<Quiz> items = quizDao.findAllForUserWithSort(userId, colName, direction, (page - 1) * size, size + 1);
         return new Page<>(items, page, size);
     }
 }

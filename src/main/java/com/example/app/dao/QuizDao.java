@@ -41,14 +41,16 @@ public class QuizDao {
     }
 
     public static QuizDao getInstance() {
-        if(INSTANCE == null) { INSTANCE = new QuizDao(); }
+        if (INSTANCE == null) {
+            INSTANCE = new QuizDao();
+        }
         return INSTANCE;
     }
 
     public Quiz createQuiz(Quiz quiz) {
         LOGGER.info("Creating new quiz");
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, quiz.getName());
             statement.setString(2, quiz.getDescription());
             statement.setInt(3, quiz.getDifficulty().ordinal());
@@ -59,65 +61,85 @@ public class QuizDao {
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         quiz.setId(generatedKeys.getInt(1));
-                    } else { LOGGER.error("Failed to create quiz, no ID obtained."); }
+                    } else {
+                        LOGGER.error("Failed to create quiz, no ID obtained.");
+                    }
                 }
-            } else { LOGGER.info("Quiz creation failed"); }
-        } catch (Exception e) { LOGGER.error(e.getMessage()); }
+            } else {
+                LOGGER.info("Quiz creation failed");
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
         return quiz;
     }
 
     public Quiz updateQuiz(Quiz quiz) {
         LOGGER.info("Updating quiz");
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setString(1, quiz.getName());
             statement.setString(2, quiz.getDescription());
             statement.setInt(3, quiz.getDifficulty().ordinal());
             statement.setInt(4, quiz.getTime());
             statement.setInt(5, quiz.getNumberOfQuestion());
             statement.setInt(6, quiz.getId());
-            if(statement.execute()) {
+            if (statement.execute()) {
                 LOGGER.error("Quiz update failed");
-            } else { LOGGER.info("Quiz updated successfully"); }
-        } catch (Exception e) { LOGGER.error(e.getMessage()); }
+            } else {
+                LOGGER.info("Quiz updated successfully");
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
         return quiz;
     }
 
     public boolean deleteQuizById(int id) {
         LOGGER.info("Deleting quiz");
         boolean result = false;
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
             statement.setInt(1, id);
             result = !statement.execute();
             LOGGER.info("Quiz deleted " + (result ? "successfully" : "failed"));
-        } catch (Exception e) { LOGGER.error(e.getMessage()); }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
         return result;
     }
 
     public Quiz findQuizById(int id) {
         LOGGER.info("Getting quiz with id " + id);
         Quiz quiz = null;
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement(findByIdQuery)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(findByIdQuery)) {
             statement.setInt(1, id);
-            try(ResultSet result = statement.executeQuery()){
-                if(result.next()) { quiz = getQuiz(result); }
+            try (ResultSet result = statement.executeQuery()) {
+                if (result.next()) {
+                    quiz = getQuiz(result);
+                }
             }
-        } catch (Exception e) { LOGGER.error(e.getMessage()); }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
         return quiz;
     }
 
     public List<Quiz> findAllForUser(Integer userId, Integer offset, Integer size) {
         LOGGER.info("Getting findAllForUser");
         List<Quiz> res = new ArrayList<>();
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement(findAllQuizzesForUser)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(findAllQuizzesForUser)) {
             statement.setInt(1, userId);
             statement.setInt(2, offset);
             statement.setInt(3, size);
-            try(ResultSet result = statement.executeQuery()){ res = getQuizzes(result); }
-        } catch (Exception e) { LOGGER.error(e.getMessage()); }
+            try (ResultSet result = statement.executeQuery()) {
+                res = getQuizzes(result);
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
         return res;
     }
 
@@ -126,8 +148,8 @@ public class QuizDao {
         List<Quiz> res = new ArrayList<>();
         String query = userId == 0 ? findAllQuery : findAllQuizzesForUser;
 
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query.replaceAll("id asc", colName+" "+direction))) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query.replaceAll("id asc", colName + " " + direction))) {
             if (userId == 0) {
                 statement.setInt(1, offset);
                 statement.setInt(2, size);
@@ -137,26 +159,36 @@ public class QuizDao {
                 statement.setInt(3, size);
             }
             LOGGER.info(statement.toString());
-            try(ResultSet result = statement.executeQuery()){ res = getQuizzes(result); }
-        } catch (Exception e) { LOGGER.error(e.getMessage()); }
+            try (ResultSet result = statement.executeQuery()) {
+                res = getQuizzes(result);
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
         return res;
     }
 
     public List<Quiz> findAll(UserType type, Integer offset, Integer size) {
         LOGGER.info("Getting all quizzes");
         List<Quiz> res = new ArrayList<>();
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement(type == UserType.USER ? findAllQuery : findAllForAdmin)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(type == UserType.USER ? findAllQuery : findAllForAdmin)) {
             statement.setInt(1, offset);
             statement.setInt(2, size);
-            try(ResultSet result = statement.executeQuery()) { res = getQuizzes(result); }
-        } catch (Exception e) { LOGGER.error(e.getMessage()); }
+            try (ResultSet result = statement.executeQuery()) {
+                res = getQuizzes(result);
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
         return res;
     }
 
     private List<Quiz> getQuizzes(ResultSet resultSet) throws Exception {
         List<Quiz> res = new ArrayList<>();
-        while(resultSet.next()) { res.add(getQuiz(resultSet)); }
+        while (resultSet.next()) {
+            res.add(getQuiz(resultSet));
+        }
         return res;
     }
 
@@ -169,7 +201,7 @@ public class QuizDao {
                 resultSet.getInt("time"),
                 resultSet.getInt("numberOfQuestion")
         );
-        quiz.setQuestions(QuestionDao.getInstance().findAll(quiz.getId(),1,quiz.getNumberOfQuestion()));
+        quiz.setQuestions(QuestionDao.getInstance().findAll(quiz.getId(), 1, quiz.getNumberOfQuestion()));
         return quiz;
     }
 }

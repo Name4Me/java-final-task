@@ -6,6 +6,7 @@ import com.example.app.model.user.UserType;
 import com.example.app.properties.MappingProperties;
 import com.example.app.service.UserService;
 import org.apache.log4j.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,21 +18,27 @@ public class UsersAdminPageCommand implements ServletCommand {
     private static UserService userService;
     private static String page;
 
-    public UsersAdminPageCommand(){
+    public UsersAdminPageCommand() {
         LOGGER.info("Initializing UsersAdminPageCommand");
         userService = new UserService(UserDao.getInstance());
         MappingProperties properties = MappingProperties.getInstance();
         page = properties.getProperty("adminUsersPage");
     }
 
+    /**
+     * @param request  Http request from servlet.
+     * @param response Http response from servlet.
+     * @return page.
+     */
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("UsersAdminPageCommand executing command");
         try {
             int pageNum = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
             int size = request.getParameter("size") == null ? 5 : Integer.parseInt(request.getParameter("size"));
             request.setAttribute("page", userService.getPageByUserType(pageNum, size, UserType.USER));
+        } catch (Exception e) {
+            LOGGER.error("UsersAdminPageCommand: " + e.getMessage());
         }
-        catch (Exception e) { LOGGER.error("UsersAdminPageCommand: " + e.getMessage()); }
         return page;
     }
 }

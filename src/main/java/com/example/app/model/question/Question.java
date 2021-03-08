@@ -12,7 +12,8 @@ public class Question {
     private QuestionType type;
     private List<Choice> choices;
 
-    public Question() { }
+    public Question() {
+    }
 
     public Question(int id, int quizId, String text, QuestionType type) {
         this.id = id;

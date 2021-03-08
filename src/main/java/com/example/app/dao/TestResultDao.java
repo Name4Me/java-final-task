@@ -26,19 +26,23 @@ public class TestResultDao {
     }
 
     public static TestResultDao getInstance() {
-        if(INSTANCE == null) { INSTANCE = new TestResultDao(); }
+        if (INSTANCE == null) {
+            INSTANCE = new TestResultDao();
+        }
         return INSTANCE;
     }
 
     public List<TestResult> findAll() {
         List<TestResult> res = new ArrayList<>();
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement(getQuery)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(getQuery)) {
             LOGGER.info(statement.toString());
-            try(ResultSet result = statement.executeQuery()) {
+            try (ResultSet result = statement.executeQuery()) {
                 res = getTestResults(result);
             }
-        } catch (Exception e) { LOGGER.error(e.getMessage()); }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
         return res;
     }
 
@@ -49,7 +53,9 @@ public class TestResultDao {
                 res.add(getTestResult(resultSet));
                 LOGGER.info("getTestResults");
             }
-        } catch (Exception e) { LOGGER.error(e.getMessage()); }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
         return res;
     }
 
@@ -60,7 +66,9 @@ public class TestResultDao {
                     resultSet.getString("name"),
                     resultSet.getInt("score"));
             LOGGER.info(testResult.toString());
-        } catch (Exception e) { LOGGER.error(e.getMessage()); }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+        }
         return testResult;
     }
 
